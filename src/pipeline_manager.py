@@ -8,9 +8,10 @@ connecting all components together from data retrieval to reporting.
 
 import logging
 import time
-import uuid
 import os
 import sys
+import json
+import requests
 from datetime import datetime
 from typing import Dict, List, Any, Tuple, Optional
 from pathlib import Path
@@ -21,12 +22,11 @@ if __name__ == "__main__":
     sys.path.insert(0, project_root)
 
 # Import components
-from config.settings import DEBUG
+from config.settings import DEBUG, SPEND_THRESHOLD, DAYS_THRESHOLD, CONFIG_DIR
 from src.meta_api_client import MetaApiClient
 from src.data_validator import DataValidator
 from src.performance_analyzer import PerformanceAnalyzer
 from src.insight_generator_simple import InsightGeneratorSimple
-from src.bigquery_handler import BigQueryHandler
 from src.sheets_manager import SheetsManager
 
 # Configure logging
@@ -44,23 +44,30 @@ class PipelineManager:
         logger.info("Initializing Pipeline Manager")
         
         try:
-            # Initialize Meta API client
-            self.meta_client = MetaApiClient()
+            # Initialize Meta API client with default region (GBR)
+            self.meta_client = MetaApiClient(region="GBR")
             
             # Initialize data validator
             self.validator = DataValidator()
             
-            # Initialize performance analyzer
-            self.analyzer = PerformanceAnalyzer()
+            # Initialize performance analyzer with dynamic benchmarks
+            # Load benchmarks from JSON file
+            benchmarks_path = os.path.join(CONFIG_DIR, 'benchmarks.json')
+            try:
+                with open(benchmarks_path, 'r') as f:
+                    benchmarks = json.load(f)
+                logger.info(f"Loaded benchmarks from {benchmarks_path}")
+                self.analyzer = PerformanceAnalyzer(benchmarks=benchmarks.get("GBR", {}))
+            except Exception as e:
+                logger.warning(f"Could not load benchmarks from {benchmarks_path}: {str(e)}")
+                logger.warning("Using default benchmarks")
+                self.analyzer = PerformanceAnalyzer()
             
             # Initialize insight generator
             self.insight_generator = InsightGeneratorSimple()
             
-            # Initialize BigQuery handler
-            self.bq_handler = BigQueryHandler()
-            
-            # Initialize Sheets manager
-            self.sheets_manager = SheetsManager()
+            # Initialize Sheets manager with default region (GBR)
+            self.sheets_manager = SheetsManager(region="GBR")
             
             logger.info("All components initialized successfully")
             
@@ -68,14 +75,34 @@ class PipelineManager:
             logger.exception(f"Error initializing components: {str(e)}")
             raise
     
-    def run_pipeline(self) -> Dict[str, Any]:
+    def run_pipeline(self, region: str = "GBR", max_ads: int = 20) -> Dict[str, Any]:
         """
         Run the complete analysis pipeline
         
+        Args:
+            region: Region code (ASI, EUR, LAT, PAC, GBR, NAM)
+            
         Returns:
             Dict: Pipeline run results
         """
-        logger.info("Starting pipeline execution")
+        logger.info(f"Starting pipeline execution for region {region}")
+        
+        # Initialize Meta API client and Sheets Manager for the specified region
+        self.meta_client = MetaApiClient(region=region)
+        self.sheets_manager = SheetsManager(region=region)
+        
+        # Update analyzer with region-specific benchmarks
+        benchmarks_path = os.path.join(CONFIG_DIR, 'benchmarks.json')
+        try:
+            with open(benchmarks_path, 'r') as f:
+                benchmarks = json.load(f)
+            # Get benchmarks for the specified region
+            region_benchmarks = benchmarks.get(region, {})
+            self.analyzer = PerformanceAnalyzer(benchmarks=region_benchmarks)
+            logger.info(f"Loaded benchmarks for region: {region}")
+        except Exception as e:
+            logger.warning(f"Could not load benchmarks for region {region}: {str(e)}")
+            # Continue with default benchmarks
         
         # Generate unique run ID
         run_id = f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
@@ -101,13 +128,25 @@ class PipelineManager:
                 run_stats["error_details"] = error_msg
                 return self._complete_run(run_stats, start_time)
             
-            # Step 2: Ensure BigQuery tables exist
-            logger.info("Ensuring BigQuery tables exist...")
-            self.bq_handler.ensure_tables_exist()
+            # Step 2: Find ads with sufficient spend over the past 7 days (excluding today)
+            logger.info(f"Finding ads with minimum spend of £{SPEND_THRESHOLD} over the past {DAYS_THRESHOLD} days (excluding today)...")
+            eligible_ads = self.meta_client.find_ads_with_spend(
+                days=DAYS_THRESHOLD,
+                min_spend=SPEND_THRESHOLD,
+                limit=max_ads
+            )
             
-            # Step 3: Query eligible ads from Meta (ads created exactly 7 days ago)
-            logger.info("Querying ads created exactly 7 days ago...")
-            eligible_ads = self.meta_client.get_eligible_ads(days_threshold=7)
+            # Fallback mechanism if no ads found
+            if not eligible_ads:
+                logger.warning("No ads found with sufficient spend, trying alternative methods...")
+                # Try looking for ads created exactly 7 days ago
+                logger.info("Trying to find ads created exactly 7 days ago...")
+                eligible_ads = self.meta_client.get_eligible_ads(days_threshold=7)
+                
+                # If still no results, try any recent ads
+                if not eligible_ads:
+                    logger.warning("No ads created exactly 7 days ago, trying any recent ads...")
+                    eligible_ads = self.meta_client.get_any_recent_ads(days=30, limit=max_ads)
             
             if not eligible_ads:
                 logger.info("No eligible ads found for analysis")
@@ -118,10 +157,48 @@ class PipelineManager:
             run_stats["ad_count"] = len(eligible_ads)
             logger.info(f"Found {len(eligible_ads)} eligible ads for analysis")
             
-            # Step 4: Validate ad data
-            logger.info("Validating ad data...")
-            validation_results = self.validator.validate_multiple_ads(eligible_ads)
-            valid_ads = validation_results["valid_ads"]
+            # Step 3: Process each ad individually with proper validation and rate limiting
+            logger.info("Processing ads individually with proper validation...")
+            
+            # We'll process the ads one by one to ensure proper rate limiting
+            valid_ads = []
+            processed_count = 0
+            
+            for ad in eligible_ads:
+                ad_id = ad.get('ad_id')
+                ad_name = ad.get('ad_name', 'Unknown Ad')
+                logger.info(f"Processing ad {ad_id}: {ad_name}")
+                processed_count += 1
+                
+                # Get complete ad data with metrics, creative, and demographics
+                try:
+                    # Get complete ad data
+                    ad_data = self.meta_client.get_complete_ad_data(ad_id, days=DAYS_THRESHOLD)
+                    
+                    if not ad_data:
+                        logger.warning(f"No data returned for ad {ad_id}")
+                        run_stats["error_count"] += 1
+                        continue
+                        
+                    # Validate the ad data
+                    validation_result = self.validator.validate_ad(ad_data)
+                    if not validation_result['valid']:
+                        logger.warning(f"Ad {ad_id} failed validation: {validation_result.get('reason', 'Unknown reason')}")
+                        run_stats["error_count"] += 1
+                        continue
+                    
+                    # Add to valid ads list
+                    valid_ads.append(ad_data)
+                    logger.info(f"Successfully validated ad {ad_id}")
+                    
+                    # Add a short delay between processing ads to avoid rate limiting
+                    if processed_count < len(eligible_ads):
+                        time.sleep(1)  # 1 second delay between ads
+                        
+                except Exception as e:
+                    logger.error(f"Error processing ad {ad_id}: {str(e)}")
+                    run_stats["error_count"] += 1
+                    continue
             
             if not valid_ads:
                 logger.warning("No valid ads after validation")
@@ -129,24 +206,16 @@ class PipelineManager:
                 run_stats["error_count"] = validation_results["invalid_count"]
                 return self._complete_run(run_stats, start_time)
             
-            # Step 5: Analyze ads and generate insights
+            # Step 4: Analyze ads and generate insights
             analyzed_ads = []
+            
+            # The ads are already fully loaded with complete data from the previous step
+            # Now we just need to analyze them and generate insights
+            logger.info(f"Analyzing {len(valid_ads)} valid ads...")
             
             for ad_data in valid_ads:
                 try:
-                    # Get detailed performance data
-                    if 'ad_id' in ad_data:
-                        ad_id = ad_data['ad_id']
-                        
-                        # Get detailed breakdowns if not already present
-                        if 'breakdowns' not in ad_data or not ad_data['breakdowns']:
-                            demographic_data = self.meta_client.get_demographic_breakdown(ad_id)
-                            ad_data['breakdowns'] = demographic_data
-                        
-                        # Get creative details if not already present
-                        if 'creative' not in ad_data or not ad_data['creative']:
-                            creative_data = self.meta_client.get_ad_creative_details(ad_id)
-                            ad_data['creative'] = creative_data
+                    ad_id = ad_data.get('ad_id', 'unknown')
                     
                     # Analyze performance
                     analysis_result = self.analyzer.analyze_performance(ad_data)
@@ -165,32 +234,102 @@ class PipelineManager:
                     })
                     
                     run_stats["success_count"] += 1
+                    logger.info(f"Successfully analyzed ad {ad_id}")
                     
                 except Exception as e:
                     logger.error(f"Error analyzing ad {ad_data.get('ad_id', 'unknown')}: {str(e)}")
                     run_stats["error_count"] += 1
             
-            # Step 6: Store results in BigQuery
-            logger.info(f"Storing {len(analyzed_ads)} analysis results in BigQuery...")
-            bq_results = self.bq_handler.batch_insert_ad_performance(analyzed_ads)
+            # Step 5: Save results to files and update Google Sheets
+            logger.info(f"Saving analysis results...")
             
-            # Step 7: Update Google Sheets
+            # Save results to JSON file in config folder
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            json_file_path = os.path.join(CONFIG_DIR, f'ad_analysis_{region}_{timestamp}.json')
+            try:
+                with open(json_file_path, 'w') as f:
+                    json.dump(analyzed_ads, f, indent=2, default=str)
+                logger.info(f"Analysis results saved to: {json_file_path}")
+            except Exception as e:
+                logger.error(f"Error saving results to JSON: {str(e)}")
+            
+            # Save results to CSV file in config folder
+            csv_file_path = os.path.join(CONFIG_DIR, f'ad_analysis_{region}_{timestamp}.csv')
+            try:
+                import csv
+                with open(csv_file_path, 'w', newline='') as csvfile:
+                    # Define CSV headers
+                    fieldnames = ["Ad ID", "Ad Name", "Campaign", "Analysis Date", "Spend (£)", "Impressions", 
+                                "CTR (%)", "Hook Rate (%)", "Viewthrough Rate (%)", "CPR (£)", "Performance Score", "Rating"]
+                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                    writer.writeheader()
+                    
+                    # Write each ad's data
+                    for ad in analyzed_ads:
+                        ad_data = ad.get("ad_data", {})
+                        analysis = ad.get("analysis_result", {})
+                        metrics = ad_data.get("metrics", {})
+                        
+                        writer.writerow({
+                            "Ad ID": ad_data.get("ad_id", ""),
+                            "Ad Name": ad_data.get("ad_name", ""),
+                            "Campaign": ad_data.get("campaign_name", ""),
+                            "Analysis Date": analysis.get("analysis_date", ""),
+                            "Spend (£)": metrics.get("spend", 0),
+                            "Impressions": metrics.get("impressions", 0),
+                            "CTR (%)": metrics.get("ctr_destination", 0),
+                            "Hook Rate (%)": metrics.get("hook_rate", 0),
+                            "Viewthrough Rate (%)": metrics.get("viewthrough_rate", 0),
+                            "CPR (£)": metrics.get("cpr", 0),
+                            "Performance Score": analysis.get("performance_score", 0),
+                            "Rating": analysis.get("performance_rating", "")
+                        })
+                        
+                logger.info(f"Analysis results saved to: {csv_file_path}")
+            except Exception as e:
+                logger.error(f"Error saving results to CSV: {str(e)}")
+            
+            # Update Google Sheets
             logger.info(f"Updating Google Sheets with analysis results...")
             
-            # Update individual ad details
-            sheets_results = self.sheets_manager.update_ad_details_batch(analyzed_ads)
-            
-            # Prepare summary data for dashboard
-            summary_data = self._prepare_dashboard_summary(analyzed_ads)
-            self.sheets_manager.update_dashboard(summary_data)
+            try:
+                # Update individual ad details
+                sheets_results = self.sheets_manager.update_ad_details_batch(analyzed_ads)
+                
+                # Prepare summary data for dashboard
+                summary_data = self._prepare_dashboard_summary(analyzed_ads)
+                self.sheets_manager.update_dashboard(summary_data)
+                
+                logger.info(f"Google Sheets updated successfully")
+            except Exception as e:
+                logger.error(f"Error updating Google Sheets: {str(e)}")  # Non-fatal error
             
             # Complete run
             run_stats["run_status"] = "success"
             return self._complete_run(run_stats, start_time)
             
+        except requests.exceptions.RequestException as e:
+            # Handle API connection errors
+            error_msg = f"API connection error: {str(e)}"
+            logger.exception(error_msg)
+            run_stats["run_status"] = "failed"
+            run_stats["error_details"] = error_msg
+            return self._complete_run(run_stats, start_time)
+            
+        except ValueError as e:
+            # Handle data validation errors
+            error_msg = f"Data validation error: {str(e)}"
+            logger.exception(error_msg)
+            run_stats["run_status"] = "failed"
+            run_stats["error_details"] = error_msg
+            return self._complete_run(run_stats, start_time)
+            
         except Exception as e:
+            # Handle unexpected errors
             error_msg = f"Pipeline error: {str(e)}"
             logger.exception(error_msg)
+            import traceback
+            logger.error(traceback.format_exc())
             run_stats["run_status"] = "failed"
             run_stats["error_details"] = error_msg
             return self._complete_run(run_stats, start_time)
@@ -210,12 +349,6 @@ class PipelineManager:
         end_time = time.time()
         duration = end_time - start_time
         run_stats["run_duration_seconds"] = round(duration, 2)
-        
-        # Log to BigQuery if available
-        try:
-            self.bq_handler.log_analysis_run(run_stats)
-        except Exception as e:
-            logger.error(f"Error logging run stats to BigQuery: {str(e)}")
         
         # Log to console
         status = run_stats["run_status"]
@@ -293,9 +426,16 @@ class PipelineManager:
 # Example usage
 if __name__ == "__main__":
     try:
+        # Parse command line arguments
+        import argparse
+        parser = argparse.ArgumentParser(description="Creative Analysis Tool Pipeline")
+        parser.add_argument("--region", type=str, default="GBR", help="Region code (GBR, EUR, NAM, etc.)")
+        parser.add_argument("--max-ads", type=int, default=20, help="Maximum number of ads to process")
+        args = parser.parse_args()
+        
         # Initialize and run pipeline
         pipeline = PipelineManager()
-        results = pipeline.run_pipeline()
+        results = pipeline.run_pipeline(region=args.region, max_ads=args.max_ads)
         
         # Print completion message
         status = results["run_status"]

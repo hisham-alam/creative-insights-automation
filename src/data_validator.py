@@ -37,6 +37,27 @@ class DataValidator:
         self.days_threshold = days_threshold
         logger.info(f"Data validator initialized with spend threshold: {spend_threshold}, days threshold: {days_threshold}")
     
+    def validate_ad(self, ad_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Validate an ad's data (simplified interface used by check_ad_data.py)
+        
+        Args:
+            ad_data: Ad performance data
+            
+        Returns:
+            Dict[str, Any]: Validation result with valid flag and reason if invalid
+        """
+        is_valid, issues = self.validate_ad_data(ad_data)
+        
+        result = {
+            "valid": is_valid
+        }
+        
+        if not is_valid and issues:
+            result["reason"] = issues[0]  # Return first issue as reason
+        
+        return result
+    
     def validate_ad_data(self, ad_data: Dict[str, Any]) -> Tuple[bool, List[str]]:
         """
         Validate an ad's data for completeness and quality

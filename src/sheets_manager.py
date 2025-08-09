@@ -36,10 +36,13 @@ logger = logging.getLogger(__name__)
 class SheetsManager:
     """Manages Google Sheets operations for Creative Analysis Tool"""
     
-    # Tab names for the spreadsheet
+    # Base tab names for the spreadsheet
     DASHBOARD_TAB = "Dashboard"
     AD_DETAILS_TAB = "Ad Details"
     SEGMENTS_TAB = "Segments"
+    
+    # Valid regions
+    VALID_REGIONS = ["ASI", "EUR", "LAT", "PAC", "GBR", "NAM"]
     
     # Column definitions for each tab
     DASHBOARD_COLUMNS = [
@@ -61,7 +64,8 @@ class SheetsManager:
     def __init__(
         self,
         spreadsheet_id: Optional[str] = SHEETS_SPREADSHEET_ID,
-        credentials_path: Optional[str] = None
+        credentials_path: Optional[str] = None,
+        region: str = "GBR"
     ):
         """
         Initialize the Sheets Manager
@@ -69,9 +73,16 @@ class SheetsManager:
         Args:
             spreadsheet_id: ID of the Google Sheet to use (from settings or .env)
             credentials_path: Path to service account credentials file
+            region: Region code (ASI, EUR, LAT, PAC, GBR, NAM)
         """
         self.spreadsheet_id = spreadsheet_id
         self.credentials_path = credentials_path
+        
+        # Set region and validate it
+        if region not in self.VALID_REGIONS:
+            logger.warning(f"Invalid region: {region}, defaulting to GBR")
+            region = "GBR"
+        self.region = region
         
         # Initialize sheets client
         self.service = self._authenticate()
@@ -81,7 +92,7 @@ class SheetsManager:
             logger.info("No spreadsheet ID provided, creating a new spreadsheet")
             self.spreadsheet_id = self._create_spreadsheet("Creative Performance Analysis")
         
-        logger.info(f"Sheets Manager initialized with spreadsheet ID: {self.spreadsheet_id}")
+        logger.info(f"Sheets Manager initialized with spreadsheet ID: {self.spreadsheet_id} for region {self.region}")
         
         # Ensure required tabs exist
         self._ensure_tabs_exist()
@@ -176,6 +187,18 @@ class SheetsManager:
             logger.exception(f"Failed to create spreadsheet: {str(e)}")
             raise
     
+    def _get_region_tab_name(self, base_tab: str) -> str:
+        """
+        Get the region-specific tab name
+        
+        Args:
+            base_tab: Base tab name
+            
+        Returns:
+            str: Tab name with region prefix
+        """
+        return f"{self.region}_{base_tab}"
+    
     def _ensure_tabs_exist(self) -> None:
         """
         Ensure that all required tabs exist in the spreadsheet, creating them if not
@@ -189,8 +212,13 @@ class SheetsManager:
             sheets = sheet_metadata.get('sheets', [])
             existing_titles = [sheet.get('properties', {}).get('title') for sheet in sheets]
             
+            # Create region-specific tab names
+            dashboard_tab = self._get_region_tab_name(self.DASHBOARD_TAB)
+            ad_details_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)
+            segments_tab = self._get_region_tab_name(self.SEGMENTS_TAB)
+            
             # Check if required tabs exist and create if not
-            required_tabs = [self.DASHBOARD_TAB, self.AD_DETAILS_TAB, self.SEGMENTS_TAB]
+            required_tabs = [dashboard_tab, ad_details_tab, segments_tab]
             requests = []
             
             for tab in required_tabs:
@@ -210,15 +238,15 @@ class SheetsManager:
                     spreadsheetId=self.spreadsheet_id,
                     body=body
                 ).execute()
-                logger.info(f"Created {len(requests)} missing tabs")
+                logger.info(f"Created {len(requests)} missing tabs for region {self.region}")
             
             # Initialize columns for each tab if not already populated
-            self._initialize_columns(self.DASHBOARD_TAB, self.DASHBOARD_COLUMNS)
-            self._initialize_columns(self.AD_DETAILS_TAB, self.AD_DETAILS_COLUMNS)
-            self._initialize_columns(self.SEGMENTS_TAB, self.SEGMENTS_COLUMNS)
+            self._initialize_columns(dashboard_tab, self.DASHBOARD_COLUMNS)
+            self._initialize_columns(ad_details_tab, self.AD_DETAILS_COLUMNS)
+            self._initialize_columns(segments_tab, self.SEGMENTS_COLUMNS)
             
         except Exception as e:
-            logger.exception(f"Failed to ensure tabs exist: {str(e)}")
+            logger.exception(f"Failed to ensure tabs exist for region {self.region}: {str(e)}")
             raise
     
     def _initialize_columns(self, tab_name: str, columns: List[str]) -> None:
@@ -387,7 +415,9 @@ class SheetsManager:
         Raises:
             Exception: If update fails
         """
-        logger.info("Updating Dashboard tab with summary metrics")
+        # Get region-specific dashboard tab name
+        dashboard_tab = self._get_region_tab_name(self.DASHBOARD_TAB)
+        logger.info(f"Updating {dashboard_tab} tab with summary metrics for region {self.region}")
         
         try:
             # Format data for dashboard row
@@ -417,7 +447,7 @@ class SheetsManager:
             ]
             
             # Find the next empty row in the Dashboard tab
-            range_name = f"{self.DASHBOARD_TAB}!A:A"
+            range_name = f"{dashboard_tab}!A:A"
             result = self.service.spreadsheets().values().get(
                 spreadsheetId=self.spreadsheet_id,
                 range=range_name
@@ -435,7 +465,7 @@ class SheetsManager:
             
             # Determine whether to insert a new row or update existing
             update_row = today_row if today_row else next_row
-            range_name = f"{self.DASHBOARD_TAB}!A{update_row}:{chr(65 + len(row_values) - 1)}{update_row}"
+            range_name = f"{dashboard_tab}!A{update_row}:{chr(65 + len(row_values) - 1)}{update_row}"
             
             # Update or insert the row
             body = {
@@ -456,7 +486,7 @@ class SheetsManager:
             logger.info(f"Dashboard updated successfully at row {update_row}")
             
             # Update dashboard summary visualization (recent trend chart)
-            self._update_dashboard_summary()
+            self._update_dashboard_summary(dashboard_tab)
             
             return True
             
@@ -464,11 +494,14 @@ class SheetsManager:
             logger.exception(f"Failed to update Dashboard: {str(e)}")
             return False
     
-    def _update_dashboard_summary(self) -> None:
+    def _update_dashboard_summary(self, dashboard_tab: str) -> None:
         """
         Update the dashboard summary visualization (trend charts)
         
         This creates or updates charts showing performance trends over time
+        
+        Args:
+            dashboard_tab: The dashboard tab name (with region prefix)
         """
         try:
             # Get sheet ID for dashboard tab
@@ -477,7 +510,7 @@ class SheetsManager:
             sheet_id = None
             
             for sheet in sheets:
-                if sheet.get('properties', {}).get('title') == self.DASHBOARD_TAB:
+                if sheet.get('properties', {}).get('title') == dashboard_tab:
                     sheet_id = sheet.get('properties', {}).get('sheetId')
                     break
             
@@ -488,7 +521,7 @@ class SheetsManager:
             # Check if charts already exist (to avoid duplicating them)
             charts_response = self.service.spreadsheets().get(
                 spreadsheetId=self.spreadsheet_id,
-                ranges=[self.DASHBOARD_TAB],
+                ranges=[dashboard_tab],
                 fields='sheets.charts'
             ).execute()
             
@@ -597,18 +630,21 @@ class SheetsManager:
             row_index: The 1-based row index to format
         """
         try:
+            # Get region-specific dashboard tab name
+            dashboard_tab = self._get_region_tab_name(self.DASHBOARD_TAB)
+            
             # Get sheet ID for dashboard tab
             sheet_metadata = self.service.spreadsheets().get(spreadsheetId=self.spreadsheet_id).execute()
             sheets = sheet_metadata.get('sheets', [])
             sheet_id = None
             
             for sheet in sheets:
-                if sheet.get('properties', {}).get('title') == self.DASHBOARD_TAB:
+                if sheet.get('properties', {}).get('title') == dashboard_tab:
                     sheet_id = sheet.get('properties', {}).get('sheetId')
                     break
             
             if not sheet_id:
-                logger.warning(f"Could not find sheet ID for tab {self.DASHBOARD_TAB}")
+                logger.warning(f"Could not find sheet ID for tab {dashboard_tab}")
                 return
             
             # Apply alternating row background
@@ -721,7 +757,9 @@ class SheetsManager:
         Raises:
             Exception: If update fails
         """
-        logger.info(f"Updating Ad Details tab for ad {ad_data.get('ad_id', 'unknown')}")
+        # Get region-specific ad details tab name
+        ad_details_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)
+        logger.info(f"Updating {ad_details_tab} tab for ad {ad_data.get('ad_id', 'unknown')} in region {self.region}")
         
         try:
             # Extract ad data fields
@@ -786,7 +824,7 @@ class SheetsManager:
             ]
             
             # Find if the ad already exists in the Ad Details tab
-            range_name = f"{self.AD_DETAILS_TAB}!A:A"
+            range_name = f"{ad_details_tab}!A:A"
             result = self.service.spreadsheets().values().get(
                 spreadsheetId=self.spreadsheet_id,
                 range=range_name
@@ -804,7 +842,7 @@ class SheetsManager:
             # Determine whether to insert a new row or update existing
             next_row = len(values) + 1
             update_row = existing_row if existing_row else next_row
-            range_name = f"{self.AD_DETAILS_TAB}!A{update_row}:{chr(65 + len(row_values) - 1)}{update_row}"
+            range_name = f"{ad_details_tab}!A{update_row}:{chr(65 + len(row_values) - 1)}{update_row}"
             
             # Update or insert the row
             body = {
@@ -820,36 +858,41 @@ class SheetsManager:
             
             # If this is a new row, apply formatting
             if not existing_row:
-                self._format_ad_details_row(update_row, performance_vs_benchmark)
+                self._format_ad_details_row(update_row, performance_vs_benchmark, ad_details_tab)
             
-            logger.info(f"Ad details updated successfully for ad {ad_id} at row {update_row}")
+            logger.info(f"Ad details updated successfully for ad {ad_id} at row {update_row} in region {self.region}")
             return True
             
         except Exception as e:
             logger.exception(f"Failed to update ad details: {str(e)}")
             return False
     
-    def _format_ad_details_row(self, row_index: int, performance_score: float) -> None:
+    def _format_ad_details_row(self, row_index: int, performance_score: float, ad_details_tab: str = None) -> None:
         """
         Apply formatting to an ad details row based on performance
         
         Args:
             row_index: The 1-based row index to format
             performance_score: Performance score to determine formatting
+            ad_details_tab: The ad details tab name (with region prefix)
         """
         try:
+            # If ad_details_tab is not provided, get it from the region
+            if ad_details_tab is None:
+                ad_details_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)
+                
             # Get sheet ID for ad details tab
             sheet_metadata = self.service.spreadsheets().get(spreadsheetId=self.spreadsheet_id).execute()
             sheets = sheet_metadata.get('sheets', [])
             sheet_id = None
             
             for sheet in sheets:
-                if sheet.get('properties', {}).get('title') == self.AD_DETAILS_TAB:
+                if sheet.get('properties', {}).get('title') == ad_details_tab:
                     sheet_id = sheet.get('properties', {}).get('sheetId')
                     break
             
             if not sheet_id:
-                logger.warning(f"Could not find sheet ID for tab {self.AD_DETAILS_TAB}")
+                logger.warning(f"Could not find sheet ID for tab {ad_details_tab}")
                 return
             
             # Apply alternating row background

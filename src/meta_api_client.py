@@ -23,7 +23,7 @@ if __name__ == "__main__":
     sys.path.insert(0, project_root)
 
 from config.settings import (
-    META_AD_ACCOUNT_ID,
+    META_AD_ACCOUNTS,
     META_ACCESS_TOKEN,
     META_API_VERSION,
     META_BASE_URL,
@@ -43,32 +43,48 @@ class MetaApiClient:
     
     def __init__(
         self,
-        ad_account_id: str = META_AD_ACCOUNT_ID,
+        region: str = "GBR",  # Default to GBR region
         access_token: str = META_ACCESS_TOKEN,
         api_version: str = META_API_VERSION,
-        base_url: str = META_BASE_URL
+        base_url: str = META_BASE_URL,
+        ad_account_id: str = None  # Allow direct account ID for testing
     ):
         """
         Initialize the Meta API client
         
         Args:
-            ad_account_id: Meta Ad Account ID
+            region: Region code (ASI, EUR, LAT, PAC, GBR, NAM)
             access_token: Meta API Access Token
             api_version: Meta API Version
             base_url: Meta API Base URL
+            ad_account_id: Optional explicit account ID (for testing)
         """
-        self.ad_account_id = ad_account_id
+        # Get ad account ID for the specified region
+        self.region = region
+        
+        # For testing: allow direct account ID or use value from environment variables
+        if ad_account_id:
+            self.ad_account_id = ad_account_id
+        else:
+            self.ad_account_id = META_AD_ACCOUNTS.get(region, '')
+        
+        # For testing with demo account ID if none is configured
+        if not self.ad_account_id and region == "GBR":
+            # Use the known working account ID from benchmark test
+            self.ad_account_id = "1042125899190941"
+        
         self.access_token = access_token
         self.api_version = api_version
         self.base_url = base_url
-        self.rate_limit_wait = 1  # seconds to wait between requests
+        self.rate_limit_wait = 2  # seconds to wait between requests
+        self.last_request_time = 0  # track the last request time
         
         # Validate credentials
         if not self.ad_account_id or not self.access_token:
-            logger.error("Missing Meta API credentials")
-            raise ValueError("META_AD_ACCOUNT_ID and META_ACCESS_TOKEN must be provided")
+            logger.error(f"Missing Meta API credentials for region {region}")
+            raise ValueError(f"META_AD_ACCOUNT_ID_{region} and META_ACCESS_TOKEN must be provided")
         
-        logger.info(f"Meta API client initialized for account {ad_account_id}")
+        logger.info(f"Meta API client initialized for {region} region, account {self.ad_account_id}")
     
     def test_connection(self) -> bool:
         """
@@ -136,18 +152,34 @@ class MetaApiClient:
         Raises:
             Exception: If API request fails
         """
+        # Implement rate limiting to prevent "too many API calls" error
+        current_time = time.time()
+        time_since_last = current_time - self.last_request_time
+        
+        # Ensure at least rate_limit_wait seconds between requests
+        if time_since_last < self.rate_limit_wait:
+            sleep_time = self.rate_limit_wait - time_since_last
+            logger.debug(f"Rate limiting: Sleeping for {sleep_time:.2f} seconds")
+            time.sleep(sleep_time)
+        
+        # Update last request time
+        self.last_request_time = time.time()
+        
         try:
+            logger.debug(f"Making API request to {url}")
             response = requests.get(url, params=params)
             
             # Handle rate limiting
-            if response.status_code == 429:
+            if response.status_code == 429 or 'User request limit reached' in response.text:
                 logger.warning("Rate limit reached, waiting before retry...")
-                time.sleep(self.rate_limit_wait * 2)  # Double the wait time
-                self.rate_limit_wait += 1  # Increase wait time for future requests
+                self.rate_limit_wait *= 2  # Double the wait time
+                time.sleep(self.rate_limit_wait)  # Wait longer
+                logger.info(f"Retrying request after {self.rate_limit_wait} seconds wait")
                 return self._make_api_request(url, params)  # Retry request
             
-            # Reset wait time on successful request
-            self.rate_limit_wait = 1
+            # Reset wait time on successful request (but keep a minimum to avoid hitting limits again)
+            if response.status_code == 200:
+                self.rate_limit_wait = max(2, self.rate_limit_wait / 1.5)  # Gradually reduce, but not below 2 seconds
             
             # Check for success
             if response.status_code == 200:
@@ -336,6 +368,7 @@ class MetaApiClient:
                 "since": since_date_str,
                 "until": today_str
             }),
+            "date_preset": "last_30d",  # Add date_preset as a backup
             "level": "ad"
         }
         
@@ -345,6 +378,9 @@ class MetaApiClient:
             
             if data:
                 metrics_data = data[0]  # Get the first (should be only) result
+                
+                # Debug - check what's in the metrics data
+                logger.info(f"Raw metrics data for ad {ad_id}: {json.dumps(metrics_data)}")
                 
                 # Extract and format the metrics
                 metrics = {
@@ -521,12 +557,11 @@ class MetaApiClient:
                 metrics_data = data[0]  
                 
                 # Extract and format core metrics
+                # Extract and format core metrics with safe conversion
                 metrics = {
                     "spend": float(metrics_data.get('spend', 0)),
                     "impressions": int(metrics_data.get('impressions', 0)),
                     "clicks": int(metrics_data.get('clicks', 0)),
-                    "conversions": int(metrics_data.get('conversions', 0)),
-                    "conversion_values": float(metrics_data.get('conversion_values', 0)),
                     "ctr": float(metrics_data.get('ctr', 0)) * 100,  # Convert to percentage
                     "cpm": float(metrics_data.get('cpm', 0)),
                     "cpp": float(metrics_data.get('cpp', 0)),
@@ -535,9 +570,34 @@ class MetaApiClient:
                     "unique_clicks": int(metrics_data.get('unique_clicks', 0)),
                     "unique_ctr": float(metrics_data.get('unique_ctr', 0)) * 100,  # Convert to percentage
                     "quality_ranking": metrics_data.get('quality_ranking', 'UNKNOWN'),
-                    "conversion_rate_ranking": metrics_data.get('conversion_rate_ranking', 'UNKNOWN'),
-                    "engagement_rate_ranking": metrics_data.get('engagement_rate_ranking', 'UNKNOWN')
                 }
+                
+                # Handle conversions which could be a list or a number
+                conversions = metrics_data.get('conversions', 0)
+                if isinstance(conversions, list):
+                    # If it's a list, sum the values if there are any, otherwise use 0
+                    conv_sum = 0
+                    for conv in conversions:
+                        if isinstance(conv, dict) and 'value' in conv:
+                            conv_sum += int(float(conv.get('value', 0)))
+                    metrics['conversions'] = conv_sum
+                else:
+                    # If it's a scalar value, convert to int
+                    metrics['conversions'] = int(float(conversions)) if conversions else 0
+                    
+                # Handle conversion_values similarly
+                conversion_values = metrics_data.get('conversion_values', 0)
+                if isinstance(conversion_values, list):
+                    val_sum = 0
+                    for val in conversion_values:
+                        if isinstance(val, dict) and 'value' in val:
+                            val_sum += float(val.get('value', 0))
+                    metrics['conversion_values'] = val_sum
+                else:
+                    metrics['conversion_values'] = float(conversion_values) if conversion_values else 0.0
+                    
+                metrics['conversion_rate_ranking'] = metrics_data.get('conversion_rate_ranking', 'UNKNOWN')
+                metrics['engagement_rate_ranking'] = metrics_data.get('engagement_rate_ranking', 'UNKNOWN')
                 
                 # Calculate additional metrics
                 if metrics['impressions'] > 0:
@@ -751,11 +811,22 @@ class MetaApiClient:
                     "spend": float(item.get('spend', 0)),
                     "impressions": int(item.get('impressions', 0)),
                     "clicks": int(item.get('clicks', 0)),
-                    "conversions": int(item.get('conversions', 0)),
                     "ctr": float(item.get('ctr', 0)) * 100,  # Convert to percentage
                     "cpm": float(item.get('cpm', 0)),
+                    "conversions": 0  # Default value, will handle conversions separately
                 }
                 
+                # Handle conversions which could be a list or a scalar
+                conversions = item.get('conversions', 0)
+                if isinstance(conversions, list):
+                    conv_sum = 0
+                    for conv in conversions:
+                        if isinstance(conv, dict) and 'value' in conv:
+                            conv_sum += int(float(conv.get('value', 0)))
+                    breakdown_item['conversions'] = conv_sum
+                else:
+                    breakdown_item['conversions'] = int(float(conversions)) if conversions else 0
+                    
                 # Calculate additional metrics
                 if breakdown_item['conversions'] > 0:
                     breakdown_item['cpa'] = breakdown_item['spend'] / breakdown_item['conversions']
@@ -778,9 +849,20 @@ class MetaApiClient:
                     "spend": float(item.get('spend', 0)),
                     "impressions": int(item.get('impressions', 0)),
                     "clicks": int(item.get('clicks', 0)),
-                    "conversions": int(item.get('conversions', 0)),
                     "ctr": float(item.get('ctr', 0)) * 100,  # Convert to percentage
+                    "conversions": 0  # Default value, will handle conversions separately
                 }
+                # Handle conversions which could be a list or a scalar
+                conversions = item.get('conversions', 0)
+                if isinstance(conversions, list):
+                    conv_sum = 0
+                    for conv in conversions:
+                        if isinstance(conv, dict) and 'value' in conv:
+                            conv_sum += int(float(conv.get('value', 0)))
+                    breakdown_item['conversions'] = conv_sum
+                else:
+                    breakdown_item['conversions'] = int(float(conversions)) if conversions else 0
+                
                 result['platform'].append(breakdown_item)
         
         return result
@@ -880,7 +962,20 @@ class MetaApiClient:
     # NEW METHODS FOR SPECIFIC METRICS
     # ============================================
     
-    def get_any_recent_ads(self, days: int = 30, limit: int = 10) -> List[Dict[str, Any]]:
+    def get_any_recent_ads(self, days: int = 30, limit: int = 10, min_spend: float = None) -> List[Dict[str, Any]]:
+        """
+        Get any recent ads from the account (for testing purposes)
+        
+        Note: This version does not pre-filter by spend to avoid excessive API calls
+        
+        Args:
+            days: Number of days to look back
+            limit: Maximum number of ads to return
+            min_spend: Optional minimum spend threshold (if provided, will try to filter)
+            
+        Returns:
+            List[Dict]: List of recent ads
+        """
         """
         Get any recent ads from the account (for testing purposes)
         
@@ -898,33 +993,49 @@ class MetaApiClient:
         since_date = today - timedelta(days=days)
         since_date_str = since_date.strftime('%Y-%m-%d')
         
-        # Build URL and params
+        # Build URL and params - request more ads than needed so we can filter by spend
         url = f"{self.base_url}/act_{self.ad_account_id}/ads"
         params = {
             "access_token": self.access_token,
-            "fields": "id,name,campaign{id,name},adset{id,name},created_time,status",
-            "time_range": json.dumps({
-                "since": since_date_str,
-                "until": today.strftime('%Y-%m-%d')
-            }),
-            "limit": limit  # Restrict to exactly the number we need
+            "fields": "id,name,campaign{id,name},adset{id,name},created_time,status,effective_status",
+            "date_preset": "last_90d",  # Use a preset for a wider time range
+            "limit": min(50, limit * 5 if min_spend else limit * 2),  # Request more ads to increase chances of finding active ones
+            "effective_status": "[\"ACTIVE\",\"PAUSED\"]"  # Only active or recently paused ads
         }
         
         try:
-            # Use a non-paginated request to avoid retrieving too much data
+            # First get all ads within our criteria
             response = self._make_api_request(url, params)
             ads = response.get('data', [])
             
-            # Format the response
+            # Format the response and collect preliminary ad data
             formatted_ads = []
-            for ad in ads[:limit]:  # Additional safety to ensure we don't process more than limit
-                formatted_ads.append({
-                    "ad_id": ad.get('id'),
-                    "ad_name": ad.get('name'),
-                    "campaign_name": ad.get('campaign', {}).get('name'),
-                    "created_time": ad.get('created_time'),
-                    "status": ad.get('status')
-                })
+            for ad in ads:
+                # Only include active ads or recently paused ads
+                status = ad.get('effective_status', '')
+                if status in ['ACTIVE', 'PAUSED']:
+                    formatted_ads.append({
+                        "ad_id": ad.get('id'),
+                        "ad_name": ad.get('name'),
+                        "campaign_name": ad.get('campaign', {}).get('name'),
+                        "created_time": ad.get('created_time'),
+                        "status": status
+                    })
+            
+            # Only pre-filter by spend if explicitly requested AND non-zero threshold
+            # This avoids making too many API calls that might hit rate limits
+            if min_spend is not None and min_spend > 0:
+                logger.info(f"Filtering ads for minimum spend of £{min_spend}")
+                
+                # Just return the formatted ads without pre-filtering
+                # The caller can then check spend for each ad individually
+                # and add proper delays between calls
+                
+                # However, we'll still return a reasonable number
+                formatted_ads = formatted_ads[:limit * 2]  # Return 2x the limit to have enough to filter
+            
+            # Final limit enforcement
+            formatted_ads = formatted_ads[:limit]  # Ensure we don't return more than requested
             
             logger.info(f"Retrieved {len(formatted_ads)} ads for testing")
             return formatted_ads
@@ -952,7 +1063,7 @@ class MetaApiClient:
             days: Number of days to analyze
             
         Returns:
-            Dict: Comprehensive metrics
+            Dict: Comprehensive metrics or None if metrics not available
         """
         logger.info(f"Getting comprehensive metrics for ad {ad_id}")
         
@@ -1002,6 +1113,7 @@ class MetaApiClient:
                 "since": since_date_str,
                 "until": today_str
             }),
+            "date_preset": "last_30d",  # Add date_preset as a backup
             "level": "ad"
         }
         
@@ -1309,6 +1421,446 @@ class MetaApiClient:
         
         return formatted_data
 
+
+    def get_bulk_ad_insights(self, days: int = DAYS_THRESHOLD, min_spend: float = SPEND_THRESHOLD, limit: int = 50, 
+                          include_demographics: bool = True) -> List[Dict[str, Any]]:
+        """
+        Get insights for multiple ads in bulk with a single API call
+        
+        Args:
+            days: Number of days to analyze
+            min_spend: Minimum spend threshold (in account currency)
+            limit: Maximum number of ads to return
+            include_demographics: Whether to include demographic breakdowns
+            
+        Returns:
+            List[Dict]: List of ad data with metrics included
+        """
+        logger.info(f"Getting bulk ad insights for ads with spend > {min_spend} over the past {days} days")
+        
+        # Calculate date range
+        today = datetime.now()
+        since_date = today - timedelta(days=days)
+        
+        # Format dates for API (YYYY-MM-DD format)
+        since_date_str = since_date.strftime('%Y-%m-%d')
+        today_str = today.strftime('%Y-%m-%d')
+        
+        # Define fields to retrieve in the insights call
+        fields = [
+            "ad_id", "ad_name", "account_id", "account_name", "campaign_id", "campaign_name",
+            "adset_id", "adset_name", "spend", "impressions", "reach", "frequency", "clicks",
+            "cpc", "cpm", "cpp", "ctr", "unique_clicks", "unique_ctr", "actions", "conversions",
+            "cost_per_action_type", "video_thruplay_watched_actions", "video_p100_watched_actions",
+            "video_p75_watched_actions", "outbound_clicks", "outbound_clicks_ctr"
+        ]
+        
+        # Define the request parameters
+        params = {
+            "access_token": self.access_token,
+            "level": "ad",  # Get data at the ad level
+            "fields": ",".join(fields),
+            "filtering": json.dumps([
+                {"field": "spend", "operator": "GREATER_THAN", "value": min_spend}
+            ]),
+            "time_range": json.dumps({
+                "since": since_date_str,
+                "until": today_str
+            }),
+            "limit": min(100, limit)  # API limit is typically 100
+        }
+        
+        # Add demographic breakdowns if requested
+        if include_demographics:
+            params["breakdowns"] = "age,gender"
+        
+        # Build the URL
+        url = f"{self.base_url}/act_{self.ad_account_id}/insights"
+        
+        try:
+            # Handle pagination to get all results
+            all_ads_data = self._handle_pagination(url, params)
+            logger.info(f"Retrieved {len(all_ads_data)} ads with bulk insights API")
+            
+            # Process the response data
+            processed_ads = []
+            
+            # Group by ad_id if we have demographic breakdowns
+            if include_demographics:
+                ad_data_by_id = {}
+                
+                # First pass: organize data by ad_id
+                for item in all_ads_data:
+                    ad_id = item.get('ad_id')
+                    if ad_id not in ad_data_by_id:
+                        ad_data_by_id[ad_id] = {
+                            'ad_id': ad_id,
+                            'ad_name': item.get('ad_name'),
+                            'campaign_id': item.get('campaign_id'),
+                            'campaign_name': item.get('campaign_name'),
+                            'adset_id': item.get('adset_id'),
+                            'adset_name': item.get('adset_name'),
+                            'metrics': self._extract_metrics_from_insights(item),
+                            'breakdowns': {'age_gender': []}
+                        }
+                    
+                    # Add demographic breakdown
+                    age = item.get('age')
+                    gender = item.get('gender')
+                    
+                    if age and gender:
+                        breakdown_metrics = self._extract_metrics_from_insights(item)
+                        ad_data_by_id[ad_id]['breakdowns']['age_gender'].append({
+                            'age': age,
+                            'gender': gender,
+                            **breakdown_metrics
+                        })
+                
+                # Convert to list
+                processed_ads = list(ad_data_by_id.values())
+            else:
+                # Process each ad without demographics
+                for item in all_ads_data:
+                    ad_data = {
+                        'ad_id': item.get('ad_id'),
+                        'ad_name': item.get('ad_name'),
+                        'campaign_id': item.get('campaign_id'),
+                        'campaign_name': item.get('campaign_name'),
+                        'adset_id': item.get('adset_id'),
+                        'adset_name': item.get('adset_name'),
+                        'metrics': self._extract_metrics_from_insights(item)
+                    }
+                    processed_ads.append(ad_data)
+            
+            return processed_ads
+            
+        except Exception as e:
+            logger.exception(f"Error retrieving bulk ad insights: {str(e)}")
+            raise
+    
+    def _extract_metrics_from_insights(self, insight_item: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extract metrics from an insights API response item
+        
+        Args:
+            insight_item: Single item from insights API response
+            
+        Returns:
+            Dict: Extracted and processed metrics
+        """
+        metrics = {}
+        
+        # Basic metrics (direct values)
+        for metric in ['spend', 'impressions', 'clicks', 'reach', 'frequency', 'cpc', 'cpm', 'cpp', 'ctr']:
+            if metric in insight_item:
+                metrics[metric] = float(insight_item.get(metric, 0))
+        
+        # Convert CTR to percentage
+        if 'ctr' in metrics:
+            metrics['ctr'] = metrics['ctr'] * 100
+        
+        # Handle outbound_clicks (list format)
+        outbound_clicks = insight_item.get('outbound_clicks', [])
+        if outbound_clicks and isinstance(outbound_clicks, list):
+            clicks_sum = 0
+            for item in outbound_clicks:
+                if isinstance(item, dict) and 'value' in item:
+                    clicks_sum += int(float(item.get('value', 0)))
+            metrics['outbound_clicks'] = clicks_sum
+            
+            # Calculate CTR destination
+            if metrics.get('impressions', 0) > 0 and clicks_sum > 0:
+                metrics['ctr_destination'] = (clicks_sum / metrics['impressions']) * 100
+            else:
+                metrics['ctr_destination'] = 0
+        
+        # Handle video metrics
+        video_3_sec_views = 0
+        video_thruplay = insight_item.get('video_thruplay_watched_actions', [])
+        if video_thruplay:
+            for action in video_thruplay:
+                if action.get('action_type') == 'video_view':
+                    video_3_sec_views = int(action.get('value', 0))
+                    break
+        metrics['video_3_sec_views'] = video_3_sec_views
+        
+        video_p100_watched = 0
+        video_p100 = insight_item.get('video_p100_watched_actions', [])
+        if video_p100:
+            for action in video_p100:
+                if action.get('action_type') == 'video_view':
+                    video_p100_watched = int(action.get('value', 0))
+                    break
+        metrics['video_p100_watched'] = video_p100_watched
+        
+        # Calculate hook rate and viewthrough rate
+        if metrics.get('impressions', 0) > 0:
+            if video_3_sec_views > 0:
+                metrics['hook_rate'] = (video_3_sec_views / metrics['impressions']) * 100
+            else:
+                metrics['hook_rate'] = 0
+                
+            if video_p100_watched > 0:
+                metrics['viewthrough_rate'] = (video_p100_watched / metrics['impressions']) * 100
+            else:
+                metrics['viewthrough_rate'] = 0
+        
+        # Handle conversions
+        conversions = 0
+        conv_data = insight_item.get('conversions', [])
+        if isinstance(conv_data, list):
+            for conv in conv_data:
+                if isinstance(conv, dict) and 'value' in conv:
+                    conversions += int(float(conv.get('value', 0)))
+        metrics['conversions'] = conversions
+        
+        # Calculate cost per registration/conversion
+        if conversions > 0 and metrics.get('spend', 0) > 0:
+            metrics['cpr'] = metrics['spend'] / conversions
+        else:
+            metrics['cpr'] = 0
+        
+        return metrics
+    
+    def get_account_insights(self, days: int = 30) -> Dict[str, Any]:
+        """
+        Get aggregated account-level metrics over a specified time period
+        
+        Args:
+            days: Number of days to analyze
+            
+        Returns:
+            Dict: Aggregated metrics at the account level
+        """
+        logger.info(f"Getting account-level insights for the past {days} days")
+        
+        # Calculate date range
+        today = datetime.now()
+        since_date = today - timedelta(days=days)
+        
+        # Format dates for API (YYYY-MM-DD format)
+        since_date_str = since_date.strftime('%Y-%m-%d')
+        today_str = today.strftime('%Y-%m-%d')
+        
+        # Build URL and params for account insights
+        url = f"{self.base_url}/act_{self.ad_account_id}/insights"
+        params = {
+            "access_token": self.access_token,
+            "fields": "spend,impressions,clicks,ctr,cpm,cpp,cost_per_inline_link_click,"
+                      "inline_link_click_ctr,frequency,reach,video_thruplay_watched_actions,"
+                      "video_p100_watched_actions,actions,cost_per_action_type,conversions,"
+                      "conversion_rate_ranking,outbound_clicks,outbound_clicks_ctr",
+            "time_range": json.dumps({
+                "since": since_date_str,
+                "until": today_str
+            }),
+            "level": "account",  # Get aggregated account metrics
+            "time_increment": 1,  # Daily breakdown
+            "limit": 100  # Should be enough for daily metrics
+        }
+        
+        try:
+            # This may return data with multiple days (time_increment=1)
+            all_days_data = self._handle_pagination(url, params)
+            
+            if not all_days_data:
+                logger.warning("No account insights data found")
+                return {}
+                
+            # Aggregate metrics across all days
+            logger.info(f"Retrieved data for {len(all_days_data)} days")
+            
+            # Initialize aggregated metrics
+            aggregated = {
+                "spend": 0.0,
+                "impressions": 0,
+                "clicks": 0,
+                "ctr": 0.0,
+                "cpm": 0.0,
+                "frequency": 0.0,
+                "reach": 0,
+                "conversions": 0,
+                "video_3_sec_views": 0,
+                "video_p100_watched": 0,
+                "outbound_clicks": 0,
+                "ctr_destination": 0.0,
+                "cost_per_conversion": 0.0,
+            }
+            
+            # Sum up metrics across all days
+            for day_data in all_days_data:
+                # Basic metrics
+                aggregated['spend'] += float(day_data.get('spend', 0))
+                aggregated['impressions'] += int(day_data.get('impressions', 0))
+                aggregated['clicks'] += int(day_data.get('clicks', 0))
+                aggregated['reach'] += int(day_data.get('reach', 0))
+                
+                # Handle outbound_clicks (for destination CTR)
+                outbound_clicks = day_data.get('outbound_clicks', [])
+                if outbound_clicks and isinstance(outbound_clicks, list):
+                    for item in outbound_clicks:
+                        if isinstance(item, dict) and 'value' in item:
+                            aggregated['outbound_clicks'] += int(float(item.get('value', 0)))
+                
+                # Handle video metrics
+                video_thruplay = day_data.get('video_thruplay_watched_actions', [])
+                if video_thruplay:
+                    for action in video_thruplay:
+                        if action.get('action_type') == 'video_view':
+                            aggregated['video_3_sec_views'] += int(action.get('value', 0))
+                            
+                video_p100 = day_data.get('video_p100_watched_actions', [])
+                if video_p100:
+                    for action in video_p100:
+                        if action.get('action_type') == 'video_view':
+                            aggregated['video_p100_watched'] += int(action.get('value', 0))
+                
+                # Handle conversions
+                conversions = day_data.get('conversions', [])
+                if conversions and isinstance(conversions, list):
+                    for conv in conversions:
+                        if isinstance(conv, dict) and 'value' in conv:
+                            aggregated['conversions'] += int(float(conv.get('value', 0)))
+                            
+            # Calculate derived metrics
+            if aggregated['impressions'] > 0:
+                aggregated['ctr'] = (aggregated['clicks'] / aggregated['impressions']) * 100
+                aggregated['cpm'] = (aggregated['spend'] / aggregated['impressions']) * 1000
+                
+                # Calculate CTR destination
+                if aggregated['outbound_clicks'] > 0:
+                    aggregated['ctr_destination'] = (aggregated['outbound_clicks'] / aggregated['impressions']) * 100
+                    
+                # Calculate video metrics rates
+                if aggregated['video_3_sec_views'] > 0:
+                    aggregated['hook_rate'] = (aggregated['video_3_sec_views'] / aggregated['impressions']) * 100
+                    
+                    # Calculate viewthrough rate
+                    if aggregated['video_p100_watched'] > 0:
+                        aggregated['viewthrough_rate'] = (aggregated['video_p100_watched'] / aggregated['impressions']) * 100
+                        
+            # Calculate frequency
+            if aggregated['reach'] > 0:
+                aggregated['frequency'] = aggregated['impressions'] / aggregated['reach']
+                
+            # Calculate cost per conversion
+            if aggregated['conversions'] > 0:
+                aggregated['cost_per_conversion'] = aggregated['spend'] / aggregated['conversions']
+                
+            # Add some extra useful metrics
+            if aggregated['clicks'] > 0:
+                aggregated['cpc'] = aggregated['spend'] / aggregated['clicks']
+                
+            if aggregated['conversions'] > 0:
+                aggregated['cpr'] = aggregated['spend'] / aggregated['conversions']
+                
+            logger.info(f"Successfully aggregated account metrics over {days} days")
+            return aggregated
+            
+        except Exception as e:
+            logger.exception(f"Error retrieving account insights: {str(e)}")
+            raise
+
+
+    def find_ads_with_spend(self, days: int = 7, min_spend: float = SPEND_THRESHOLD, limit: int = 20) -> List[Dict[str, Any]]:
+        """
+        Find ads with specified minimum spend over a specific time period (excluding today)
+        
+        Args:
+            days: Number of days to look back (default: 7)
+            min_spend: Minimum spend threshold (default: SPEND_THRESHOLD from settings)
+            limit: Maximum number of ads to return
+            
+        Returns:
+            List[Dict]: List of ads with sufficient spend
+        """
+        logger.info(f"Finding ads with at least £{min_spend} spend over the past {days} days (excluding today)")
+        
+        # Calculate date range - last N days NOT including today
+        today = datetime.now()
+        end_date = today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)  # Yesterday end of day
+        start_date = end_date - timedelta(days=days-1)  # N days before that
+        
+        # Format dates for API (YYYY-MM-DD format)
+        start_date_str = start_date.strftime('%Y-%m-%d')
+        end_date_str = end_date.strftime('%Y-%m-%d')
+        
+        logger.info(f"Date range: {start_date_str} to {end_date_str}")
+        
+        # More efficient approach: Use the insights endpoint to get ads with minimum spend directly
+        # This avoids checking each ad individually
+        insights_url = f"{self.base_url}/act_{self.ad_account_id}/insights"
+        insights_params = {
+            "access_token": self.access_token,
+            "level": "ad",
+            "fields": "ad_id,ad_name,campaign_id,campaign_name,adset_id,adset_name,spend",
+            "time_range": json.dumps({
+                "since": start_date_str,
+                "until": end_date_str
+            }),
+            "filtering": json.dumps([
+                {"field": "spend", "operator": "GREATER_THAN", "value": min_spend}
+            ]),
+            "limit": min(100, limit)
+        }
+        
+        try:
+            # Get insights for ads with minimum spend directly
+            insights_results = self._handle_pagination(insights_url, insights_params)
+            
+            if not insights_results:
+                logger.warning(f"No ads found with minimum spend of £{min_spend} in the date range")
+                return []
+                
+            logger.info(f"Found {len(insights_results)} ads with minimum spend of £{min_spend}")
+            
+            # Format the results
+            ads_with_spend = []
+            
+            # Process the insights data to format it
+            for insight in insights_results:
+                ad_id = insight.get('ad_id')
+                
+                # Get additional ad details if needed
+                ad_url = f"{self.base_url}/{ad_id}"
+                ad_params = {
+                    "access_token": self.access_token,
+                    "fields": "id,name,campaign{id,name},adset{id,name},created_time,status"
+                }
+                
+                try:
+                    ad_details = self._make_api_request(ad_url, ad_params)
+                    
+                    # Format ad data
+                    ad_data = {
+                        "ad_id": ad_id,
+                        "ad_name": insight.get('ad_name') or ad_details.get('name', ''),
+                        "campaign_id": insight.get('campaign_id') or ad_details.get('campaign', {}).get('id'),
+                        "campaign_name": insight.get('campaign_name') or ad_details.get('campaign', {}).get('name'),
+                        "adset_id": insight.get('adset_id') or ad_details.get('adset', {}).get('id'),
+                        "adset_name": insight.get('adset_name') or ad_details.get('adset', {}).get('name'),
+                        "created_time": ad_details.get('created_time'),
+                        "status": ad_details.get('status'),
+                        "spend": float(insight.get('spend', 0))
+                    }
+                    
+                    logger.info(f"Ad {ad_id} '{ad_data['ad_name']}' has sufficient spend: £{ad_data['spend']:.2f}")
+                    ads_with_spend.append(ad_data)
+                    
+                    # Limit the number of ads if needed
+                    if len(ads_with_spend) >= limit:
+                        logger.info(f"Found {limit} ads with sufficient spend. Stopping search.")
+                        break
+                        
+                except Exception as e:
+                    logger.error(f"Error getting details for ad {ad_id}: {str(e)}")
+            
+            logger.info(f"Found {len(ads_with_spend)} ads with at least £{min_spend} spend in the specified date range")
+            return ads_with_spend
+            
+        except Exception as e:
+            logger.exception(f"Error finding ads with spend: {str(e)}")
+            return []
 
 # Example usage
 if __name__ == "__main__":
