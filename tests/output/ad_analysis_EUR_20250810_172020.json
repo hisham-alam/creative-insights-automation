@@ -1,0 +1,4339 @@
+[
+  {
+    "ad_data": {
+      "ad_id": "6579151639875",
+      "ad_name": "Global_EvergreenNov24_Proplander_MCA_Travel_EN_Video",
+      "campaign_id": "6360745804275",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "adset_id": "6519417867275",
+      "adset_name": "EUR - Web - Android - WC - Conversion - Use Cases - EUR - Behaviour - Frequent international traveller - O - Feed & Stories",
+      "status": "ACTIVE",
+      "created_time": "2024-11-15T12:36:07+0000",
+      "metrics": {
+        "spend": 645.85,
+        "impressions": 527441,
+        "clicks": 3034,
+        "ctr": 57.523,
+        "cpm": 1.2244971475482564,
+        "cpp": 2.25526,
+        "frequency": 1.841784,
+        "reach": 286375,
+        "unique_clicks": 2576,
+        "unique_ctr": 89.952,
+        "quality_ranking": "UNKNOWN",
+        "conversions": 413,
+        "conversion_values": 0.0,
+        "conversion_rate_ranking": "UNKNOWN",
+        "engagement_rate_ranking": "UNKNOWN",
+        "cpa": 1.5638014527845037,
+        "roas": 0,
+        "video": {
+          "views": 371177,
+          "p25": 68956,
+          "p50": 27882,
+          "p75": 17470,
+          "p95": 12946,
+          "p100": 12074
+        }
+      },
+      "creative": {
+        "creative_id": "6579152089075",
+        "name": "{{product.name}} 2024-11-15-882de8def6487ee8c70974ce4f10fddf",
+        "object_type": "SHARE",
+        "image_url": null,
+        "video_id": "490342543326611",
+        "thumbnail_url": "https://scontent-mad2-1.xx.fbcdn.net/v/t15.13418-10/466622325_549206581145023_9207914948905317140_n.jpg?_nc_cat=109&ccb=1-7&_nc_ohc=r1hTmfFB47sQ7kNvwH4Dhta&_nc_oc=AdlXqsIDOYYE5WumiKxDH9ShLnzwFCifB6JS69U-F3ALyiIjUUVdn6kE-okc3XkCXs0&_nc_zt=23&_nc_ht=scontent-mad2-1.xx&edm=AAT1rw8EAAAA&_nc_gid=XViStMxZ3Q3aUfRajv-2AQ&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=1727f7&_nc_sid=58080a&oh=00_AfU3DjuZ5gSujzgIN-127lIyNtzuuLTlTuOsIUW5meJ4xw&oe=689E9B40",
+        "primary_text": null,
+        "headline": null,
+        "description": null,
+        "link_url": null,
+        "body": null,
+        "title": null
+      },
+      "breakdowns": {
+        "age_gender": [
+          {
+            "age": "18-24",
+            "gender": "female",
+            "spend": 6.241836,
+            "impressions": 6658,
+            "clicks": 22,
+            "ctr": 33.043,
+            "cpm": 0.937494,
+            "conversions": 4,
+            "cpa": 1.560459
+          },
+          {
+            "age": "18-24",
+            "gender": "male",
+            "spend": 29.908799,
+            "impressions": 34744,
+            "clicks": 143,
+            "ctr": 41.1582,
+            "cpm": 0.860833,
+            "conversions": 28,
+            "cpa": 1.0681713928571428
+          },
+          {
+            "age": "18-24",
+            "gender": "unknown",
+            "spend": 0.390115,
+            "impressions": 345,
+            "clicks": 2,
+            "ctr": 57.971,
+            "cpm": 1.130767,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "female",
+            "spend": 27.408063,
+            "impressions": 21125,
+            "clicks": 110,
+            "ctr": 52.071,
+            "cpm": 1.297423,
+            "conversions": 16,
+            "cpa": 1.7130039375
+          },
+          {
+            "age": "25-34",
+            "gender": "male",
+            "spend": 108.932046,
+            "impressions": 114807,
+            "clicks": 577,
+            "ctr": 50.2583,
+            "cpm": 0.948828,
+            "conversions": 103,
+            "cpa": 1.0575926796116504
+          },
+          {
+            "age": "25-34",
+            "gender": "unknown",
+            "spend": 1.070315,
+            "impressions": 780,
+            "clicks": 7,
+            "ctr": 89.7436,
+            "cpm": 1.372199,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "female",
+            "spend": 46.883793,
+            "impressions": 29458,
+            "clicks": 150,
+            "ctr": 50.92,
+            "cpm": 1.591547,
+            "conversions": 16,
+            "cpa": 2.9302370625
+          },
+          {
+            "age": "35-44",
+            "gender": "male",
+            "spend": 157.706395,
+            "impressions": 129472,
+            "clicks": 737,
+            "ctr": 56.923500000000004,
+            "cpm": 1.218073,
+            "conversions": 88,
+            "cpa": 1.7921181249999998
+          },
+          {
+            "age": "35-44",
+            "gender": "unknown",
+            "spend": 1.770521,
+            "impressions": 1027,
+            "clicks": 3,
+            "ctr": 29.2113,
+            "cpm": 1.723974,
+            "conversions": 2,
+            "cpa": 0.8852605
+          },
+          {
+            "age": "45-54",
+            "gender": "female",
+            "spend": 40.641956,
+            "impressions": 24310,
+            "clicks": 189,
+            "ctr": 77.7458,
+            "cpm": 1.671821,
+            "conversions": 22,
+            "cpa": 1.8473616363636365
+          },
+          {
+            "age": "45-54",
+            "gender": "male",
+            "spend": 115.453965,
+            "impressions": 88309,
+            "clicks": 514,
+            "ctr": 58.204699999999995,
+            "cpm": 1.307386,
+            "conversions": 65,
+            "cpa": 1.776214846153846
+          },
+          {
+            "age": "45-54",
+            "gender": "unknown",
+            "spend": 1.170344,
+            "impressions": 833,
+            "clicks": 6,
+            "ctr": 72.0288,
+            "cpm": 1.404975,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "female",
+            "spend": 17.23507,
+            "impressions": 11141,
+            "clicks": 105,
+            "ctr": 94.2465,
+            "cpm": 1.546995,
+            "conversions": 7,
+            "cpa": 2.4621528571428573
+          },
+          {
+            "age": "55-64",
+            "gender": "male",
+            "spend": 55.91645,
+            "impressions": 40314,
+            "clicks": 247,
+            "ctr": 61.269,
+            "cpm": 1.387023,
+            "conversions": 30,
+            "cpa": 1.8638816666666667
+          },
+          {
+            "age": "55-64",
+            "gender": "unknown",
+            "spend": 0.630185,
+            "impressions": 417,
+            "clicks": 3,
+            "ctr": 71.94239999999999,
+            "cpm": 1.511236,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "female",
+            "spend": 8.152398,
+            "impressions": 5304,
+            "clicks": 56,
+            "ctr": 105.5807,
+            "cpm": 1.537028,
+            "conversions": 2,
+            "cpa": 4.076199
+          },
+          {
+            "age": "65+",
+            "gender": "male",
+            "spend": 25.327451,
+            "impressions": 18089,
+            "clicks": 159,
+            "ctr": 87.89869999999999,
+            "cpm": 1.400158,
+            "conversions": 14,
+            "cpa": 1.8091036428571428
+          },
+          {
+            "age": "65+",
+            "gender": "unknown",
+            "spend": 0.400118,
+            "impressions": 319,
+            "clicks": 4,
+            "ctr": 125.3919,
+            "cpm": 1.254287,
+            "conversions": 0,
+            "cpa": 0
+          }
+        ],
+        "platform": [
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_smartphone",
+            "spend": 94.147697,
+            "impressions": 95074,
+            "clicks": 379,
+            "ctr": 39.8637,
+            "conversions": 83
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_tablet",
+            "spend": 0.640188,
+            "impressions": 747,
+            "clicks": 3,
+            "ctr": 40.1606,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "other",
+            "spend": 0.010003,
+            "impressions": 3,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_smartphone",
+            "spend": 14.744338,
+            "impressions": 13002,
+            "clicks": 36,
+            "ctr": 27.688000000000002,
+            "conversions": 4
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_tablet",
+            "spend": 0.040012,
+            "impressions": 45,
+            "clicks": 2,
+            "ctr": 444.4444,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 416.712591,
+            "impressions": 233229,
+            "clicks": 2213,
+            "ctr": 94.8853,
+            "conversions": 193
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 2.330686,
+            "impressions": 1423,
+            "clicks": 14,
+            "ctr": 98.38369999999999,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "other",
+            "spend": 0.060018,
+            "impressions": 39,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_smartphone",
+            "spend": 27.478084,
+            "impressions": 69218,
+            "clicks": 238,
+            "ctr": 34.384100000000004,
+            "conversions": 56
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 17,
+            "clicks": 1,
+            "ctr": 588.2353,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_smartphone",
+            "spend": 9.672846,
+            "impressions": 19693,
+            "clicks": 7,
+            "ctr": 3.5546,
+            "conversions": 19
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_tablet",
+            "spend": 0.090026,
+            "impressions": 146,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_smartphone",
+            "spend": 0.270079,
+            "impressions": 241,
+            "clicks": 2,
+            "ctr": 82.9876,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_tablet",
+            "spend": 0.010003,
+            "impressions": 3,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_smartphone",
+            "spend": 0.330097,
+            "impressions": 622,
+            "clicks": 1,
+            "ctr": 16.0772,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_tablet",
+            "spend": 0.040012,
+            "impressions": 37,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 23.907033,
+            "impressions": 12790,
+            "clicks": 34,
+            "ctr": 26.583299999999998,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.110032,
+            "impressions": 82,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_smartphone",
+            "spend": 0.520153,
+            "impressions": 708,
+            "clicks": 4,
+            "ctr": 56.49720000000001,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_tablet",
+            "spend": 0.010003,
+            "impressions": 10,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_smartphone",
+            "spend": 21.716389,
+            "impressions": 23478,
+            "clicks": 36,
+            "ctr": 15.3335,
+            "conversions": 16
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_tablet",
+            "spend": 0.160047,
+            "impressions": 107,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_smartphone",
+            "spend": 0.110032,
+            "impressions": 3,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_smartphone",
+            "spend": 24.777289,
+            "impressions": 19307,
+            "clicks": 61,
+            "ctr": 31.5948,
+            "conversions": 10
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_tablet",
+            "spend": 0.120035,
+            "impressions": 92,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_smartphone",
+            "spend": 7.192116,
+            "impressions": 37227,
+            "clicks": 3,
+            "ctr": 0.8059000000000001,
+            "conversions": 14
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_tablet",
+            "spend": 0.030009,
+            "impressions": 104,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_stories",
+            "device": "android_smartphone",
+            "spend": 0.010003,
+            "impressions": 5,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          }
+        ]
+      }
+    },
+    "analysis_result": {
+      "ad_id": "6579151639875",
+      "ad_name": "Global_EvergreenNov24_Proplander_MCA_Travel_EN_Video",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "benchmark_comparison": {
+        "metrics_vs_benchmark": {
+          "ctr_vs_benchmark": 15901.436605555327,
+          "cpa_vs_benchmark": 193.8040078952193,
+          "roas_vs_benchmark": -100.0,
+          "cpm_vs_benchmark": 27.597811666092696,
+          "hook_rate_vs_benchmark": 0,
+          "viewthrough_rate_vs_benchmark": 0
+        },
+        "overall_performance_score": 1621.0446440907078,
+        "performance_rating": "Above Average",
+        "stability_score": 50.0
+      },
+      "segment_analysis": {
+        "best_segments": [
+          "18_24_female",
+          "18_24_male",
+          "18_24_unknown"
+        ],
+        "worst_segments": [
+          "65_plus_unknown",
+          "65_plus_male",
+          "65_plus_female"
+        ],
+        "segment_performance": {
+          "18_24_female": {
+            "segment_name": "18_24_female",
+            "display_name": "18-24 female",
+            "metrics": {
+              "spend": 6.241836,
+              "impressions": 6658,
+              "clicks": 22,
+              "conversions": 4,
+              "ctr": 0.33042955842595373,
+              "cpm": 0.9374941423851006,
+              "cpa": 1.560459,
+              "conversion_rate": 18.181818181818183
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.9673668311419467,
+            "conversion_contribution": 1.0075566750629723
+          },
+          "18_24_male": {
+            "segment_name": "18_24_male",
+            "display_name": "18-24 male",
+            "metrics": {
+              "spend": 29.908799,
+              "impressions": 34744,
+              "clicks": 143,
+              "conversions": 28,
+              "ctr": 0.41158185586000456,
+              "cpm": 0.8608334964310383,
+              "cpa": 1.0681713928571428,
+              "conversion_rate": 19.58041958041958
+            },
+            "segment_score": 0,
+            "spend_contribution": 4.63529963169353,
+            "conversion_contribution": 7.052896725440807
+          },
+          "18_24_unknown": {
+            "segment_name": "18_24_unknown",
+            "display_name": "18-24 unknown",
+            "metrics": {
+              "spend": 0.390115,
+              "impressions": 345,
+              "clicks": 2,
+              "conversions": 0,
+              "ctr": 0.5797101449275363,
+              "cpm": 1.1307681159420289,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.06046046569165554,
+            "conversion_contribution": 0.0
+          },
+          "25_34_female": {
+            "segment_name": "25_34_female",
+            "display_name": "25-34 female",
+            "metrics": {
+              "spend": 27.408063,
+              "impressions": 21125,
+              "clicks": 110,
+              "conversions": 16,
+              "ctr": 0.5207100591715976,
+              "cpm": 1.297423100591716,
+              "cpa": 1.7130039375,
+              "conversion_rate": 14.545454545454545
+            },
+            "segment_score": 0,
+            "spend_contribution": 4.24773272672477,
+            "conversion_contribution": 4.030226700251889
+          },
+          "25_34_male": {
+            "segment_name": "25_34_male",
+            "display_name": "25-34 male",
+            "metrics": {
+              "spend": 108.932046,
+              "impressions": 114807,
+              "clicks": 577,
+              "conversions": 103,
+              "ctr": 0.5025825951379271,
+              "cpm": 0.948827562779273,
+              "cpa": 1.0575926796116504,
+              "conversion_rate": 17.85095320623917
+            },
+            "segment_score": 0,
+            "spend_contribution": 16.882412185906322,
+            "conversion_contribution": 25.94458438287154
+          },
+          "25_34_unknown": {
+            "segment_name": "25_34_unknown",
+            "display_name": "25-34 unknown",
+            "metrics": {
+              "spend": 1.070315,
+              "impressions": 780,
+              "clicks": 7,
+              "conversions": 0,
+              "ctr": 0.8974358974358974,
+              "cpm": 1.3721987179487178,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.1658786340867803,
+            "conversion_contribution": 0.0
+          },
+          "35_44_female": {
+            "segment_name": "35_44_female",
+            "display_name": "35-44 female",
+            "metrics": {
+              "spend": 46.883793,
+              "impressions": 29458,
+              "clicks": 150,
+              "conversions": 16,
+              "ctr": 0.5091995383257519,
+              "cpm": 1.5915470500373412,
+              "cpa": 2.9302370625,
+              "conversion_rate": 10.666666666666668
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.2661034776186,
+            "conversion_contribution": 4.030226700251889
+          },
+          "35_44_male": {
+            "segment_name": "35_44_male",
+            "display_name": "35-44 male",
+            "metrics": {
+              "spend": 157.706395,
+              "impressions": 129472,
+              "clicks": 737,
+              "conversions": 88,
+              "ctr": 0.5692350469599604,
+              "cpm": 1.2180733672145327,
+              "cpa": 1.7921181249999998,
+              "conversion_rate": 11.940298507462686
+            },
+            "segment_score": 0,
+            "spend_contribution": 24.441516179209145,
+            "conversion_contribution": 22.16624685138539
+          },
+          "35_44_unknown": {
+            "segment_name": "35_44_unknown",
+            "display_name": "35-44 unknown",
+            "metrics": {
+              "spend": 1.770521,
+              "impressions": 1027,
+              "clicks": 3,
+              "conversions": 2,
+              "ctr": 0.2921129503407984,
+              "cpm": 1.7239737098344694,
+              "cpa": 0.8852605,
+              "conversion_rate": 66.66666666666666
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.2743973550795423,
+            "conversion_contribution": 0.5037783375314862
+          },
+          "45_54_female": {
+            "segment_name": "45_54_female",
+            "display_name": "45-54 female",
+            "metrics": {
+              "spend": 40.641956,
+              "impressions": 24310,
+              "clicks": 189,
+              "conversions": 22,
+              "ctr": 0.7774578362813657,
+              "cpm": 1.671820485396956,
+              "cpa": 1.8473616363636365,
+              "conversion_rate": 11.64021164021164
+            },
+            "segment_score": 0,
+            "spend_contribution": 6.298736491495519,
+            "conversion_contribution": 5.541561712846348
+          },
+          "45_54_male": {
+            "segment_name": "45_54_male",
+            "display_name": "45-54 male",
+            "metrics": {
+              "spend": 115.453965,
+              "impressions": 88309,
+              "clicks": 514,
+              "conversions": 65,
+              "ctr": 0.5820471299641033,
+              "cpm": 1.3073861667553703,
+              "cpa": 1.776214846153846,
+              "conversion_rate": 12.645914396887159
+            },
+            "segment_score": 0,
+            "spend_contribution": 17.893186598434053,
+            "conversion_contribution": 16.3727959697733
+          },
+          "45_54_unknown": {
+            "segment_name": "45_54_unknown",
+            "display_name": "45-54 unknown",
+            "metrics": {
+              "spend": 1.170344,
+              "impressions": 833,
+              "clicks": 6,
+              "conversions": 0,
+              "ctr": 0.7202881152460985,
+              "cpm": 1.4049747899159664,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.1813812420938311,
+            "conversion_contribution": 0.0
+          },
+          "55_64_female": {
+            "segment_name": "55_64_female",
+            "display_name": "55-64 female",
+            "metrics": {
+              "spend": 17.23507,
+              "impressions": 11141,
+              "clicks": 105,
+              "conversions": 7,
+              "ctr": 0.9424647697693205,
+              "cpm": 1.5469948837626784,
+              "cpa": 2.4621528571428573,
+              "conversion_rate": 6.666666666666667
+            },
+            "segment_score": 0,
+            "spend_contribution": 2.6711107197320834,
+            "conversion_contribution": 1.7632241813602016
+          },
+          "55_64_male": {
+            "segment_name": "55_64_male",
+            "display_name": "55-64 male",
+            "metrics": {
+              "spend": 55.91645,
+              "impressions": 40314,
+              "clicks": 247,
+              "conversions": 30,
+              "ctr": 0.6126903805129732,
+              "cpm": 1.3870231185196211,
+              "cpa": 1.8638816666666667,
+              "conversion_rate": 12.145748987854251
+            },
+            "segment_score": 0,
+            "spend_contribution": 8.665994916432776,
+            "conversion_contribution": 7.5566750629722925
+          },
+          "55_64_unknown": {
+            "segment_name": "55_64_unknown",
+            "display_name": "55-64 unknown",
+            "metrics": {
+              "spend": 0.630185,
+              "impressions": 417,
+              "clicks": 3,
+              "conversions": 0,
+              "ctr": 0.7194244604316548,
+              "cpm": 1.5112350119904077,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.09766678690103163,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_female": {
+            "segment_name": "65_plus_female",
+            "display_name": "65+ female",
+            "metrics": {
+              "spend": 8.152398,
+              "impressions": 5304,
+              "clicks": 56,
+              "conversions": 2,
+              "ctr": 1.0558069381598794,
+              "cpm": 1.5370282805429865,
+              "cpa": 4.076199,
+              "conversion_rate": 3.571428571428571
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.2634678994238142,
+            "conversion_contribution": 0.5037783375314862
+          },
+          "65_plus_male": {
+            "segment_name": "65_plus_male",
+            "display_name": "65+ male",
+            "metrics": {
+              "spend": 25.327451,
+              "impressions": 18089,
+              "clicks": 159,
+              "conversions": 14,
+              "ctr": 0.8789872298081708,
+              "cpm": 1.4001576095969925,
+              "cpa": 1.8091036428571428,
+              "conversion_rate": 8.80503144654088
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.925277116344121,
+            "conversion_contribution": 3.5264483627204033
+          },
+          "65_plus_unknown": {
+            "segment_name": "65_plus_unknown",
+            "display_name": "65+ unknown",
+            "metrics": {
+              "spend": 0.400118,
+              "impressions": 319,
+              "clicks": 4,
+              "conversions": 0,
+              "ctr": 1.2539184952978055,
+              "cpm": 1.2542884012539184,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.06201074199047417,
+            "conversion_contribution": 0.0
+          }
+        }
+      },
+      "analysis_date": "2025-08-10",
+      "performance_rating": "Above Average",
+      "performance_score": 1621.0446440907078,
+      "best_segment": "18_24_female",
+      "insights": {
+        "summary": [
+          "Data analysis complete. Insights will be generated by AI."
+        ],
+        "formatted_text": "Data analysis complete. Insights will be generated by AI."
+      }
+    }
+  },
+  {
+    "ad_data": {
+      "ad_id": "6579152573475",
+      "ad_name": "Global_EvergreenNov24_Explainer_MCA_Travel_EN_Video",
+      "campaign_id": "6360745804275",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "adset_id": "6519417867275",
+      "adset_name": "EUR - Web - Android - WC - Conversion - Use Cases - EUR - Behaviour - Frequent international traveller - O - Feed & Stories",
+      "status": "ACTIVE",
+      "created_time": "2024-11-15T12:41:21+0000",
+      "metrics": {
+        "spend": 133.27,
+        "impressions": 227544,
+        "clicks": 671,
+        "ctr": 29.488799999999998,
+        "cpm": 0.5856889217030552,
+        "cpp": 1.356037,
+        "frequency": 2.315286,
+        "reach": 98279,
+        "unique_clicks": 638,
+        "unique_ctr": 64.9172,
+        "quality_ranking": "UNKNOWN",
+        "conversions": 186,
+        "conversion_values": 0.0,
+        "conversion_rate_ranking": "UNKNOWN",
+        "engagement_rate_ranking": "UNKNOWN",
+        "cpa": 0.7165053763440861,
+        "roas": 0,
+        "video": {
+          "views": 159464,
+          "p25": 11084,
+          "p50": 4435,
+          "p75": 2463,
+          "p95": 1676,
+          "p100": 1537
+        }
+      },
+      "creative": {
+        "creative_id": "6579153431275",
+        "name": "{{product.name}} 2024-11-15-279dd90da7e2ac89cff28556a42b40b0",
+        "object_type": "SHARE",
+        "image_url": null,
+        "video_id": "603009658744697",
+        "thumbnail_url": "https://scontent-mad2-1.xx.fbcdn.net/v/t15.13418-10/466734148_434092866401961_1603756607430921652_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=C_OgBwL6huUQ7kNvwGesgY3&_nc_oc=AdmksfaCEYpY8W7zAXWwIeWgeImji3k3zRLWFPoK08JMAqvato_jMdl5_5Vlb5H1QX4&_nc_zt=23&_nc_ht=scontent-mad2-1.xx&edm=AAT1rw8EAAAA&_nc_gid=cb56M2H_zn48sX7oJyKNGg&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=1727f7&_nc_sid=58080a&oh=00_AfUmdDS5ViZhImcWMezmZe7CyFC30YKcCdb-o03nNLn6SQ&oe=689E8A21",
+        "primary_text": null,
+        "headline": null,
+        "description": null,
+        "link_url": null,
+        "body": null,
+        "title": null
+      },
+      "breakdowns": {
+        "age_gender": [
+          {
+            "age": "18-24",
+            "gender": "female",
+            "spend": 0.660149,
+            "impressions": 2446,
+            "clicks": 3,
+            "ctr": 12.264899999999999,
+            "cpm": 0.269889,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "18-24",
+            "gender": "male",
+            "spend": 4.340977,
+            "impressions": 8504,
+            "clicks": 16,
+            "ctr": 18.814700000000002,
+            "cpm": 0.510463,
+            "conversions": 8,
+            "cpa": 0.542622125
+          },
+          {
+            "age": "18-24",
+            "gender": "unknown",
+            "spend": 0.020005,
+            "impressions": 152,
+            "clicks": 1,
+            "ctr": 65.7895,
+            "cpm": 0.131609,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "female",
+            "spend": 2.590583,
+            "impressions": 5722,
+            "clicks": 10,
+            "ctr": 17.4764,
+            "cpm": 0.452741,
+            "conversions": 2,
+            "cpa": 1.2952915
+          },
+          {
+            "age": "25-34",
+            "gender": "male",
+            "spend": 21.364809,
+            "impressions": 35928,
+            "clicks": 90,
+            "ctr": 25.050099999999997,
+            "cpm": 0.594656,
+            "conversions": 31,
+            "cpa": 0.6891873870967742
+          },
+          {
+            "age": "25-34",
+            "gender": "unknown",
+            "spend": 0.040009,
+            "impressions": 190,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 0.210574,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "female",
+            "spend": 4.691056,
+            "impressions": 7885,
+            "clicks": 15,
+            "ctr": 19.0235,
+            "cpm": 0.594934,
+            "conversions": 6,
+            "cpa": 0.7818426666666666
+          },
+          {
+            "age": "35-44",
+            "gender": "male",
+            "spend": 30.936964,
+            "impressions": 50958,
+            "clicks": 128,
+            "ctr": 25.1187,
+            "cpm": 0.607107,
+            "conversions": 48,
+            "cpa": 0.6445200833333333
+          },
+          {
+            "age": "35-44",
+            "gender": "unknown",
+            "spend": 0.180041,
+            "impressions": 261,
+            "clicks": 2,
+            "ctr": 76.6284,
+            "cpm": 0.68981,
+            "conversions": 2,
+            "cpa": 0.0900205
+          },
+          {
+            "age": "45-54",
+            "gender": "female",
+            "spend": 6.111376,
+            "impressions": 9047,
+            "clicks": 32,
+            "ctr": 35.3708,
+            "cpm": 0.675514,
+            "conversions": 8,
+            "cpa": 0.763922
+          },
+          {
+            "age": "45-54",
+            "gender": "male",
+            "spend": 28.78648,
+            "impressions": 49283,
+            "clicks": 123,
+            "ctr": 24.9579,
+            "cpm": 0.584106,
+            "conversions": 31,
+            "cpa": 0.9285961290322581
+          },
+          {
+            "age": "45-54",
+            "gender": "unknown",
+            "spend": 0.280063,
+            "impressions": 270,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 1.037271,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "female",
+            "spend": 3.630817,
+            "impressions": 6508,
+            "clicks": 36,
+            "ctr": 55.316500000000005,
+            "cpm": 0.557901,
+            "conversions": 2,
+            "cpa": 1.8154085
+          },
+          {
+            "age": "55-64",
+            "gender": "male",
+            "spend": 17.693983,
+            "impressions": 30899,
+            "clicks": 113,
+            "ctr": 36.5708,
+            "cpm": 0.572639,
+            "conversions": 29,
+            "cpa": 0.6101373448275862
+          },
+          {
+            "age": "55-64",
+            "gender": "unknown",
+            "spend": 0.070016,
+            "impressions": 194,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 0.360906,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "female",
+            "spend": 2.060464,
+            "impressions": 3865,
+            "clicks": 17,
+            "ctr": 43.9845,
+            "cpm": 0.533108,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "male",
+            "spend": 9.672177,
+            "impressions": 15307,
+            "clicks": 84,
+            "ctr": 54.87689999999999,
+            "cpm": 0.631879,
+            "conversions": 19,
+            "cpa": 0.509061947368421
+          },
+          {
+            "age": "65+",
+            "gender": "unknown",
+            "spend": 0.050011,
+            "impressions": 125,
+            "clicks": 1,
+            "ctr": 80.0,
+            "cpm": 0.40009,
+            "conversions": 0,
+            "cpa": 0
+          }
+        ],
+        "platform": [
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_smartphone",
+            "spend": 35.618018,
+            "impressions": 60177,
+            "clicks": 163,
+            "ctr": 27.0868,
+            "conversions": 51
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_tablet",
+            "spend": 0.590133,
+            "impressions": 1042,
+            "clicks": 3,
+            "ctr": 28.7908,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "other",
+            "spend": 0.0,
+            "impressions": 8,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_smartphone",
+            "spend": 1.500338,
+            "impressions": 2282,
+            "clicks": 4,
+            "ctr": 17.5285,
+            "conversions": 6
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 11,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 63.104205,
+            "impressions": 79226,
+            "clicks": 379,
+            "ctr": 47.8378,
+            "conversions": 107
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.750169,
+            "impressions": 984,
+            "clicks": 9,
+            "ctr": 91.4634,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "other",
+            "spend": 0.010002,
+            "impressions": 12,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_smartphone",
+            "spend": 10.602387,
+            "impressions": 33855,
+            "clicks": 82,
+            "ctr": 24.2209,
+            "conversions": 4
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_smartphone",
+            "spend": 7.991799,
+            "impressions": 16987,
+            "clicks": 12,
+            "ctr": 7.0642,
+            "conversions": 10
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_tablet",
+            "spend": 0.09002,
+            "impressions": 159,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_smartphone",
+            "spend": 0.060014,
+            "impressions": 173,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_smartphone",
+            "spend": 0.110025,
+            "impressions": 238,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_tablet",
+            "spend": 0.010002,
+            "impressions": 21,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 3.380761,
+            "impressions": 6132,
+            "clicks": 6,
+            "ctr": 9.7847,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 39,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "other",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_smartphone",
+            "spend": 0.230052,
+            "impressions": 536,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_smartphone",
+            "spend": 4.991124,
+            "impressions": 14044,
+            "clicks": 3,
+            "ctr": 2.1361000000000003,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_tablet",
+            "spend": 0.010002,
+            "impressions": 47,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_smartphone",
+            "spend": 2.810633,
+            "impressions": 5097,
+            "clicks": 10,
+            "ctr": 19.619400000000002,
+            "conversions": 4
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 15,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_smartphone",
+            "spend": 1.310295,
+            "impressions": 6441,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_tablet",
+            "spend": 0.010002,
+            "impressions": 14,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          }
+        ]
+      }
+    },
+    "analysis_result": {
+      "ad_id": "6579152573475",
+      "ad_name": "Global_EvergreenNov24_Explainer_MCA_Travel_EN_Video",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "benchmark_comparison": {
+        "metrics_vs_benchmark": {
+          "ctr_vs_benchmark": 8103.034677848859,
+          "cpa_vs_benchmark": 541.2389209481832,
+          "roas_vs_benchmark": -100.0,
+          "cpm_vs_benchmark": 166.76816075709482,
+          "hook_rate_vs_benchmark": 0,
+          "viewthrough_rate_vs_benchmark": 0
+        },
+        "overall_performance_score": 959.3519601450504,
+        "performance_rating": "Above Average",
+        "stability_score": 50.0
+      },
+      "segment_analysis": {
+        "best_segments": [
+          "18_24_female",
+          "18_24_male",
+          "18_24_unknown"
+        ],
+        "worst_segments": [
+          "65_plus_unknown",
+          "65_plus_male",
+          "65_plus_female"
+        ],
+        "segment_performance": {
+          "18_24_female": {
+            "segment_name": "18_24_female",
+            "display_name": "18-24 female",
+            "metrics": {
+              "spend": 0.660149,
+              "impressions": 2446,
+              "clicks": 3,
+              "conversions": 0,
+              "ctr": 0.12264922322158626,
+              "cpm": 0.2698892068683565,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.49568185848954177,
+            "conversion_contribution": 0.0
+          },
+          "18_24_male": {
+            "segment_name": "18_24_male",
+            "display_name": "18-24 male",
+            "metrics": {
+              "spend": 4.340977,
+              "impressions": 8504,
+              "clicks": 16,
+              "conversions": 8,
+              "ctr": 0.18814675446848542,
+              "cpm": 0.510462958607714,
+              "cpa": 0.542622125,
+              "conversion_rate": 50.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.2594816428114792,
+            "conversion_contribution": 4.301075268817205
+          },
+          "18_24_unknown": {
+            "segment_name": "18_24_unknown",
+            "display_name": "18-24 unknown",
+            "metrics": {
+              "spend": 0.020005,
+              "impressions": 152,
+              "clicks": 1,
+              "conversions": 0,
+              "ctr": 0.6578947368421052,
+              "cpm": 0.13161184210526314,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.015021026433552548,
+            "conversion_contribution": 0.0
+          },
+          "25_34_female": {
+            "segment_name": "25_34_female",
+            "display_name": "25-34 female",
+            "metrics": {
+              "spend": 2.590583,
+              "impressions": 5722,
+              "clicks": 10,
+              "conversions": 2,
+              "ctr": 0.17476406850751486,
+              "cpm": 0.4527408248864034,
+              "cpa": 1.2952915,
+              "conversion_rate": 20.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.9451744924424827,
+            "conversion_contribution": 1.0752688172043012
+          },
+          "25_34_male": {
+            "segment_name": "25_34_male",
+            "display_name": "25-34 male",
+            "metrics": {
+              "spend": 21.364809,
+              "impressions": 35928,
+              "clicks": 90,
+              "conversions": 31,
+              "ctr": 0.250501002004008,
+              "cpm": 0.5946562291249166,
+              "cpa": 0.6891873870967742,
+              "conversion_rate": 34.44444444444444
+            },
+            "segment_score": 0,
+            "spend_contribution": 16.04205752245946,
+            "conversion_contribution": 16.666666666666664
+          },
+          "25_34_unknown": {
+            "segment_name": "25_34_unknown",
+            "display_name": "25-34 unknown",
+            "metrics": {
+              "spend": 0.040009,
+              "impressions": 190,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 0.21057368421052633,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.030041302003499328,
+            "conversion_contribution": 0.0
+          },
+          "35_44_female": {
+            "segment_name": "35_44_female",
+            "display_name": "35-44 female",
+            "metrics": {
+              "spend": 4.691056,
+              "impressions": 7885,
+              "clicks": 15,
+              "conversions": 6,
+              "ctr": 0.19023462270133165,
+              "cpm": 0.5949341788205452,
+              "cpa": 0.7818426666666666,
+              "conversion_rate": 40.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.522343223058,
+            "conversion_contribution": 3.225806451612903
+          },
+          "35_44_male": {
+            "segment_name": "35_44_male",
+            "display_name": "35-44 male",
+            "metrics": {
+              "spend": 30.936964,
+              "impressions": 50958,
+              "clicks": 128,
+              "conversions": 48,
+              "ctr": 0.2511872522469485,
+              "cpm": 0.6071071078142785,
+              "cpa": 0.6445200833333333,
+              "conversion_rate": 37.5
+            },
+            "segment_score": 0,
+            "spend_contribution": 23.22944034080798,
+            "conversion_contribution": 25.806451612903224
+          },
+          "35_44_unknown": {
+            "segment_name": "35_44_unknown",
+            "display_name": "35-44 unknown",
+            "metrics": {
+              "spend": 0.180041,
+              "impressions": 261,
+              "clicks": 2,
+              "conversions": 2,
+              "ctr": 0.7662835249042145,
+              "cpm": 0.6898122605363984,
+              "cpa": 0.0900205,
+              "conversion_rate": 100.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.13518623444754985,
+            "conversion_contribution": 1.0752688172043012
+          },
+          "45_54_female": {
+            "segment_name": "45_54_female",
+            "display_name": "45-54 female",
+            "metrics": {
+              "spend": 6.111376,
+              "impressions": 9047,
+              "clicks": 32,
+              "conversions": 8,
+              "ctr": 0.353708411628164,
+              "cpm": 0.6755140930695258,
+              "cpa": 0.763922,
+              "conversion_rate": 25.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 4.588809819614029,
+            "conversion_contribution": 4.301075268817205
+          },
+          "45_54_male": {
+            "segment_name": "45_54_male",
+            "display_name": "45-54 male",
+            "metrics": {
+              "spend": 28.78648,
+              "impressions": 49283,
+              "clicks": 123,
+              "conversions": 31,
+              "ctr": 0.24957896231966398,
+              "cpm": 0.5841056753850212,
+              "cpa": 0.9285961290322581,
+              "conversion_rate": 25.203252032520325
+            },
+            "segment_score": 0,
+            "spend_contribution": 21.61472017040399,
+            "conversion_contribution": 16.666666666666664
+          },
+          "45_54_unknown": {
+            "segment_name": "45_54_unknown",
+            "display_name": "45-54 unknown",
+            "metrics": {
+              "spend": 0.280063,
+              "impressions": 270,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 1.0372703703703703,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.21028911402449527,
+            "conversion_contribution": 0.0
+          },
+          "55_64_female": {
+            "segment_name": "55_64_female",
+            "display_name": "55-64 female",
+            "metrics": {
+              "spend": 3.630817,
+              "impressions": 6508,
+              "clicks": 36,
+              "conversions": 2,
+              "ctr": 0.5531653349723417,
+              "cpm": 0.5579005838967425,
+              "cpa": 1.8154085,
+              "conversion_rate": 5.555555555555555
+            },
+            "segment_score": 0,
+            "spend_contribution": 2.7262483445334653,
+            "conversion_contribution": 1.0752688172043012
+          },
+          "55_64_male": {
+            "segment_name": "55_64_male",
+            "display_name": "55-64 male",
+            "metrics": {
+              "spend": 17.693983,
+              "impressions": 30899,
+              "clicks": 113,
+              "conversions": 29,
+              "ctr": 0.3657076280785786,
+              "cpm": 0.5726393410789993,
+              "cpa": 0.6101373448275862,
+              "conversion_rate": 25.663716814159294
+            },
+            "segment_score": 0,
+            "spend_contribution": 13.285767875922492,
+            "conversion_contribution": 15.591397849462366
+          },
+          "55_64_unknown": {
+            "segment_name": "55_64_unknown",
+            "display_name": "55-64 unknown",
+            "metrics": {
+              "spend": 0.070016,
+              "impressions": 194,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 0.3609072164948453,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.05257246622202526,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_female": {
+            "segment_name": "65_plus_female",
+            "display_name": "65+ female",
+            "metrics": {
+              "spend": 2.060464,
+              "impressions": 3865,
+              "clicks": 17,
+              "conversions": 0,
+              "ctr": 0.4398447606727037,
+              "cpm": 0.5331084087968953,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.5471274286120182,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_male": {
+            "segment_name": "65_plus_male",
+            "display_name": "65+ male",
+            "metrics": {
+              "spend": 9.672177,
+              "impressions": 15307,
+              "clicks": 84,
+              "conversions": 19,
+              "ctr": 0.5487685372705298,
+              "cpm": 0.6318793362513881,
+              "cpa": 0.509061947368421,
+              "conversion_rate": 22.61904761904762
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.262485697925469,
+            "conversion_contribution": 10.21505376344086
+          },
+          "65_plus_unknown": {
+            "segment_name": "65_plus_unknown",
+            "display_name": "65+ unknown",
+            "metrics": {
+              "spend": 0.050011,
+              "impressions": 125,
+              "clicks": 1,
+              "conversions": 0,
+              "ctr": 0.8,
+              "cpm": 0.400088,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.03755143978847272,
+            "conversion_contribution": 0.0
+          }
+        }
+      },
+      "analysis_date": "2025-08-10",
+      "performance_rating": "Above Average",
+      "performance_score": 959.3519601450504,
+      "best_segment": "18_24_female",
+      "insights": {
+        "summary": [
+          "Data analysis complete. Insights will be generated by AI."
+        ],
+        "formatted_text": "Data analysis complete. Insights will be generated by AI."
+      }
+    }
+  },
+  {
+    "ad_data": {
+      "ad_id": "6579154354875",
+      "ad_name": "Global_EvergreenNov24_Proplander_MCA_Trust_EN_Static",
+      "campaign_id": "6360745804275",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "adset_id": "6519417867275",
+      "adset_name": "EUR - Web - Android - WC - Conversion - Use Cases - EUR - Behaviour - Frequent international traveller - O - Feed & Stories",
+      "status": "ACTIVE",
+      "created_time": "2024-11-15T12:50:10+0000",
+      "metrics": {
+        "spend": 514.1,
+        "impressions": 403333,
+        "clicks": 2272,
+        "ctr": 56.3306,
+        "cpm": 1.2746291525860767,
+        "cpp": 2.061314,
+        "frequency": 1.617187,
+        "reach": 249404,
+        "unique_clicks": 1948,
+        "unique_ctr": 78.1062,
+        "quality_ranking": "UNKNOWN",
+        "conversions": 278,
+        "conversion_values": 0.0,
+        "conversion_rate_ranking": "UNKNOWN",
+        "engagement_rate_ranking": "UNKNOWN",
+        "cpa": 1.8492805755395685,
+        "roas": 0
+      },
+      "creative": {
+        "creative_id": "6584988298475",
+        "name": "{{product.name}} 2024-12-17-305804f15b2bc073bb67b48cea7ad179",
+        "object_type": "SHARE",
+        "image_url": null,
+        "video_id": null,
+        "thumbnail_url": "https://scontent-mad1-1.xx.fbcdn.net/v/t45.1600-4/467125700_6579150704075_2373337535350103555_n.png?_nc_cat=101&ccb=1-7&_nc_ohc=rYqNKxX7hXcQ7kNvwGyITDo&_nc_oc=AdkJc1Smt6Hc2S8zJMApl6fJxe6n9ACMuEk_VtMfrh5NHOM4lV9CvfckVEZ-8LEzclg&_nc_zt=1&_nc_ht=scontent-mad1-1.xx&edm=AAT1rw8EAAAA&_nc_gid=8MhLvCs9AHr_Und3gtlURw&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=4c02d7&_nc_sid=58080a&oh=00_AfX9fX_Wv4E-BSbPm_fnBYdltnIr-XkVzc-wGx6xzpbWpg&oe=689E8FEA",
+        "primary_text": null,
+        "headline": null,
+        "description": null,
+        "link_url": null,
+        "body": null,
+        "title": null
+      },
+      "breakdowns": {
+        "age_gender": [
+          {
+            "age": "18-24",
+            "gender": "female",
+            "spend": 15.418397,
+            "impressions": 10431,
+            "clicks": 56,
+            "ctr": 53.6861,
+            "cpm": 1.478132,
+            "conversions": 4,
+            "cpa": 3.85459925
+          },
+          {
+            "age": "18-24",
+            "gender": "male",
+            "spend": 44.9845,
+            "impressions": 41897,
+            "clicks": 197,
+            "ctr": 47.0201,
+            "cpm": 1.073693,
+            "conversions": 52,
+            "cpa": 0.8650865384615384
+          },
+          {
+            "age": "18-24",
+            "gender": "unknown",
+            "spend": 0.490267,
+            "impressions": 408,
+            "clicks": 4,
+            "ctr": 98.03920000000001,
+            "cpm": 1.201635,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "female",
+            "spend": 46.565361,
+            "impressions": 25708,
+            "clicks": 161,
+            "ctr": 62.626400000000004,
+            "cpm": 1.811318,
+            "conversions": 20,
+            "cpa": 2.32826805
+          },
+          {
+            "age": "25-34",
+            "gender": "male",
+            "spend": 125.008085,
+            "impressions": 110834,
+            "clicks": 551,
+            "ctr": 49.714000000000006,
+            "cpm": 1.127886,
+            "conversions": 56,
+            "cpa": 2.232287232142857
+          },
+          {
+            "age": "25-34",
+            "gender": "unknown",
+            "spend": 1.690921,
+            "impressions": 891,
+            "clicks": 7,
+            "ctr": 78.5634,
+            "cpm": 1.897779,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "female",
+            "spend": 41.18243,
+            "impressions": 23922,
+            "clicks": 161,
+            "ctr": 67.3021,
+            "cpm": 1.72153,
+            "conversions": 12,
+            "cpa": 3.4318691666666665
+          },
+          {
+            "age": "35-44",
+            "gender": "male",
+            "spend": 116.603507,
+            "impressions": 92425,
+            "clicks": 499,
+            "ctr": 53.9897,
+            "cpm": 1.261601,
+            "conversions": 61,
+            "cpa": 1.911532901639344
+          },
+          {
+            "age": "35-44",
+            "gender": "unknown",
+            "spend": 1.040567,
+            "impressions": 804,
+            "clicks": 2,
+            "ctr": 24.875600000000002,
+            "cpm": 1.294237,
+            "conversions": 2,
+            "cpa": 0.5202835
+          },
+          {
+            "age": "45-54",
+            "gender": "female",
+            "spend": 20.631237,
+            "impressions": 13445,
+            "clicks": 103,
+            "ctr": 76.6084,
+            "cpm": 1.534491,
+            "conversions": 4,
+            "cpa": 5.15780925
+          },
+          {
+            "age": "45-54",
+            "gender": "male",
+            "spend": 57.351236,
+            "impressions": 47277,
+            "clicks": 272,
+            "ctr": 57.5333,
+            "cpm": 1.21309,
+            "conversions": 24,
+            "cpa": 2.3896348333333335
+          },
+          {
+            "age": "45-54",
+            "gender": "unknown",
+            "spend": 0.710387,
+            "impressions": 490,
+            "clicks": 7,
+            "ctr": 142.8571,
+            "cpm": 1.449769,
+            "conversions": 2,
+            "cpa": 0.3551935
+          },
+          {
+            "age": "55-64",
+            "gender": "female",
+            "spend": 8.014365,
+            "impressions": 5281,
+            "clicks": 51,
+            "ctr": 96.5726,
+            "cpm": 1.517585,
+            "conversions": 2,
+            "cpa": 4.0071825
+          },
+          {
+            "age": "55-64",
+            "gender": "male",
+            "spend": 21.281591,
+            "impressions": 17887,
+            "clicks": 113,
+            "ctr": 63.1744,
+            "cpm": 1.18978,
+            "conversions": 9,
+            "cpa": 2.364621222222222
+          },
+          {
+            "age": "55-64",
+            "gender": "unknown",
+            "spend": 0.240131,
+            "impressions": 209,
+            "clicks": 2,
+            "ctr": 95.6938,
+            "cpm": 1.148951,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "female",
+            "spend": 2.651444,
+            "impressions": 2597,
+            "clicks": 24,
+            "ctr": 92.41430000000001,
+            "cpm": 1.020964,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "male",
+            "spend": 9.995444,
+            "impressions": 8690,
+            "clicks": 61,
+            "ctr": 70.1956,
+            "cpm": 1.150224,
+            "conversions": 4,
+            "cpa": 2.498861
+          },
+          {
+            "age": "65+",
+            "gender": "unknown",
+            "spend": 0.240131,
+            "impressions": 137,
+            "clicks": 1,
+            "ctr": 72.9927,
+            "cpm": 1.752779,
+            "conversions": 0,
+            "cpa": 0
+          }
+        ],
+        "platform": [
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_smartphone",
+            "spend": 33.83843,
+            "impressions": 38298,
+            "clicks": 134,
+            "ctr": 34.9888,
+            "conversions": 18
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_tablet",
+            "spend": 0.370202,
+            "impressions": 479,
+            "clicks": 2,
+            "ctr": 41.7537,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "other",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_smartphone",
+            "spend": 4.692556,
+            "impressions": 7533,
+            "clicks": 24,
+            "ctr": 31.8598,
+            "conversions": 6
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_tablet",
+            "spend": 0.020011,
+            "impressions": 17,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 414.755893,
+            "impressions": 248845,
+            "clicks": 1978,
+            "ctr": 79.4872,
+            "conversions": 152
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 2.621428,
+            "impressions": 1238,
+            "clicks": 5,
+            "ctr": 40.387699999999995,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "other",
+            "spend": 0.020011,
+            "impressions": 10,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_smartphone",
+            "spend": 3.021646,
+            "impressions": 9260,
+            "clicks": 19,
+            "ctr": 20.5184,
+            "conversions": 6
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_smartphone",
+            "spend": 7.374016,
+            "impressions": 10583,
+            "clicks": 15,
+            "ctr": 14.1737,
+            "conversions": 8
+          },
+          {
+            "platform": "facebook",
+            "position": "marketplace",
+            "device": "android_tablet",
+            "spend": 0.120065,
+            "impressions": 85,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_smartphone",
+            "spend": 0.610332,
+            "impressions": 200,
+            "clicks": 2,
+            "ctr": 100.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_smartphone",
+            "spend": 0.250136,
+            "impressions": 156,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_tablet",
+            "spend": 0.010005,
+            "impressions": 6,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 16.68909,
+            "impressions": 7937,
+            "clicks": 25,
+            "ctr": 31.497999999999998,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.040022,
+            "impressions": 60,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_smartphone",
+            "spend": 0.200109,
+            "impressions": 178,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore_grid_home",
+            "device": "android_smartphone",
+            "spend": 0.170093,
+            "impressions": 394,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore_grid_home",
+            "device": "android_tablet",
+            "spend": 0.010005,
+            "impressions": 7,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_smartphone",
+            "spend": 7.984349,
+            "impressions": 8689,
+            "clicks": 27,
+            "ctr": 31.073800000000002,
+            "conversions": 4
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_tablet",
+            "spend": 0.100054,
+            "impressions": 65,
+            "clicks": 1,
+            "ctr": 153.8462,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "other",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_smartphone",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_smartphone",
+            "spend": 5.883204,
+            "impressions": 5672,
+            "clicks": 18,
+            "ctr": 31.734800000000003,
+            "conversions": 4
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_tablet",
+            "spend": 0.010005,
+            "impressions": 17,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_smartphone",
+            "spend": 15.25831,
+            "impressions": 63420,
+            "clicks": 22,
+            "ctr": 3.4688999999999997,
+            "conversions": 50
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_tablet",
+            "spend": 0.050027,
+            "impressions": 173,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_stories",
+            "device": "android_smartphone",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          }
+        ]
+      }
+    },
+    "analysis_result": {
+      "ad_id": "6579154354875",
+      "ad_name": "Global_EvergreenNov24_Proplander_MCA_Trust_EN_Static",
+      "campaign_name": "EUR - Web - Android - WC - Conversion - Use Cases",
+      "benchmark_comparison": {
+        "metrics_vs_benchmark": {
+          "ctr_vs_benchmark": 15569.741231383878,
+          "cpa_vs_benchmark": 148.4485807387009,
+          "roas_vs_benchmark": -100.0,
+          "cpm_vs_benchmark": 22.57930559765613,
+          "hook_rate_vs_benchmark": 0,
+          "viewthrough_rate_vs_benchmark": 0
+        },
+        "overall_performance_score": 1573.7666279197636,
+        "performance_rating": "Above Average",
+        "stability_score": 50.0
+      },
+      "segment_analysis": {
+        "best_segments": [
+          "18_24_female",
+          "18_24_male",
+          "18_24_unknown"
+        ],
+        "worst_segments": [
+          "65_plus_unknown",
+          "65_plus_male",
+          "65_plus_female"
+        ],
+        "segment_performance": {
+          "18_24_female": {
+            "segment_name": "18_24_female",
+            "display_name": "18-24 female",
+            "metrics": {
+              "spend": 15.418397,
+              "impressions": 10431,
+              "clicks": 56,
+              "conversions": 4,
+              "ctr": 0.5368612788802607,
+              "cpm": 1.4781322020899244,
+              "cpa": 3.85459925,
+              "conversion_rate": 7.142857142857142
+            },
+            "segment_score": 0,
+            "spend_contribution": 2.999104643067293,
+            "conversion_contribution": 1.5873015873015872
+          },
+          "18_24_male": {
+            "segment_name": "18_24_male",
+            "display_name": "18-24 male",
+            "metrics": {
+              "spend": 44.9845,
+              "impressions": 41897,
+              "clicks": 197,
+              "conversions": 52,
+              "ctr": 0.47020073036255583,
+              "cpm": 1.0736926271570757,
+              "cpa": 0.8650865384615384,
+              "conversion_rate": 26.39593908629442
+            },
+            "segment_score": 0,
+            "spend_contribution": 8.750145868994075,
+            "conversion_contribution": 20.634920634920633
+          },
+          "18_24_unknown": {
+            "segment_name": "18_24_unknown",
+            "display_name": "18-24 unknown",
+            "metrics": {
+              "spend": 0.490267,
+              "impressions": 408,
+              "clicks": 4,
+              "conversions": 0,
+              "ctr": 0.9803921568627451,
+              "cpm": 1.2016348039215687,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.0953641313064304,
+            "conversion_contribution": 0.0
+          },
+          "25_34_female": {
+            "segment_name": "25_34_female",
+            "display_name": "25-34 female",
+            "metrics": {
+              "spend": 46.565361,
+              "impressions": 25708,
+              "clicks": 161,
+              "conversions": 20,
+              "ctr": 0.6262641979150458,
+              "cpm": 1.811317916601836,
+              "cpa": 2.32826805,
+              "conversion_rate": 12.422360248447205
+            },
+            "segment_score": 0,
+            "spend_contribution": 9.057646549197342,
+            "conversion_contribution": 7.936507936507936
+          },
+          "25_34_male": {
+            "segment_name": "25_34_male",
+            "display_name": "25-34 male",
+            "metrics": {
+              "spend": 125.008085,
+              "impressions": 110834,
+              "clicks": 551,
+              "conversions": 56,
+              "ctr": 0.4971398668278687,
+              "cpm": 1.1278857119656422,
+              "cpa": 2.232287232142857,
+              "conversion_rate": 10.163339382940109
+            },
+            "segment_score": 0,
+            "spend_contribution": 24.31590833628495,
+            "conversion_contribution": 22.22222222222222
+          },
+          "25_34_unknown": {
+            "segment_name": "25_34_unknown",
+            "display_name": "25-34 unknown",
+            "metrics": {
+              "spend": 1.690921,
+              "impressions": 891,
+              "clicks": 7,
+              "conversions": 0,
+              "ctr": 0.7856341189674524,
+              "cpm": 1.8977789001122334,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.3289089664872418,
+            "conversion_contribution": 0.0
+          },
+          "35_44_female": {
+            "segment_name": "35_44_female",
+            "display_name": "35-44 female",
+            "metrics": {
+              "spend": 41.18243,
+              "impressions": 23922,
+              "clicks": 161,
+              "conversions": 12,
+              "ctr": 0.6730206504472871,
+              "cpm": 1.7215295543850848,
+              "cpa": 3.4318691666666665,
+              "conversion_rate": 7.453416149068323
+            },
+            "segment_score": 0,
+            "spend_contribution": 8.010587418769525,
+            "conversion_contribution": 4.761904761904762
+          },
+          "35_44_male": {
+            "segment_name": "35_44_male",
+            "display_name": "35-44 male",
+            "metrics": {
+              "spend": 116.603507,
+              "impressions": 92425,
+              "clicks": 499,
+              "conversions": 61,
+              "ctr": 0.5398972139572626,
+              "cpm": 1.2616013740870977,
+              "cpa": 1.911532901639344,
+              "conversion_rate": 12.224448897795591
+            },
+            "segment_score": 0,
+            "spend_contribution": 22.681094490019266,
+            "conversion_contribution": 24.206349206349206
+          },
+          "35_44_unknown": {
+            "segment_name": "35_44_unknown",
+            "display_name": "35-44 unknown",
+            "metrics": {
+              "spend": 1.040567,
+              "impressions": 804,
+              "clicks": 2,
+              "conversions": 2,
+              "ctr": 0.24875621890547264,
+              "cpm": 1.2942375621890547,
+              "cpa": 0.5202835,
+              "conversion_rate": 100.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.202405562726307,
+            "conversion_contribution": 0.7936507936507936
+          },
+          "45_54_female": {
+            "segment_name": "45_54_female",
+            "display_name": "45-54 female",
+            "metrics": {
+              "spend": 20.631237,
+              "impressions": 13445,
+              "clicks": 103,
+              "conversions": 4,
+              "ctr": 0.7660840461137969,
+              "cpm": 1.5344914094458906,
+              "cpa": 5.15780925,
+              "conversion_rate": 3.8834951456310676
+            },
+            "segment_score": 0,
+            "spend_contribution": 4.013078576127059,
+            "conversion_contribution": 1.5873015873015872
+          },
+          "45_54_male": {
+            "segment_name": "45_54_male",
+            "display_name": "45-54 male",
+            "metrics": {
+              "spend": 57.351236,
+              "impressions": 47277,
+              "clicks": 272,
+              "conversions": 24,
+              "ctr": 0.5753326141675656,
+              "cpm": 1.2130895784419484,
+              "cpa": 2.3896348333333335,
+              "conversion_rate": 8.823529411764707
+            },
+            "segment_score": 0,
+            "spend_contribution": 11.155657632453496,
+            "conversion_contribution": 9.523809523809524
+          },
+          "45_54_unknown": {
+            "segment_name": "45_54_unknown",
+            "display_name": "45-54 unknown",
+            "metrics": {
+              "spend": 0.710387,
+              "impressions": 490,
+              "clicks": 7,
+              "conversions": 2,
+              "ctr": 1.4285714285714286,
+              "cpm": 1.449769387755102,
+              "cpa": 0.3551935,
+              "conversion_rate": 28.57142857142857
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.13818070387438103,
+            "conversion_contribution": 0.7936507936507936
+          },
+          "55_64_female": {
+            "segment_name": "55_64_female",
+            "display_name": "55-64 female",
+            "metrics": {
+              "spend": 8.014365,
+              "impressions": 5281,
+              "clicks": 51,
+              "conversions": 2,
+              "ctr": 0.9657261882219277,
+              "cpm": 1.5175847377390645,
+              "cpa": 4.0071825,
+              "conversion_rate": 3.9215686274509802
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.5589116873003077,
+            "conversion_contribution": 0.7936507936507936
+          },
+          "55_64_male": {
+            "segment_name": "55_64_male",
+            "display_name": "55-64 male",
+            "metrics": {
+              "spend": 21.281591,
+              "impressions": 17887,
+              "clicks": 113,
+              "conversions": 9,
+              "ctr": 0.6317437244926483,
+              "cpm": 1.1897797842008162,
+              "cpa": 2.364621222222222,
+              "conversion_rate": 7.964601769911504
+            },
+            "segment_score": 0,
+            "spend_contribution": 4.1395819798879945,
+            "conversion_contribution": 3.571428571428571
+          },
+          "55_64_unknown": {
+            "segment_name": "55_64_unknown",
+            "display_name": "55-64 unknown",
+            "metrics": {
+              "spend": 0.240131,
+              "impressions": 209,
+              "clicks": 2,
+              "conversions": 0,
+              "ctr": 0.9569377990430622,
+              "cpm": 1.1489521531100477,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.046709005939099386,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_female": {
+            "segment_name": "65_plus_female",
+            "display_name": "65+ female",
+            "metrics": {
+              "spend": 2.651444,
+              "impressions": 2597,
+              "clicks": 24,
+              "conversions": 0,
+              "ctr": 0.9241432422025414,
+              "cpm": 1.0209641894493646,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.5157447957289539,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_male": {
+            "segment_name": "65_plus_male",
+            "display_name": "65+ male",
+            "metrics": {
+              "spend": 9.995444,
+              "impressions": 8690,
+              "clicks": 61,
+              "conversions": 4,
+              "ctr": 0.7019562715765247,
+              "cpm": 1.1502237054085156,
+              "cpa": 2.498861,
+              "conversion_rate": 6.557377049180328
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.9442606458971785,
+            "conversion_contribution": 1.5873015873015872
+          },
+          "65_plus_unknown": {
+            "segment_name": "65_plus_unknown",
+            "display_name": "65+ unknown",
+            "metrics": {
+              "spend": 0.240131,
+              "impressions": 137,
+              "clicks": 1,
+              "conversions": 0,
+              "ctr": 0.7299270072992701,
+              "cpm": 1.7527810218978104,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.046709005939099386,
+            "conversion_contribution": 0.0
+          }
+        }
+      },
+      "analysis_date": "2025-08-10",
+      "performance_rating": "Above Average",
+      "performance_score": 1573.7666279197636,
+      "best_segment": "18_24_female",
+      "insights": {
+        "summary": [
+          "Data analysis complete. Insights will be generated by AI."
+        ],
+        "formatted_text": "Data analysis complete. Insights will be generated by AI."
+      }
+    }
+  },
+  {
+    "ad_data": {
+      "ad_id": "6583193074875",
+      "ad_name": "Global_EvergreenNov24_WhyWise_MCA_Generic_FR_Video",
+      "campaign_id": "6360760319675",
+      "campaign_name": "EUR - App - Android - REG - Conversion - Generic",
+      "adset_id": "6360763957075",
+      "adset_name": "EUR - App - Android - REG - Conversion - Generic - FR - Broad - O - O - Feed & Stories",
+      "status": "ACTIVE",
+      "created_time": "2024-12-06T16:54:45+0000",
+      "metrics": {
+        "spend": 194.47,
+        "impressions": 208241,
+        "clicks": 526,
+        "ctr": 25.2592,
+        "cpm": 0.9338698911357514,
+        "cpp": 1.595573,
+        "frequency": 1.70856,
+        "reach": 121881,
+        "unique_clicks": 516,
+        "unique_ctr": 42.336400000000005,
+        "quality_ranking": "UNKNOWN",
+        "conversions": 4,
+        "conversion_values": 0.0,
+        "conversion_rate_ranking": "UNKNOWN",
+        "engagement_rate_ranking": "UNKNOWN",
+        "cpa": 48.6175,
+        "roas": 0,
+        "video": {
+          "views": 36007,
+          "p25": 3486,
+          "p50": 1971,
+          "p75": 1513,
+          "p95": 1330,
+          "p100": 1279
+        }
+      },
+      "creative": {
+        "creative_id": "6584971165475",
+        "name": "{{product.name}} 2024-12-17-6b8546f08e9a885838acf1be272bbafb",
+        "object_type": "SHARE",
+        "image_url": null,
+        "video_id": "524198643955217",
+        "thumbnail_url": "https://scontent-mad1-1.xx.fbcdn.net/v/t15.13418-10/469098644_1524422614905192_1944183344856948596_n.jpg?_nc_cat=101&ccb=1-7&_nc_ohc=Z6pz7GKysuQQ7kNvwEZXBga&_nc_oc=AdkyNJuLnzxX4l2td27oIsmqcXSZoUThyGYwtDjXVqkZ4uCq2EElRHgYBjMjkENYSSk&_nc_zt=23&_nc_ht=scontent-mad1-1.xx&edm=AAT1rw8EAAAA&_nc_gid=u9x-RqdyZnQkaQZ1hjOB3Q&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=1727f7&_nc_sid=58080a&oh=00_AfUknTI6h3BWKvxE5fvdDnNVP4F5ara_bOcT6BE_Ivj5vg&oe=689EAFFE",
+        "primary_text": null,
+        "headline": null,
+        "description": null,
+        "link_url": null,
+        "body": null,
+        "title": null
+      },
+      "breakdowns": {
+        "age_gender": [
+          {
+            "age": "18-24",
+            "gender": "female",
+            "spend": 2.611477,
+            "impressions": 4035,
+            "clicks": 10,
+            "ctr": 24.7831,
+            "cpm": 0.647206,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "18-24",
+            "gender": "male",
+            "spend": 10.195767,
+            "impressions": 10471,
+            "clicks": 30,
+            "ctr": 28.650599999999997,
+            "cpm": 0.973715,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "18-24",
+            "gender": "unknown",
+            "spend": 0.130074,
+            "impressions": 91,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 1.42938,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "female",
+            "spend": 11.796673,
+            "impressions": 24967,
+            "clicks": 70,
+            "ctr": 28.037,
+            "cpm": 0.472491,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "male",
+            "spend": 34.599571,
+            "impressions": 50017,
+            "clicks": 141,
+            "ctr": 28.1904,
+            "cpm": 0.691756,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "unknown",
+            "spend": 0.240136,
+            "impressions": 324,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 0.74116,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "female",
+            "spend": 13.627708,
+            "impressions": 23900,
+            "clicks": 50,
+            "ctr": 20.9205,
+            "cpm": 0.570197,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "male",
+            "spend": 31.767969,
+            "impressions": 41506,
+            "clicks": 109,
+            "ctr": 26.2613,
+            "cpm": 0.765383,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "unknown",
+            "spend": 0.410232,
+            "impressions": 597,
+            "clicks": 2,
+            "ctr": 33.5008,
+            "cpm": 0.687156,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "45-54",
+            "gender": "female",
+            "spend": 11.866712,
+            "impressions": 11562,
+            "clicks": 24,
+            "ctr": 20.7577,
+            "cpm": 1.026355,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "45-54",
+            "gender": "male",
+            "spend": 25.494421,
+            "impressions": 18724,
+            "clicks": 32,
+            "ctr": 17.0904,
+            "cpm": 1.361591,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "45-54",
+            "gender": "unknown",
+            "spend": 0.470266,
+            "impressions": 331,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 1.420743,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "female",
+            "spend": 7.023973,
+            "impressions": 4820,
+            "clicks": 19,
+            "ctr": 39.4191,
+            "cpm": 1.457256,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "male",
+            "spend": 24.723985,
+            "impressions": 9237,
+            "clicks": 14,
+            "ctr": 15.1564,
+            "cpm": 2.676625,
+            "conversions": 2,
+            "cpa": 12.3619925
+          },
+          {
+            "age": "55-64",
+            "gender": "unknown",
+            "spend": 0.360204,
+            "impressions": 147,
+            "clicks": 1,
+            "ctr": 68.0272,
+            "cpm": 2.450366,
+            "conversions": 2,
+            "cpa": 0.180102
+          },
+          {
+            "age": "65+",
+            "gender": "female",
+            "spend": 4.372473,
+            "impressions": 1951,
+            "clicks": 4,
+            "ctr": 20.5023,
+            "cpm": 2.241145,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "male",
+            "spend": 14.508206,
+            "impressions": 5450,
+            "clicks": 20,
+            "ctr": 36.6972,
+            "cpm": 2.662056,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "unknown",
+            "spend": 0.270153,
+            "impressions": 111,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 2.433809,
+            "conversions": 0,
+            "cpa": 0
+          }
+        ],
+        "platform": [
+          {
+            "platform": "facebook",
+            "position": "facebook_profile_feed",
+            "device": "android_smartphone",
+            "spend": 0.050028,
+            "impressions": 44,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_smartphone",
+            "spend": 63.886137,
+            "impressions": 23928,
+            "clicks": 57,
+            "ctr": 23.8215,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_tablet",
+            "spend": 0.5303,
+            "impressions": 207,
+            "clicks": 2,
+            "ctr": 96.61840000000001,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels_overlay",
+            "device": "android_smartphone",
+            "spend": 45.325638,
+            "impressions": 166237,
+            "clicks": 395,
+            "ctr": 23.7613,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels_overlay",
+            "device": "android_tablet",
+            "spend": 0.170096,
+            "impressions": 714,
+            "clicks": 3,
+            "ctr": 42.016799999999996,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_smartphone",
+            "spend": 5.853311,
+            "impressions": 832,
+            "clicks": 13,
+            "ctr": 156.25,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_tablet",
+            "spend": 0.020011,
+            "impressions": 6,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 34.489509,
+            "impressions": 7449,
+            "clicks": 13,
+            "ctr": 17.452,
+            "conversions": 4
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.150085,
+            "impressions": 33,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_smartphone",
+            "spend": 20.581642,
+            "impressions": 3996,
+            "clicks": 26,
+            "ctr": 65.0651,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_smartphone",
+            "spend": 0.020011,
+            "impressions": 4,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_smartphone",
+            "spend": 0.060034,
+            "impressions": 19,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 6.243532,
+            "impressions": 688,
+            "clicks": 1,
+            "ctr": 14.5349,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.040023,
+            "impressions": 4,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_smartphone",
+            "spend": 0.030017,
+            "impressions": 6,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_smartphone",
+            "spend": 9.225218,
+            "impressions": 2000,
+            "clicks": 3,
+            "ctr": 15.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_tablet",
+            "spend": 0.040023,
+            "impressions": 24,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_smartphone",
+            "spend": 0.110062,
+            "impressions": 45,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_smartphone",
+            "spend": 7.694352,
+            "impressions": 1996,
+            "clicks": 13,
+            "ctr": 65.13029999999999,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_tablet",
+            "spend": 0.020011,
+            "impressions": 5,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_stories",
+            "device": "android_smartphone",
+            "spend": 0.0,
+            "impressions": 2,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          }
+        ]
+      }
+    },
+    "analysis_result": {
+      "ad_id": "6583193074875",
+      "ad_name": "Global_EvergreenNov24_WhyWise_MCA_Generic_FR_Video",
+      "campaign_name": "EUR - App - Android - REG - Conversion - Generic",
+      "benchmark_comparison": {
+        "metrics_vs_benchmark": {
+          "ctr_vs_benchmark": 6926.467456618103,
+          "cpa_vs_benchmark": -90.54967584963329,
+          "roas_vs_benchmark": -100.0,
+          "cpm_vs_benchmark": 67.30719975189561,
+          "hook_rate_vs_benchmark": 0,
+          "viewthrough_rate_vs_benchmark": 0
+        },
+        "overall_performance_score": 642.2125628821099,
+        "performance_rating": "Above Average",
+        "stability_score": 50.0
+      },
+      "segment_analysis": {
+        "best_segments": [
+          "18_24_female",
+          "18_24_male",
+          "18_24_unknown"
+        ],
+        "worst_segments": [
+          "65_plus_unknown",
+          "65_plus_male",
+          "65_plus_female"
+        ],
+        "segment_performance": {
+          "18_24_female": {
+            "segment_name": "18_24_female",
+            "display_name": "18-24 female",
+            "metrics": {
+              "spend": 2.611477,
+              "impressions": 4035,
+              "clicks": 10,
+              "conversions": 0,
+              "ctr": 0.24783147459727387,
+              "cpm": 0.6472061957868649,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.3428688229546972,
+            "conversion_contribution": 0.0
+          },
+          "18_24_male": {
+            "segment_name": "18_24_male",
+            "display_name": "18-24 male",
+            "metrics": {
+              "spend": 10.195767,
+              "impressions": 10471,
+              "clicks": 30,
+              "conversions": 0,
+              "ctr": 0.28650558685894373,
+              "cpm": 0.9737147359373508,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 5.242848254229444,
+            "conversion_contribution": 0.0
+          },
+          "18_24_unknown": {
+            "segment_name": "18_24_unknown",
+            "display_name": "18-24 unknown",
+            "metrics": {
+              "spend": 0.130074,
+              "impressions": 91,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 1.4293846153846153,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.0668864092147889,
+            "conversion_contribution": 0.0
+          },
+          "25_34_female": {
+            "segment_name": "25_34_female",
+            "display_name": "25-34 female",
+            "metrics": {
+              "spend": 11.796673,
+              "impressions": 24967,
+              "clicks": 70,
+              "conversions": 0,
+              "ctr": 0.2803700885168422,
+              "cpm": 0.4724906076020347,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 6.0660631459865275,
+            "conversion_contribution": 0.0
+          },
+          "25_34_male": {
+            "segment_name": "25_34_male",
+            "display_name": "25-34 male",
+            "metrics": {
+              "spend": 34.599571,
+              "impressions": 50017,
+              "clicks": 141,
+              "conversions": 0,
+              "ctr": 0.28190415258812007,
+              "cpm": 0.6917562228842193,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 17.791726744485008,
+            "conversion_contribution": 0.0
+          },
+          "25_34_unknown": {
+            "segment_name": "25_34_unknown",
+            "display_name": "25-34 unknown",
+            "metrics": {
+              "spend": 0.240136,
+              "impressions": 324,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 0.7411604938271604,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.12348228518537564,
+            "conversion_contribution": 0.0
+          },
+          "35_44_female": {
+            "segment_name": "35_44_female",
+            "display_name": "35-44 female",
+            "metrics": {
+              "spend": 13.627708,
+              "impressions": 23900,
+              "clicks": 50,
+              "conversions": 0,
+              "ctr": 0.20920502092050208,
+              "cpm": 0.5701969874476988,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.007614542088754,
+            "conversion_contribution": 0.0
+          },
+          "35_44_male": {
+            "segment_name": "35_44_male",
+            "display_name": "35-44 male",
+            "metrics": {
+              "spend": 31.767969,
+              "impressions": 41506,
+              "clicks": 109,
+              "conversions": 0,
+              "ctr": 0.26261263431792997,
+              "cpm": 0.7653825711945261,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 16.33566565537101,
+            "conversion_contribution": 0.0
+          },
+          "35_44_unknown": {
+            "segment_name": "35_44_unknown",
+            "display_name": "35-44 unknown",
+            "metrics": {
+              "spend": 0.410232,
+              "impressions": 597,
+              "clicks": 2,
+              "conversions": 0,
+              "ctr": 0.33500837520938026,
+              "cpm": 0.6871557788944723,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.21094873245230628,
+            "conversion_contribution": 0.0
+          },
+          "45_54_female": {
+            "segment_name": "45_54_female",
+            "display_name": "45-54 female",
+            "metrics": {
+              "spend": 11.866712,
+              "impressions": 11562,
+              "clicks": 24,
+              "conversions": 0,
+              "ctr": 0.2075765438505449,
+              "cpm": 1.026354609929078,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 6.102078469686841,
+            "conversion_contribution": 0.0
+          },
+          "45_54_male": {
+            "segment_name": "45_54_male",
+            "display_name": "45-54 male",
+            "metrics": {
+              "spend": 25.494421,
+              "impressions": 18724,
+              "clicks": 32,
+              "conversions": 0,
+              "ctr": 0.17090365306558428,
+              "cpm": 1.361590525528733,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 13.109693525993727,
+            "conversion_contribution": 0.0
+          },
+          "45_54_unknown": {
+            "segment_name": "45_54_unknown",
+            "display_name": "45-54 unknown",
+            "metrics": {
+              "spend": 0.470266,
+              "impressions": 331,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 1.4207432024169184,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.2418193037486502,
+            "conversion_contribution": 0.0
+          },
+          "55_64_female": {
+            "segment_name": "55_64_female",
+            "display_name": "55-64 female",
+            "metrics": {
+              "spend": 7.023973,
+              "impressions": 4820,
+              "clicks": 19,
+              "conversions": 0,
+              "ctr": 0.3941908713692946,
+              "cpm": 1.4572558091286305,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.6118542705815804,
+            "conversion_contribution": 0.0
+          },
+          "55_64_male": {
+            "segment_name": "55_64_male",
+            "display_name": "55-64 male",
+            "metrics": {
+              "spend": 24.723985,
+              "impressions": 9237,
+              "clicks": 14,
+              "conversions": 2,
+              "ctr": 0.15156436072317853,
+              "cpm": 2.676624986467468,
+              "cpa": 12.3619925,
+              "conversion_rate": 14.285714285714285
+            },
+            "segment_score": 0,
+            "spend_contribution": 12.713521365763356,
+            "conversion_contribution": 50.0
+          },
+          "55_64_unknown": {
+            "segment_name": "55_64_unknown",
+            "display_name": "55-64 unknown",
+            "metrics": {
+              "spend": 0.360204,
+              "impressions": 147,
+              "clicks": 1,
+              "conversions": 2,
+              "ctr": 0.6802721088435374,
+              "cpm": 2.4503673469387754,
+              "cpa": 0.180102,
+              "conversion_rate": 200.0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.18522342777806347,
+            "conversion_contribution": 50.0
+          },
+          "65_plus_female": {
+            "segment_name": "65_plus_female",
+            "display_name": "65+ female",
+            "metrics": {
+              "spend": 4.372473,
+              "impressions": 1951,
+              "clicks": 4,
+              "conversions": 0,
+              "ctr": 0.20502306509482315,
+              "cpm": 2.241144541260892,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 2.2484048953566105,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_male": {
+            "segment_name": "65_plus_male",
+            "display_name": "65+ male",
+            "metrics": {
+              "spend": 14.508206,
+              "impressions": 5450,
+              "clicks": 20,
+              "conversions": 0,
+              "ctr": 0.3669724770642202,
+              "cpm": 2.6620561467889905,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.46038257828971,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_unknown": {
+            "segment_name": "65_plus_unknown",
+            "display_name": "65+ unknown",
+            "metrics": {
+              "spend": 0.270153,
+              "impressions": 111,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 2.4338108108108107,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.13891757083354758,
+            "conversion_contribution": 0.0
+          }
+        }
+      },
+      "analysis_date": "2025-08-10",
+      "performance_rating": "Above Average",
+      "performance_score": 642.2125628821099,
+      "best_segment": "18_24_female",
+      "insights": {
+        "summary": [
+          "Data analysis complete. Insights will be generated by AI."
+        ],
+        "formatted_text": "Data analysis complete. Insights will be generated by AI."
+      }
+    }
+  },
+  {
+    "ad_data": {
+      "ad_id": "6583196573275",
+      "ad_name": "Global_EvergreenNov24_Proplander_SM_Fast_FR_Video",
+      "campaign_id": "6360760319675",
+      "campaign_name": "EUR - App - Android - REG - Conversion - Generic",
+      "adset_id": "6360763957075",
+      "adset_name": "EUR - App - Android - REG - Conversion - Generic - FR - Broad - O - O - Feed & Stories",
+      "status": "ACTIVE",
+      "created_time": "2024-12-06T17:25:41+0000",
+      "metrics": {
+        "spend": 403.83,
+        "impressions": 375897,
+        "clicks": 1039,
+        "ctr": 27.6406,
+        "cpm": 1.0743102498822814,
+        "cpp": 2.250853,
+        "frequency": 2.095161,
+        "reach": 179412,
+        "unique_clicks": 1018,
+        "unique_ctr": 56.7409,
+        "quality_ranking": "UNKNOWN",
+        "conversions": 16,
+        "conversion_values": 0.0,
+        "conversion_rate_ranking": "UNKNOWN",
+        "engagement_rate_ranking": "UNKNOWN",
+        "cpa": 25.239375,
+        "roas": 0,
+        "video": {
+          "views": 64631,
+          "p25": 13900,
+          "p50": 5195,
+          "p75": 3150,
+          "p95": 2367,
+          "p100": 2216
+        }
+      },
+      "creative": {
+        "creative_id": "6584971266475",
+        "name": "{{product.name}} 2024-12-17-f673634196e0fe12aa6d2c987ee7a12a",
+        "object_type": "SHARE",
+        "image_url": null,
+        "video_id": "1250001546231148",
+        "thumbnail_url": "https://scontent-mad2-1.xx.fbcdn.net/v/t15.13418-10/469557072_1811938342890898_2001893181610191532_n.jpg?_nc_cat=100&ccb=1-7&_nc_ohc=XsFnjmnl0tMQ7kNvwFxour-&_nc_oc=AdnLFJ7c5RqU9FVoaRiSLBrg9NZ9soYkBZCcpQuToP3Al2ZrE6bMgnKHtF-qiWXicjw&_nc_zt=23&_nc_ht=scontent-mad2-1.xx&edm=AAT1rw8EAAAA&_nc_gid=VV74nAOxXn34cni140wNGQ&stp=c0.5000x0.5000f_dst-emg0_p64x64_q75_tt6&ur=1727f7&_nc_sid=58080a&oh=00_AfXZY0_bgbIeaJoIdezZBHNoLmCZjEdthNjTDWE6sSKaaQ&oe=689E8F8C",
+        "primary_text": null,
+        "headline": null,
+        "description": null,
+        "link_url": null,
+        "body": null,
+        "title": null
+      },
+      "breakdowns": {
+        "age_gender": [
+          {
+            "age": "18-24",
+            "gender": "female",
+            "spend": 5.113165,
+            "impressions": 8367,
+            "clicks": 29,
+            "ctr": 34.660000000000004,
+            "cpm": 0.611111,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "18-24",
+            "gender": "male",
+            "spend": 14.569019,
+            "impressions": 17995,
+            "clicks": 55,
+            "ctr": 30.564000000000004,
+            "cpm": 0.809615,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "18-24",
+            "gender": "unknown",
+            "spend": 0.170105,
+            "impressions": 184,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 0.924485,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "25-34",
+            "gender": "female",
+            "spend": 25.155573,
+            "impressions": 50972,
+            "clicks": 176,
+            "ctr": 34.5288,
+            "cpm": 0.493517,
+            "conversions": 2,
+            "cpa": 12.5777865
+          },
+          {
+            "age": "25-34",
+            "gender": "male",
+            "spend": 63.86954,
+            "impressions": 87340,
+            "clicks": 223,
+            "ctr": 25.5324,
+            "cpm": 0.731275,
+            "conversions": 2,
+            "cpa": 31.93477
+          },
+          {
+            "age": "25-34",
+            "gender": "unknown",
+            "spend": 0.340211,
+            "impressions": 575,
+            "clicks": 1,
+            "ctr": 17.3913,
+            "cpm": 0.591671,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "female",
+            "spend": 30.799067,
+            "impressions": 48021,
+            "clicks": 138,
+            "ctr": 28.7374,
+            "cpm": 0.641367,
+            "conversions": 2,
+            "cpa": 15.3995335
+          },
+          {
+            "age": "35-44",
+            "gender": "male",
+            "spend": 62.94897,
+            "impressions": 69565,
+            "clicks": 168,
+            "ctr": 24.1501,
+            "cpm": 0.904894,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "35-44",
+            "gender": "unknown",
+            "spend": 0.760471,
+            "impressions": 936,
+            "clicks": 2,
+            "ctr": 21.3675,
+            "cpm": 0.812469,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "45-54",
+            "gender": "female",
+            "spend": 29.518274,
+            "impressions": 22426,
+            "clicks": 59,
+            "ctr": 26.3087,
+            "cpm": 1.316252,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "45-54",
+            "gender": "male",
+            "spend": 50.22109,
+            "impressions": 30000,
+            "clicks": 63,
+            "ctr": 21.0,
+            "cpm": 1.674036,
+            "conversions": 4,
+            "cpa": 12.5552725
+          },
+          {
+            "age": "45-54",
+            "gender": "unknown",
+            "spend": 0.530328,
+            "impressions": 474,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 1.118836,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "female",
+            "spend": 22.814124,
+            "impressions": 9152,
+            "clicks": 28,
+            "ctr": 30.5944,
+            "cpm": 2.492802,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "55-64",
+            "gender": "male",
+            "spend": 42.576358,
+            "impressions": 14139,
+            "clicks": 37,
+            "ctr": 26.168799999999997,
+            "cpm": 3.011271,
+            "conversions": 4,
+            "cpa": 10.6440895
+          },
+          {
+            "age": "55-64",
+            "gender": "unknown",
+            "spend": 0.370229,
+            "impressions": 178,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 2.079939,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "female",
+            "spend": 15.419546,
+            "impressions": 4842,
+            "clicks": 24,
+            "ctr": 49.566300000000005,
+            "cpm": 3.184541,
+            "conversions": 2,
+            "cpa": 7.709773
+          },
+          {
+            "age": "65+",
+            "gender": "male",
+            "spend": 38.123601,
+            "impressions": 10545,
+            "clicks": 36,
+            "ctr": 34.139399999999995,
+            "cpm": 3.615325,
+            "conversions": 0,
+            "cpa": 0
+          },
+          {
+            "age": "65+",
+            "gender": "unknown",
+            "spend": 0.530328,
+            "impressions": 186,
+            "clicks": 0,
+            "ctr": 0.0,
+            "cpm": 2.851227,
+            "conversions": 0,
+            "cpa": 0
+          }
+        ],
+        "platform": [
+          {
+            "platform": "facebook",
+            "position": "facebook_profile_feed",
+            "device": "android_smartphone",
+            "spend": 0.790489,
+            "impressions": 334,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_profile_feed",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_smartphone",
+            "spend": 83.651787,
+            "impressions": 28161,
+            "clicks": 65,
+            "ctr": 23.081599999999998,
+            "conversions": 8
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels",
+            "device": "android_tablet",
+            "spend": 0.520322,
+            "impressions": 184,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels_overlay",
+            "device": "android_smartphone",
+            "spend": 81.020157,
+            "impressions": 297050,
+            "clicks": 870,
+            "ctr": 29.287999999999997,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_reels_overlay",
+            "device": "android_tablet",
+            "spend": 0.310192,
+            "impressions": 909,
+            "clicks": 2,
+            "ctr": 22.0022,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_smartphone",
+            "spend": 7.164435,
+            "impressions": 762,
+            "clicks": 17,
+            "ctr": 223.09709999999998,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "facebook_stories",
+            "device": "android_tablet",
+            "spend": 0.250155,
+            "impressions": 9,
+            "clicks": 2,
+            "ctr": 2222.2221999999997,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 188.816891,
+            "impressions": 40944,
+            "clicks": 45,
+            "ctr": 10.9906,
+            "conversions": 6
+          },
+          {
+            "platform": "facebook",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.700434,
+            "impressions": 176,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "instream_video",
+            "device": "android_smartphone",
+            "spend": 5.273265,
+            "impressions": 3212,
+            "clicks": 22,
+            "ctr": 68.4932,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "search",
+            "device": "android_smartphone",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_smartphone",
+            "spend": 0.160099,
+            "impressions": 64,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "facebook",
+            "position": "video_feeds",
+            "device": "android_tablet",
+            "spend": 0.010006,
+            "impressions": 3,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_smartphone",
+            "spend": 16.46019,
+            "impressions": 1514,
+            "clicks": 4,
+            "ctr": 26.4201,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "feed",
+            "device": "android_tablet",
+            "spend": 0.030019,
+            "impressions": 4,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_explore",
+            "device": "android_smartphone",
+            "spend": 0.050031,
+            "impressions": 16,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_smartphone",
+            "spend": 13.628437,
+            "impressions": 1573,
+            "clicks": 5,
+            "ctr": 31.786399999999997,
+            "conversions": 2
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_reels",
+            "device": "android_tablet",
+            "spend": 0.030019,
+            "impressions": 6,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_smartphone",
+            "spend": 0.110068,
+            "impressions": 113,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_search",
+            "device": "android_tablet",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_smartphone",
+            "spend": 4.842998,
+            "impressions": 854,
+            "clicks": 7,
+            "ctr": 81.96719999999999,
+            "conversions": 0
+          },
+          {
+            "platform": "instagram",
+            "position": "instagram_stories",
+            "device": "android_tablet",
+            "spend": 0.010006,
+            "impressions": 5,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          },
+          {
+            "platform": "messenger",
+            "position": "messenger_inbox",
+            "device": "android_smartphone",
+            "spend": 0.0,
+            "impressions": 1,
+            "clicks": 0,
+            "ctr": 0.0,
+            "conversions": 0
+          }
+        ]
+      }
+    },
+    "analysis_result": {
+      "ad_id": "6583196573275",
+      "ad_name": "Global_EvergreenNov24_Proplander_SM_Fast_FR_Video",
+      "campaign_name": "EUR - App - Android - REG - Conversion - Generic",
+      "benchmark_comparison": {
+        "metrics_vs_benchmark": {
+          "ctr_vs_benchmark": 7588.912411374799,
+          "cpa_vs_benchmark": -81.7962554785745,
+          "roas_vs_benchmark": -100.0,
+          "cpm_vs_benchmark": 45.435786762390705,
+          "hook_rate_vs_benchmark": 0,
+          "viewthrough_rate_vs_benchmark": 0
+        },
+        "overall_performance_score": 708.8959431701467,
+        "performance_rating": "Above Average",
+        "stability_score": 50.0
+      },
+      "segment_analysis": {
+        "best_segments": [
+          "18_24_female",
+          "18_24_male",
+          "18_24_unknown"
+        ],
+        "worst_segments": [
+          "65_plus_unknown",
+          "65_plus_male",
+          "65_plus_female"
+        ],
+        "segment_performance": {
+          "18_24_female": {
+            "segment_name": "18_24_female",
+            "display_name": "18-24 female",
+            "metrics": {
+              "spend": 5.113165,
+              "impressions": 8367,
+              "clicks": 29,
+              "conversions": 0,
+              "ctr": 0.34659973706226843,
+              "cpm": 0.61111091191586,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 1.2661676974622187,
+            "conversion_contribution": 0.0
+          },
+          "18_24_male": {
+            "segment_name": "18_24_male",
+            "display_name": "18-24 male",
+            "metrics": {
+              "spend": 14.569019,
+              "impressions": 17995,
+              "clicks": 55,
+              "conversions": 0,
+              "ctr": 0.30564045568213394,
+              "cpm": 0.8096148374548486,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.607710926894265,
+            "conversion_contribution": 0.0
+          },
+          "18_24_unknown": {
+            "segment_name": "18_24_unknown",
+            "display_name": "18-24 unknown",
+            "metrics": {
+              "spend": 0.170105,
+              "impressions": 184,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 0.9244836956521739,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.04212292311646714,
+            "conversion_contribution": 0.0
+          },
+          "25_34_female": {
+            "segment_name": "25_34_female",
+            "display_name": "25-34 female",
+            "metrics": {
+              "spend": 25.155573,
+              "impressions": 50972,
+              "clicks": 176,
+              "conversions": 2,
+              "ctr": 0.34528760888330845,
+              "cpm": 0.4935174801851997,
+              "cpa": 12.5777865,
+              "conversion_rate": 1.1363636363636365
+            },
+            "segment_score": 0,
+            "spend_contribution": 6.229248213924791,
+            "conversion_contribution": 12.5
+          },
+          "25_34_male": {
+            "segment_name": "25_34_male",
+            "display_name": "25-34 male",
+            "metrics": {
+              "spend": 63.86954,
+              "impressions": 87340,
+              "clicks": 223,
+              "conversions": 2,
+              "ctr": 0.2553240210670941,
+              "cpm": 0.7312747881841081,
+              "cpa": 31.93477,
+              "conversion_rate": 0.8968609865470852
+            },
+            "segment_score": 0,
+            "spend_contribution": 15.815947343723716,
+            "conversion_contribution": 12.5
+          },
+          "25_34_unknown": {
+            "segment_name": "25_34_unknown",
+            "display_name": "25-34 unknown",
+            "metrics": {
+              "spend": 0.340211,
+              "impressions": 575,
+              "clicks": 1,
+              "conversions": 0,
+              "ctr": 0.17391304347826086,
+              "cpm": 0.591671304347826,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.08424609386188765,
+            "conversion_contribution": 0.0
+          },
+          "35_44_female": {
+            "segment_name": "35_44_female",
+            "display_name": "35-44 female",
+            "metrics": {
+              "spend": 30.799067,
+              "impressions": 48021,
+              "clicks": 138,
+              "conversions": 2,
+              "ctr": 0.28737427375523206,
+              "cpm": 0.641366631265488,
+              "cpa": 15.3995335,
+              "conversion_rate": 1.4492753623188406
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.626740726609565,
+            "conversion_contribution": 12.5
+          },
+          "35_44_male": {
+            "segment_name": "35_44_male",
+            "display_name": "35-44 male",
+            "metrics": {
+              "spend": 62.94897,
+              "impressions": 69565,
+              "clicks": 168,
+              "conversions": 0,
+              "ctr": 0.2415007546898584,
+              "cpm": 0.9048942715445986,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 15.587987558101151,
+            "conversion_contribution": 0.0
+          },
+          "35_44_unknown": {
+            "segment_name": "35_44_unknown",
+            "display_name": "35-44 unknown",
+            "metrics": {
+              "spend": 0.760471,
+              "impressions": 936,
+              "clicks": 2,
+              "conversions": 0,
+              "ctr": 0.2136752136752137,
+              "cpm": 0.8124690170940171,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.18831463781372024,
+            "conversion_contribution": 0.0
+          },
+          "45_54_female": {
+            "segment_name": "45_54_female",
+            "display_name": "45-54 female",
+            "metrics": {
+              "spend": 29.518274,
+              "impressions": 22426,
+              "clicks": 59,
+              "conversions": 0,
+              "ctr": 0.2630874877374476,
+              "cpm": 1.3162522964416303,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 7.309579296509868,
+            "conversion_contribution": 0.0
+          },
+          "45_54_male": {
+            "segment_name": "45_54_male",
+            "display_name": "45-54 male",
+            "metrics": {
+              "spend": 50.22109,
+              "impressions": 30000,
+              "clicks": 63,
+              "conversions": 4,
+              "ctr": 0.21,
+              "cpm": 1.6740363333333332,
+              "cpa": 12.5552725,
+              "conversion_rate": 6.349206349206349
+            },
+            "segment_score": 0,
+            "spend_contribution": 12.436195954823058,
+            "conversion_contribution": 25.0
+          },
+          "45_54_unknown": {
+            "segment_name": "45_54_unknown",
+            "display_name": "45-54 unknown",
+            "metrics": {
+              "spend": 0.530328,
+              "impressions": 474,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 1.1188354430379748,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.13132456759360267,
+            "conversion_contribution": 0.0
+          },
+          "55_64_female": {
+            "segment_name": "55_64_female",
+            "display_name": "55-64 female",
+            "metrics": {
+              "spend": 22.814124,
+              "impressions": 9152,
+              "clicks": 28,
+              "conversions": 0,
+              "ctr": 0.30594405594405594,
+              "cpm": 2.4928020104895103,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 5.649437648637886,
+            "conversion_contribution": 0.0
+          },
+          "55_64_male": {
+            "segment_name": "55_64_male",
+            "display_name": "55-64 male",
+            "metrics": {
+              "spend": 42.576358,
+              "impressions": 14139,
+              "clicks": 37,
+              "conversions": 4,
+              "ctr": 0.2616875309427824,
+              "cpm": 3.0112708112313458,
+              "cpa": 10.6440895,
+              "conversion_rate": 10.81081081081081
+            },
+            "segment_score": 0,
+            "spend_contribution": 10.543138970713269,
+            "conversion_contribution": 25.0
+          },
+          "55_64_unknown": {
+            "segment_name": "55_64_unknown",
+            "display_name": "55-64 unknown",
+            "metrics": {
+              "spend": 0.370229,
+              "impressions": 178,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 2.079938202247191,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.09167941978475948,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_female": {
+            "segment_name": "65_plus_female",
+            "display_name": "65+ female",
+            "metrics": {
+              "spend": 15.419546,
+              "impressions": 4842,
+              "clicks": 24,
+              "conversions": 2,
+              "ctr": 0.49566294919454773,
+              "cpm": 3.18454068566708,
+              "cpa": 7.709773,
+              "conversion_rate": 8.333333333333332
+            },
+            "segment_score": 0,
+            "spend_contribution": 3.8183260377345074,
+            "conversion_contribution": 12.5
+          },
+          "65_plus_male": {
+            "segment_name": "65_plus_male",
+            "display_name": "65+ male",
+            "metrics": {
+              "spend": 38.123601,
+              "impressions": 10545,
+              "clicks": 36,
+              "conversions": 0,
+              "ctr": 0.34139402560455195,
+              "cpm": 3.615324893314367,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 9.44050741510167,
+            "conversion_contribution": 0.0
+          },
+          "65_plus_unknown": {
+            "segment_name": "65_plus_unknown",
+            "display_name": "65+ unknown",
+            "metrics": {
+              "spend": 0.530328,
+              "impressions": 186,
+              "clicks": 0,
+              "conversions": 0,
+              "ctr": 0.0,
+              "cpm": 2.851225806451613,
+              "cpa": 0,
+              "conversion_rate": 0
+            },
+            "segment_score": 0,
+            "spend_contribution": 0.13132456759360267,
+            "conversion_contribution": 0.0
+          }
+        }
+      },
+      "analysis_date": "2025-08-10",
+      "performance_rating": "Above Average",
+      "performance_score": 708.8959431701467,
+      "best_segment": "18_24_female",
+      "insights": {
+        "summary": [
+          "Data analysis complete. Insights will be generated by AI."
+        ],
+        "formatted_text": "Data analysis complete. Insights will be generated by AI."
+      }
+    }
+  }
+]

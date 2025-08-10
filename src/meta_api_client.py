@@ -660,54 +660,136 @@ class MetaApiClient:
         """
         logger.info(f"Getting creative details for ad {ad_id}")
         
+        # First get the creative ID from the ad
         url = f"{self.base_url}/{ad_id}"
         params = {
             "access_token": self.access_token,
-            "fields": "creative{id,name,title,body,object_type,image_url,video_id,"
-                      "thumbnail_url,link_url,call_to_action_type,object_story_spec{link_data{message,"
-                      "description,name,image_url,call_to_action{type,value}}}}"
+            "fields": "creative{id}"
         }
         
         try:
             ad_data = self._make_api_request(url, params)
-            creative_data = ad_data.get('creative', {})
+            creative = ad_data.get('creative', {})
+            
+            if not creative or 'id' not in creative:
+                logger.warning(f"No creative ID found for ad {ad_id}")
+                return {}
+                
+            creative_id = creative.get('id')
+            logger.info(f"Found creative ID: {creative_id}")
+            
+            # Now get the detailed creative data with the correct fields
+            creative_url = f"{self.base_url}/{creative_id}"
+            creative_params = {
+                "access_token": self.access_token,
+                "fields": "name,object_story_spec{link_data{message,name,description,link,caption,call_to_action},video_data{message,title,video_id,call_to_action}},asset_feed_spec{bodies,titles,descriptions,link_urls,videos},thumbnail_url,image_url,video_id,object_type,effective_object_story_id"
+            }
+            
+            creative_data = self._make_api_request(creative_url, creative_params)
             
             if not creative_data:
-                logger.warning(f"No creative found for ad {ad_id}")
+                logger.warning(f"No creative data found for creative ID {creative_id}")
                 return {}
-            
+                
+            # Initialize creative details
             creative_details = {
-                "creative_id": creative_data.get('id'),
+                "creative_id": creative_id,
                 "name": creative_data.get('name'),
-                "title": creative_data.get('title'),
-                "body": creative_data.get('body'),
                 "object_type": creative_data.get('object_type'),
                 "image_url": creative_data.get('image_url'),
                 "video_id": creative_data.get('video_id'),
                 "thumbnail_url": creative_data.get('thumbnail_url'),
-                "link_url": creative_data.get('link_url'),
-                "call_to_action_type": creative_data.get('call_to_action_type')
             }
             
-            # Extract additional details from object_story_spec if available
-            story_spec = creative_data.get('object_story_spec', {})
-            link_data = story_spec.get('link_data', {})
+            # Try to extract primary text, headline, description, and link URL
+            # Start with object_story_spec.link_data
+            object_story_spec = creative_data.get('object_story_spec', {})
+            link_data = object_story_spec.get('link_data', {})
+            video_data = object_story_spec.get('video_data', {})
+            
+            # Extract data from link_data
             if link_data:
                 creative_details.update({
+                    "primary_text": link_data.get('message'),
                     "headline": link_data.get('name'),
-                    "message": link_data.get('message'),
                     "description": link_data.get('description'),
-                    "image_url": link_data.get('image_url') or creative_details['image_url']
+                    "link_url": link_data.get('link'),
                 })
                 
                 # Get call to action details
                 cta = link_data.get('call_to_action', {})
                 if cta:
-                    creative_details['call_to_action'] = {
-                        "type": cta.get('type'),
-                        "value": cta.get('value')
-                    }
+                    creative_details['call_to_action_type'] = cta.get('type')
+                    creative_details['call_to_action_value'] = cta.get('value')
             
+            # If no link_data, try video_data
+            elif video_data:
+                creative_details.update({
+                    "primary_text": video_data.get('message'),
+                    "headline": video_data.get('title'),
+                    "video_id": video_data.get('video_id') or creative_details.get('video_id'),
+                })
+                
+                # Get call to action details
+                cta = video_data.get('call_to_action', {})
+                if cta:
+                    creative_details['call_to_action_type'] = cta.get('type')
+                    creative_details['call_to_action_value'] = cta.get('value')
+            
+            # Fallback to asset_feed_spec if needed
+            asset_feed_spec = creative_data.get('asset_feed_spec', {})
+            if asset_feed_spec:
+                bodies = asset_feed_spec.get('bodies', [])
+                titles = asset_feed_spec.get('titles', [])
+                descriptions = asset_feed_spec.get('descriptions', [])
+                link_urls = asset_feed_spec.get('link_urls', [])
+                videos = asset_feed_spec.get('videos', [])
+                
+                if bodies and not creative_details.get('primary_text'):
+                    creative_details['primary_text'] = bodies[0].get('text') if bodies[0] else None
+                
+                if titles and not creative_details.get('headline'):
+                    creative_details['headline'] = titles[0].get('text') if titles[0] else None
+                    
+                if descriptions and not creative_details.get('description'):
+                    creative_details['description'] = descriptions[0].get('text') if descriptions[0] else None
+                    
+                if link_urls and not creative_details.get('link_url'):
+                    creative_details['link_url'] = link_urls[0].get('url') if isinstance(link_urls[0], dict) else link_urls[0]
+                    
+                if videos and not creative_details.get('video_id'):
+                    creative_details['video_id'] = videos[0].get('video_id') if videos[0] else None
+            
+            # If we have a video ID, try to get the video URL
+            if creative_details.get('video_id'):
+                video_id = creative_details['video_id']
+                video_url = f"{self.base_url}/{video_id}"
+                video_params = {
+                    "access_token": self.access_token,
+                    "fields": "source,permalink_url"
+                }
+                
+                try:
+                    video_data = self._make_api_request(video_url, video_params)
+                    if video_data:
+                        creative_details['video_url'] = video_data.get('source')
+                        creative_details['video_permalink'] = video_data.get('permalink_url')
+                except Exception as e:
+                    logger.warning(f"Error retrieving video details: {str(e)}")
+            
+            # Clean up the data - set empty strings to None for consistency
+            for key, value in creative_details.items():
+                if value == "":
+                    creative_details[key] = None
+                    
+            # For backward compatibility
+            if 'primary_text' in creative_details and 'body' not in creative_details:
+                creative_details['body'] = creative_details['primary_text']
+                
+            if 'headline' in creative_details and 'title' not in creative_details:
+                creative_details['title'] = creative_details['headline']
+            
+            logger.info(f"Successfully retrieved creative details for ad {ad_id}")
             return creative_details
             
         except Exception as e:

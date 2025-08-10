@@ -16,6 +16,9 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
+# Import our custom formatter
+from src.sheets_formatter import SheetsFormatter
+
 # Import settings from config
 import sys
 
@@ -65,7 +68,8 @@ class SheetsManager:
         self,
         spreadsheet_id: Optional[str] = SHEETS_SPREADSHEET_ID,
         credentials_path: Optional[str] = None,
-        region: str = "GBR"
+        region: str = "GBR",
+        output_dir: Optional[str] = None
     ):
         """
         Initialize the Sheets Manager
@@ -83,6 +87,9 @@ class SheetsManager:
             logger.warning(f"Invalid region: {region}, defaulting to GBR")
             region = "GBR"
         self.region = region
+        
+        # Initialize the formatter
+        self.formatter = SheetsFormatter(output_dir=output_dir)
         
         # Initialize sheets client
         self.service = self._authenticate()
@@ -1138,31 +1145,272 @@ class SheetsManager:
         """
         logger.info(f"Batch updating Ad Details for {len(ads_data)} ads")
         
+        # Format the data according to new specifications
+        formatted_ads = self.formatter.format_ad_data_for_sheets(ads_data)
+        sheets_ready_ads = self.formatter.create_sheets_formulas(formatted_ads)
+        
+        # Export to CSV for local testing
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.formatter.export_to_csv(formatted_ads, f"ad_analysis_{self.region}_{timestamp}.csv")
+        
+        # Now update the Google Sheets with the formatted data
         success_count = 0
         error_count = 0
         
-        for item in ads_data:
-            ad_data = item.get('ad_data', {})
-            analysis_result = item.get('analysis_result', {})
+        # Get the Ad Details tab name for this region
+        ad_details_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)
+        
+        try:
+            # Format data for sheets API
+            rows_data = self.formatter.format_for_sheets_api(sheets_ready_ads)
             
-            if not ad_data or not analysis_result:
-                error_count += 1
-                continue
-                
-            result = self.update_ad_details(ad_data, analysis_result)
-            if result:
-                success_count += 1
-            else:
-                error_count += 1
-                
-        logger.info(f"Ad details batch update complete: {success_count} successes, {error_count} errors")
+            # Get sheet ID for this tab
+            sheet_id = self._get_sheet_id(ad_details_tab)
+            if not sheet_id:
+                logger.error(f"Could not find sheet ID for {ad_details_tab}")
+                return 0, len(ads_data)
+            
+            # Clear existing data (except header row)
+            clear_range = f"{ad_details_tab}!A2:Z1000"  # Adjust as needed
+            self.service.spreadsheets().values().clear(
+                spreadsheetId=self.spreadsheet_id,
+                range=clear_range
+            ).execute()
+            
+            # Write new data
+            body = {
+                'values': rows_data[1:]  # Skip header row since it's already in the sheet
+            }
+            
+            update_range = f"{ad_details_tab}!A2"  # Start from row 2
+            self.service.spreadsheets().values().update(
+                spreadsheetId=self.spreadsheet_id,
+                range=update_range,
+                valueInputOption='USER_ENTERED',  # For formulas to work
+                body=body
+            ).execute()
+            
+            # Apply formatting
+            self._apply_special_formatting(sheet_id, len(sheets_ready_ads))
+            
+            success_count = len(sheets_ready_ads)
+            logger.info(f"Ad details batch update complete: {success_count} ads updated")
+            
+        except Exception as e:
+            logger.exception(f"Failed to batch update sheets: {str(e)}")
+            error_count = len(sheets_ready_ads)
+        
         return success_count, error_count
+        
+    def _get_sheet_id(self, tab_name: str) -> Optional[int]:
+        """
+        Get sheet ID for a specific tab name
+        
+        Args:
+            tab_name: Tab name to find
+            
+        Returns:
+            Optional[int]: Sheet ID or None if not found
+        """
+        try:
+            sheet_metadata = self.service.spreadsheets().get(spreadsheetId=self.spreadsheet_id).execute()
+            sheets = sheet_metadata.get('sheets', [])
+            
+            for sheet in sheets:
+                if sheet.get('properties', {}).get('title') == tab_name:
+                    return sheet.get('properties', {}).get('sheetId')
+            
+            return None
+        except Exception as e:
+            logger.exception(f"Error getting sheet ID: {str(e)}")
+            return None
+            
+    def _apply_special_formatting(self, sheet_id: int, row_count: int) -> None:
+        """
+        Apply special formatting for the new sheet format with hyperlinks, bullets, etc.
+        
+        Args:
+            sheet_id: Sheet ID to format
+            row_count: Number of data rows
+        """
+        try:
+            requests = []
+            
+            # Set column widths appropriate for content
+            requests.append({
+                'updateDimensionProperties': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'dimension': 'COLUMNS',
+                        'startIndex': 0,  # Date Launched
+                        'endIndex': 1
+                    },
+                    'properties': {'pixelSize': 100},
+                    'fields': 'pixelSize'
+                }
+            })
+            
+            requests.append({
+                'updateDimensionProperties': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'dimension': 'COLUMNS',
+                        'startIndex': 1,  # Ad Name
+                        'endIndex': 2
+                    },
+                    'properties': {'pixelSize': 250},
+                    'fields': 'pixelSize'
+                }
+            })
+            
+            # Make Demographics and AI Analysis columns wider
+            requests.append({
+                'updateDimensionProperties': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'dimension': 'COLUMNS',
+                        'startIndex': 6,  # Demographics
+                        'endIndex': 8     # Through AI Analysis
+                    },
+                    'properties': {'pixelSize': 300},
+                    'fields': 'pixelSize'
+                }
+            })
+            
+            # Apply text wrapping to Demographics and AI Analysis
+            requests.append({
+                'repeatCell': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': 1,
+                        'endRowIndex': row_count + 1,
+                        'startColumnIndex': 6,
+                        'endColumnIndex': 8
+                    },
+                    'cell': {
+                        'userEnteredFormat': {
+                            'wrapStrategy': 'WRAP',
+                            'verticalAlignment': 'TOP'
+                        }
+                    },
+                    'fields': 'userEnteredFormat(wrapStrategy,verticalAlignment)'
+                }
+            })
+            
+            # Apply formatting for CPR column with mixed bold/regular text
+            # Note: This can't be done directly in batch update - 
+            # requires textFormatRuns which is implemented in the actual cell values
+            
+            # Set row heights taller for multiline content
+            requests.append({
+                'updateDimensionProperties': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'dimension': 'ROWS',
+                        'startIndex': 1,
+                        'endIndex': row_count + 1
+                    },
+                    'properties': {'pixelSize': 120},
+                    'fields': 'pixelSize'
+                }
+            })
+            
+            # Set data validation for status column
+            requests.append({
+                'setDataValidation': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': 1,
+                        'endRowIndex': 1000,  # Apply to all potential rows
+                        'startColumnIndex': 3,  # Status column
+                        'endColumnIndex': 4
+                    },
+                    'rule': {
+                        'condition': {
+                            'type': 'ONE_OF_LIST',
+                            'values': [
+                                {'userEnteredValue': 'Winning'},
+                                {'userEnteredValue': 'Average'},
+                                {'userEnteredValue': 'Losing'}
+                            ]
+                        },
+                        'showCustomUi': True,
+                        'strict': False
+                    }
+                }
+            })
+            
+            # Set data validation for action column
+            requests.append({
+                'setDataValidation': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': 1,
+                        'endRowIndex': 1000,  # Apply to all potential rows
+                        'startColumnIndex': 4,  # Action column
+                        'endColumnIndex': 5
+                    },
+                    'rule': {
+                        'condition': {
+                            'type': 'ONE_OF_LIST',
+                            'values': [
+                                {'userEnteredValue': 'Scale'},
+                                {'userEnteredValue': 'Monitor'},
+                                {'userEnteredValue': 'Stop'}
+                            ]
+                        },
+                        'showCustomUi': True,
+                        'strict': False
+                    }
+                }
+            })
+            
+            # Set data validation for creative angle column
+            requests.append({
+                'setDataValidation': {
+                    'range': {
+                        'sheetId': sheet_id,
+                        'startRowIndex': 1,
+                        'endRowIndex': 1000,  # Apply to all potential rows
+                        'startColumnIndex': 2,  # Creative angle column
+                        'endColumnIndex': 3
+                    },
+                    'rule': {
+                        'condition': {
+                            'type': 'ONE_OF_LIST',
+                            'values': [
+                                {'userEnteredValue': 'Comparison'},
+                                {'userEnteredValue': 'Testimonial'},
+                                {'userEnteredValue': 'Educational'},
+                                {'userEnteredValue': 'Problem-Solution'},
+                                {'userEnteredValue': 'Lifestyle'},
+                                {'userEnteredValue': 'Product Demo'}
+                            ]
+                        },
+                        'showCustomUi': True,
+                        'strict': False
+                    }
+                }
+            })
+            
+            # Execute batch update
+            if requests:
+                body = {'requests': requests}
+                self.service.spreadsheets().batchUpdate(
+                    spreadsheetId=self.spreadsheet_id,
+                    body=body
+                ).execute()
+                logger.info(f"Applied special formatting to {row_count} rows")
+                
+        except Exception as e:
+            logger.exception(f"Failed to apply special formatting: {str(e)}")
 
 
 # Example usage
 if __name__ == "__main__":
-    # Initialize the Sheets Manager
-    manager = SheetsManager()
+    # Initialize the Sheets Manager with output directory for CSV files
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'tests', 'output')
+    manager = SheetsManager(output_dir=output_dir)
     
     # Print spreadsheet URL
     print(f"Spreadsheet URL: {manager.get_spreadsheet_url()}")
