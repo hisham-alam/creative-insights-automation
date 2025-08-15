@@ -337,16 +337,16 @@ class SheetsManager:
                         'cell': {
                             'userEnteredFormat': {
                                 'backgroundColor': {
-                                    'red': 0.2,
+                                    'red': 0.086,
                                     'green': 0.2,
-                                    'blue': 0.2
+                                    'blue': 0.0
                                 },
                                 'textFormat': {
                                     'bold': True,
                                     'foregroundColor': {
-                                        'red': 1.0,
-                                        'green': 1.0,
-                                        'blue': 1.0
+                                        'red': 0.624,
+                                        'green': 0.91,
+                                        'blue': 0.439
                                     }
                                 }
                             }
@@ -677,13 +677,14 @@ class SheetsManager:
                         'cell': {
                             'userEnteredFormat': {
                                 'backgroundColor': background_color,
-                                'horizontalAlignment': 'RIGHT',
+                                'horizontalAlignment': 'CENTER',
+                                'verticalAlignment': 'MIDDLE',
                                 'textFormat': {
                                     'bold': False
                                 }
                             }
                         },
-                        'fields': 'userEnteredFormat(backgroundColor,horizontalAlignment,textFormat)'
+                        'fields': 'userEnteredFormat(backgroundColor,horizontalAlignment,verticalAlignment,textFormat)'
                     }
                 },
                 # Left-align text columns
@@ -698,10 +699,11 @@ class SheetsManager:
                         },
                         'cell': {
                             'userEnteredFormat': {
-                                'horizontalAlignment': 'LEFT'
+                                'horizontalAlignment': 'LEFT',
+                                'verticalAlignment': 'MIDDLE'
                             }
                         },
-                        'fields': 'userEnteredFormat(horizontalAlignment)'
+                        'fields': 'userEnteredFormat(horizontalAlignment,verticalAlignment)'
                     }
                 },
                 {
@@ -715,10 +717,11 @@ class SheetsManager:
                         },
                         'cell': {
                             'userEnteredFormat': {
-                                'horizontalAlignment': 'LEFT'
+                                'horizontalAlignment': 'LEFT',
+                                'verticalAlignment': 'MIDDLE'
                             }
                         },
-                        'fields': 'userEnteredFormat(horizontalAlignment)'
+                        'fields': 'userEnteredFormat(horizontalAlignment,verticalAlignment)'
                     }
                 },
                 {
@@ -732,10 +735,11 @@ class SheetsManager:
                         },
                         'cell': {
                             'userEnteredFormat': {
-                                'horizontalAlignment': 'LEFT'
+                                'horizontalAlignment': 'LEFT',
+                                'verticalAlignment': 'MIDDLE'
                             }
                         },
-                        'fields': 'userEnteredFormat(horizontalAlignment)'
+                        'fields': 'userEnteredFormat(horizontalAlignment,verticalAlignment)'
                     }
                 }
             ]
@@ -789,8 +793,8 @@ class SheetsManager:
             conversions = metrics.get('conversions', 0)
             ctr = metrics.get('ctr', 0)
             cpa = metrics.get('cpa', 0)
-            roas = metrics.get('roas', 0)
             cpm = metrics.get('cpm', 0)
+            # ROAS removed as per client request
             
             # Extract analysis data
             benchmark_comparison = analysis_result.get('benchmark_comparison', {})
@@ -821,7 +825,6 @@ class SheetsManager:
                 conversions,
                 ctr,
                 cpa,
-                roas,
                 cpm,
                 performance_vs_benchmark,
                 performance_rating,
@@ -935,13 +938,14 @@ class SheetsManager:
                         'cell': {
                             'userEnteredFormat': {
                                 'backgroundColor': background_color,
-                                'horizontalAlignment': 'RIGHT',
+                                'horizontalAlignment': 'CENTER',
+                                'verticalAlignment': 'MIDDLE',
                                 'textFormat': {
                                     'bold': False
                                 }
                             }
                         },
-                        'fields': 'userEnteredFormat(backgroundColor,horizontalAlignment,textFormat)'
+                        'fields': 'userEnteredFormat(backgroundColor,horizontalAlignment,verticalAlignment,textFormat)'
                     }
                 },
                 # Left-align text columns
@@ -956,10 +960,11 @@ class SheetsManager:
                         },
                         'cell': {
                             'userEnteredFormat': {
-                                'horizontalAlignment': 'LEFT'
+                                'horizontalAlignment': 'LEFT',
+                                'verticalAlignment': 'MIDDLE'
                             }
                         },
-                        'fields': 'userEnteredFormat(horizontalAlignment)'
+                        'fields': 'userEnteredFormat(horizontalAlignment,verticalAlignment)'
                     }
                 },
                 # Left-align more text columns
@@ -974,10 +979,11 @@ class SheetsManager:
                         },
                         'cell': {
                             'userEnteredFormat': {
-                                'horizontalAlignment': 'LEFT'
+                                'horizontalAlignment': 'LEFT',
+                                'verticalAlignment': 'MIDDLE'
                             }
                         },
-                        'fields': 'userEnteredFormat(horizontalAlignment)'
+                        'fields': 'userEnteredFormat(horizontalAlignment,verticalAlignment)'
                     }
                 }
             ]
@@ -1310,10 +1316,11 @@ class SheetsManager:
                     'cell': {
                         'userEnteredFormat': {
                             'wrapStrategy': 'WRAP',
-                            'verticalAlignment': 'TOP'
+                            'verticalAlignment': 'MIDDLE',
+                            'horizontalAlignment': 'LEFT'
                         }
                     },
-                    'fields': 'userEnteredFormat(wrapStrategy,verticalAlignment)'
+                    'fields': 'userEnteredFormat(wrapStrategy,verticalAlignment,horizontalAlignment)'
                 }
             })
             
@@ -1410,6 +1417,87 @@ class SheetsManager:
                         'showCustomUi': True,
                         'strict': False
                     }
+                }
+            })
+            
+            # Add conditional formatting for status column
+            requests.append({
+                'addConditionalFormatRule': {
+                    'rule': {
+                        'ranges': [{
+                            'sheetId': sheet_id,
+                            'startRowIndex': 1,
+                            'endRowIndex': 1000,
+                            'startColumnIndex': 3,  # Status column
+                            'endColumnIndex': 4
+                        }],
+                        'booleanRule': {
+                            'condition': {
+                                'type': 'TEXT_EQ',
+                                'values': [{'userEnteredValue': 'Winning'}]
+                            },
+                            'format': {
+                                'textFormat': {
+                                    'foregroundColor': {'red': 0.0, 'green': 0.6, 'blue': 0.0}  # Green color
+                                }
+                            }
+                        }
+                    },
+                    'index': 0
+                }
+            })
+            
+            # Add conditional formatting for Average status
+            requests.append({
+                'addConditionalFormatRule': {
+                    'rule': {
+                        'ranges': [{
+                            'sheetId': sheet_id,
+                            'startRowIndex': 1,
+                            'endRowIndex': 1000,
+                            'startColumnIndex': 3,  # Status column
+                            'endColumnIndex': 4
+                        }],
+                        'booleanRule': {
+                            'condition': {
+                                'type': 'TEXT_EQ',
+                                'values': [{'userEnteredValue': 'Average'}]
+                            },
+                            'format': {
+                                'textFormat': {
+                                    'foregroundColor': {'red': 1.0, 'green': 0.65, 'blue': 0.0}  # Orange color
+                                }
+                            }
+                        }
+                    },
+                    'index': 1
+                }
+            })
+            
+            # Add conditional formatting for Losing status
+            requests.append({
+                'addConditionalFormatRule': {
+                    'rule': {
+                        'ranges': [{
+                            'sheetId': sheet_id,
+                            'startRowIndex': 1,
+                            'endRowIndex': 1000,
+                            'startColumnIndex': 3,  # Status column
+                            'endColumnIndex': 4
+                        }],
+                        'booleanRule': {
+                            'condition': {
+                                'type': 'TEXT_EQ',
+                                'values': [{'userEnteredValue': 'Losing'}]
+                            },
+                            'format': {
+                                'textFormat': {
+                                    'foregroundColor': {'red': 0.8, 'green': 0.0, 'blue': 0.0}  # Red color
+                                }
+                            }
+                        }
+                    },
+                    'index': 2
                 }
             })
             

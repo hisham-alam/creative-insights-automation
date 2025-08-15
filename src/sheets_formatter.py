@@ -90,17 +90,11 @@ class SheetsFormatter:
                 status = "Average"
                 action = "Monitor"
             
-            # Format CPR metrics with bold values and percentage change
-            cpr_value = metrics.get("cpr", 0)
+            # Use CPA as CPR (Cost Per Registration) value
+            cpr_value = metrics.get("cpr", 0) or metrics.get("cpa", 0)
             
-            # Get historical CPR if available for percentage change calculation
-            # This is a simplified placeholder - actual implementation would depend on 
-            # how historical data is stored and accessed
-            historical_cpr = 0  # Placeholder
-            cpr_percent_change = 0
-            
-            if historical_cpr > 0:
-                cpr_percent_change = (cpr_value - historical_cpr) / historical_cpr
+            # Remove percentage change calculation as it's no longer needed
+            cpr_percent_change = 0  # Set to 0 for backward compatibility
             
             # Extract or create demographics insights
             demographics = []
@@ -225,10 +219,8 @@ class SheetsFormatter:
             ad_link = ad.get("ad_link", "")
             hyperlink_formula = f'=HYPERLINK("{ad_link}", "{ad_name}")' if ad_link else ad_name
             
-            # Format CPR with bold value and percentage
-            cpr_value = ad.get("cpr_value", 0)
-            cpr_percent = ad.get("cpr_percent_change", 0)
-            cpr_percent_str = f"{cpr_percent:.0%}" if cpr_percent else "0%"
+            # Format CPR value (use cpa value if cpr_value doesn't exist)
+            cpr_value = ad.get("cpr_value", 0) or ad.get("cpa", 0)
             
             # Format demographics and AI analysis as bulleted lists
             demographics = ad.get("demographics", [])
@@ -261,10 +253,9 @@ class SheetsFormatter:
             sheets_ad["cpc_formatted"] = f"£{cpc:.2f}"
             
             # CPR (cost per registration/conversion)
-            cpr_value = ad.get("cpr_value", 0)
-            cpr_percent = ad.get("cpr_percent_change", 0)
-            cpr_percent_str = f"{cpr_percent:.0%}" if cpr_percent else "0%"
-            sheets_ad["cpr_formatted"] = f"£{cpr_value:.2f} ({cpr_percent_str})"
+            # Use cpa value as cpr value since they're the same metric
+            cpr_value = ad.get("cpr_value", 0) or ad.get("cpa", 0)
+            sheets_ad["cpr_formatted"] = f"£{cpr_value:.2f}"
             
             # Format percentage metrics
             ctr = ad.get("ctr", 0)
@@ -309,11 +300,9 @@ class SheetsFormatter:
         csv_ready_ads = []
         for ad in formatted_ads:
             csv_ad = ad.copy()
-            # Format CPR value and percentage change as a single string
-            cpr_value = ad.get("cpr_value", 0)
-            cpr_percent = ad.get("cpr_percent_change", 0)
-            cpr_percent_str = f"{cpr_percent:.0%}" if cpr_percent else "0%"
-            csv_ad["cpr"] = f"£{cpr_value:.2f} ({cpr_percent_str})"
+            # Format CPR value (use cpa value if cpr_value doesn't exist)
+            cpr_value = ad.get("cpr_value", 0) or ad.get("cpa", 0) or ad.get("cpr", 0)
+            csv_ad["cpr"] = f"£{cpr_value:.2f}"
             
             # Format percentages
             csv_ad["ctr"] = f"{ad.get('ctr', 0):.2f}%"
