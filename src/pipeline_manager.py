@@ -252,41 +252,7 @@ class PipelineManager:
             except Exception as e:
                 logger.error(f"Error saving results to JSON: {str(e)}")
             
-            # Save results to CSV file in config folder
-            csv_file_path = os.path.join(CONFIG_DIR, f'ad_analysis_{region}_{timestamp}.csv')
-            try:
-                import csv
-                with open(csv_file_path, 'w', newline='') as csvfile:
-                    # Define CSV headers
-                    fieldnames = ["Ad ID", "Ad Name", "Campaign", "Analysis Date", "Spend (£)", "Impressions", 
-                                "CTR (%)", "Hook Rate (%)", "Viewthrough Rate (%)", "CPR (£)", "Performance Score", "Rating"]
-                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                    writer.writeheader()
-                    
-                    # Write each ad's data
-                    for ad in analyzed_ads:
-                        ad_data = ad.get("ad_data", {})
-                        analysis = ad.get("analysis_result", {})
-                        metrics = ad_data.get("metrics", {})
-                        
-                        writer.writerow({
-                            "Ad ID": ad_data.get("ad_id", ""),
-                            "Ad Name": ad_data.get("ad_name", ""),
-                            "Campaign": ad_data.get("campaign_name", ""),
-                            "Analysis Date": analysis.get("analysis_date", ""),
-                            "Spend (£)": metrics.get("spend", 0),
-                            "Impressions": metrics.get("impressions", 0),
-                            "CTR (%)": metrics.get("ctr_destination", 0),
-                            "Hook Rate (%)": metrics.get("hook_rate", 0),
-                            "Viewthrough Rate (%)": metrics.get("viewthrough_rate", 0),
-                            "CPR (£)": metrics.get("cpr", 0),
-                            "Performance Score": analysis.get("performance_score", 0),
-                            "Rating": analysis.get("performance_rating", "")
-                        })
-                        
-                logger.info(f"Analysis results saved to: {csv_file_path}")
-            except Exception as e:
-                logger.error(f"Error saving results to CSV: {str(e)}")
+            # CSV export has been replaced with Google Sheets integration
             
             # Update Google Sheets
             logger.info(f"Updating Google Sheets with analysis results...")
@@ -299,9 +265,18 @@ class PipelineManager:
                 summary_data = self._prepare_dashboard_summary(analyzed_ads)
                 self.sheets_manager.update_dashboard(summary_data)
                 
-                logger.info(f"Google Sheets updated successfully")
+                # Get the spreadsheet URL to display to user
+                spreadsheet_url = self.sheets_manager.get_spreadsheet_url()
+                
+                logger.info(f"Google Sheets updated successfully at: {spreadsheet_url}")
+                
+                # Add spreadsheet URL to run stats for later reference
+                run_stats["spreadsheet_url"] = spreadsheet_url
             except Exception as e:
-                logger.error(f"Error updating Google Sheets: {str(e)}")  # Non-fatal error
+                logger.error(f"Error updating Google Sheets: {str(e)}")
+                # Since Google Sheets is now the primary output, report this in run_stats
+                run_stats["warning"] = f"Failed to update Google Sheets: {str(e)}"
+                # Continue with pipeline completion even if Sheets update fails
             
             # Complete run
             run_stats["run_status"] = "success"
@@ -443,12 +418,15 @@ if __name__ == "__main__":
             print(f"Processed {results['ad_count']} ads: {results['success_count']} successful, {results['error_count']} failed")
             print(f"Run duration: {results['run_duration_seconds']:.2f} seconds")
             
-            # If sheets manager is initialized, print URL
-            try:
-                url = pipeline.sheets_manager.get_spreadsheet_url()
-                print(f"\nView results at: {url}")
-            except:
-                pass
+            # Display any warnings
+            if "warning" in results:
+                print(f"\nWarning: {results['warning']}")
+            
+            # Always display the spreadsheet URL if it was generated
+            if "spreadsheet_url" in results:
+                print(f"\nView results at: {results['spreadsheet_url']}")
+            else:
+                print("\nNote: No Google Sheets URL available. Check logs for details.")
         else:
             print(f"\nPipeline failed: {results.get('error_details', 'Unknown error')}")
         

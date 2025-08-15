@@ -54,9 +54,10 @@ class SheetsManager:
     ]
     
     AD_DETAILS_COLUMNS = [
-        "Ad ID", "Ad Name", "Campaign", "Created Date", "Analysis Date", "Spend (£)",
-        "Impressions", "Clicks", "Conversions", "CTR (%)", "CPA (£)", "ROAS", "CPM (£)",
-        "Performance vs Benchmark (%)", "Rating", "Best Segment", "Creative Preview"
+        "Launch Date", "Ad Name", "Creative Angle", "Status", 
+        "Action", "Spend", "CPM", "Hook Rate", 
+        "VT Rate", "CTR", "CPC", "CPR", 
+        "Demographics", "AI Analysis"
     ]
     
     SEGMENTS_COLUMNS = [
@@ -202,13 +203,18 @@ class SheetsManager:
             base_tab: Base tab name
             
         Returns:
-            str: Tab name with region prefix
+            str: Region name for Ad Details tab, region_tab for others
         """
+        # For Ad Details tab, use just the region name
+        if base_tab == self.AD_DETAILS_TAB:
+            return self.region
+        
+        # For other tabs (Dashboard, Segments), use region prefix
         return f"{self.region}_{base_tab}"
     
     def _ensure_tabs_exist(self) -> None:
         """
-        Ensure that all required tabs exist in the spreadsheet, creating them if not
+        Ensure that the region tab exists in the spreadsheet, creating it if not
         
         Raises:
             Exception: If tab creation fails
@@ -219,38 +225,31 @@ class SheetsManager:
             sheets = sheet_metadata.get('sheets', [])
             existing_titles = [sheet.get('properties', {}).get('title') for sheet in sheets]
             
-            # Create region-specific tab names
-            dashboard_tab = self._get_region_tab_name(self.DASHBOARD_TAB)
-            ad_details_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)
-            segments_tab = self._get_region_tab_name(self.SEGMENTS_TAB)
+            # Get region tab name (for Ad Details, this is just the region name)
+            region_tab = self._get_region_tab_name(self.AD_DETAILS_TAB)  # This will return just the region name
             
-            # Check if required tabs exist and create if not
-            required_tabs = [dashboard_tab, ad_details_tab, segments_tab]
+            # Check if region tab exists and create if not
             requests = []
-            
-            for tab in required_tabs:
-                if tab not in existing_titles:
-                    requests.append({
-                        'addSheet': {
-                            'properties': {
-                                'title': tab
-                            }
+            if region_tab not in existing_titles:
+                requests.append({
+                    'addSheet': {
+                        'properties': {
+                            'title': region_tab
                         }
-                    })
+                    }
+                })
             
-            # Execute batch update if any tabs need to be created
+            # Execute batch update if region tab needs to be created
             if requests:
                 body = {'requests': requests}
                 self.service.spreadsheets().batchUpdate(
                     spreadsheetId=self.spreadsheet_id,
                     body=body
                 ).execute()
-                logger.info(f"Created {len(requests)} missing tabs for region {self.region}")
+                logger.info(f"Created {region_tab} tab for region {self.region}")
             
-            # Initialize columns for each tab if not already populated
-            self._initialize_columns(dashboard_tab, self.DASHBOARD_COLUMNS)
-            self._initialize_columns(ad_details_tab, self.AD_DETAILS_COLUMNS)
-            self._initialize_columns(segments_tab, self.SEGMENTS_COLUMNS)
+            # Initialize columns for region tab if not already populated
+            self._initialize_columns(region_tab, self.AD_DETAILS_COLUMNS)
             
         except Exception as e:
             logger.exception(f"Failed to ensure tabs exist for region {self.region}: {str(e)}")
@@ -1149,9 +1148,7 @@ class SheetsManager:
         formatted_ads = self.formatter.format_ad_data_for_sheets(ads_data)
         sheets_ready_ads = self.formatter.create_sheets_formulas(formatted_ads)
         
-        # Export to CSV for local testing
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.formatter.export_to_csv(formatted_ads, f"ad_analysis_{self.region}_{timestamp}.csv")
+        # No longer exporting to CSV - Google Sheets only
         
         # Now update the Google Sheets with the formatted data
         success_count = 0
@@ -1170,19 +1167,27 @@ class SheetsManager:
                 logger.error(f"Could not find sheet ID for {ad_details_tab}")
                 return 0, len(ads_data)
             
-            # Clear existing data (except header row)
-            clear_range = f"{ad_details_tab}!A2:Z1000"  # Adjust as needed
-            self.service.spreadsheets().values().clear(
+            # Find the first empty row to append data
+            # Get current data to determine where to append
+            current_data_range = f"{ad_details_tab}!A:A"
+            result = self.service.spreadsheets().values().get(
                 spreadsheetId=self.spreadsheet_id,
-                range=clear_range
+                range=current_data_range
             ).execute()
             
-            # Write new data
+            values = result.get('values', [])
+            next_row = len(values) + 1
+            if next_row == 1:  # No data exists yet, add header row
+                next_row = 1
+            else:  # Data exists, append after last row
+                next_row = max(2, next_row)  # Make sure we start at row 2 at minimum
+            
+            # Write new data (including header if this is the first data)
             body = {
-                'values': rows_data[1:]  # Skip header row since it's already in the sheet
+                'values': rows_data[1:] if next_row > 1 else rows_data  # Include header if first data
             }
             
-            update_range = f"{ad_details_tab}!A2"  # Start from row 2
+            update_range = f"{ad_details_tab}!A{next_row}"  # Append after last row
             self.service.spreadsheets().values().update(
                 spreadsheetId=self.spreadsheet_id,
                 range=update_range,
@@ -1231,8 +1236,23 @@ class SheetsManager:
         
         Args:
             sheet_id: Sheet ID to format
-            row_count: Number of data rows
+            row_count: Number of new data rows to format
         """
+        # Get the starting row for new data
+        current_data_range = f"!A:A"  # Just look at column A to count rows
+        result = self.service.spreadsheets().get(
+            spreadsheetId=self.spreadsheet_id,
+            includeGridData=False
+        ).execute()
+        
+        # Find the sheet and get its properties
+        start_row = 1  # Default to 1 if we can't determine existing rows
+        for sheet in result.get('sheets', []):
+            if sheet.get('properties', {}).get('sheetId') == sheet_id:
+                # Get sheet dimensions
+                grid_props = sheet.get('properties', {}).get('gridProperties', {})
+                start_row = max(1, grid_props.get('rowCount', 1) - row_count)
+                break
         try:
             requests = []
             

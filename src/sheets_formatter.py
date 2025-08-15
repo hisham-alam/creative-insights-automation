@@ -139,11 +139,44 @@ class SheetsFormatter:
                 ai_analysis = ["Awaiting AI analysis."]
             
             # Extract more metrics from the data
+            spend = metrics.get("spend", 0)  # Ad spend
             impressions = metrics.get("impressions", 0)
-            ctr = metrics.get("ctr", 0)  # CTR as percentage
-            hook_rate = metrics.get("hook_rate", 0)  # Video hook rate
-            viewthrough_rate = metrics.get("viewthrough_rate", 0)  # Video completion rate
+            clicks = metrics.get("clicks", 0)  # Number of clicks
+            conversions = metrics.get("conversions", 0)  # Number of conversions
+            
+            # Percentage metrics - calculate if not directly provided
+            # CTR - Use value directly from API as it's already in percentage form
+            ctr = metrics.get("ctr", 0)
+            # Only calculate if we don't have a value and have necessary data
+            if ctr == 0 and impressions > 0 and clicks > 0:
+                ctr = (clicks / impressions) * 100
+                
+            # Hook rate - Only for video ads
+            hook_rate = ""  # Default to blank for non-video ads
+            if "video" in metrics and metrics["video"]:
+                video_metrics = metrics.get("video", {})
+                p25_views = video_metrics.get("p25", 0)
+                if impressions > 0:
+                    hook_rate = (p25_views / impressions) * 100
+                
+            # Viewthrough rate - Only for video ads
+            viewthrough_rate = ""  # Default to blank for non-video ads
+            if "video" in metrics and metrics["video"]:
+                video_metrics = metrics.get("video", {})
+                p100_views = video_metrics.get("p100", 0)
+                if impressions > 0:
+                    viewthrough_rate = (p100_views / impressions) * 100
+                
             ctr_destination = metrics.get("ctr_destination", 0)  # Destination CTR
+            
+            # Cost metrics - extract if available or calculate
+            cpm = metrics.get("cpm", 0)
+            if cpm == 0 and impressions > 0:
+                cpm = (spend / impressions) * 1000
+                
+            cpc = metrics.get("cpc", 0)
+            if cpc == 0 and clicks > 0:
+                cpc = spend / clicks
             
             # Create formatted ad entry
             formatted_ad = {
@@ -153,8 +186,13 @@ class SheetsFormatter:
                 "creative_angle": creative_angle,
                 "status": status,
                 "action": action,
+                "spend": spend,
                 "impressions": impressions,
+                "clicks": clicks,
+                "conversions": conversions,
                 "ctr": ctr,
+                "cpm": cpm,
+                "cpc": cpc,
                 "hook_rate": hook_rate,
                 "viewthrough_rate": viewthrough_rate,
                 "ctr_destination": ctr_destination,
@@ -204,25 +242,46 @@ class SheetsFormatter:
             sheets_ad["ad_name_formula"] = hyperlink_formula
             
             # Format all metrics correctly
+            # Spend
+            spend = ad.get("spend", 0)
+            sheets_ad["spend_formatted"] = f"£{spend:.2f}"
+            
+            # CPM
+            cpm = ad.get("cpm", 0)
+            if cpm == 0 and ad.get("impressions", 0) > 0:
+                # Calculate CPM if not provided but we have impressions
+                cpm = (spend / ad.get("impressions", 1)) * 1000
+            sheets_ad["cpm_formatted"] = f"£{cpm:.2f}"
+            
+            # CPC
+            cpc = ad.get("cpc", 0)
+            if cpc == 0 and ad.get("clicks", 0) > 0:
+                # Calculate CPC if not provided but we have clicks
+                cpc = spend / ad.get("clicks", 1)
+            sheets_ad["cpc_formatted"] = f"£{cpc:.2f}"
+            
+            # CPR (cost per registration/conversion)
             cpr_value = ad.get("cpr_value", 0)
             cpr_percent = ad.get("cpr_percent_change", 0)
             cpr_percent_str = f"{cpr_percent:.0%}" if cpr_percent else "0%"
             sheets_ad["cpr_formatted"] = f"£{cpr_value:.2f} ({cpr_percent_str})"
             
-            # Format other metrics
-            impressions = ad.get("impressions", 0)
-            sheets_ad["impressions_formatted"] = f"{impressions:,}"
-            
             # Format percentage metrics
             ctr = ad.get("ctr", 0)
             hook_rate = ad.get("hook_rate", 0)
             viewthrough_rate = ad.get("viewthrough_rate", 0)
-            ctr_destination = ad.get("ctr_destination", 0)
             
             sheets_ad["ctr_formatted"] = f"{ctr:.2f}%"
-            sheets_ad["hook_rate_formatted"] = f"{hook_rate:.2f}%"
-            sheets_ad["viewthrough_rate_formatted"] = f"{viewthrough_rate:.2f}%"
-            sheets_ad["ctr_destination_formatted"] = f"{ctr_destination:.2f}%"
+            # Format hook rate and viewthrough rate - handle empty values
+            if hook_rate != "":
+                sheets_ad["hook_rate_formatted"] = f"{hook_rate:.2f}%"
+            else:
+                sheets_ad["hook_rate_formatted"] = ""
+                
+            if viewthrough_rate != "":
+                sheets_ad["viewthrough_rate_formatted"] = f"{viewthrough_rate:.2f}%"
+            else:
+                sheets_ad["viewthrough_rate_formatted"] = ""
             
             sheets_ad["demographics_formatted"] = demographics_str
             sheets_ad["ai_analysis_formatted"] = ai_analysis_str
@@ -307,22 +366,22 @@ class SheetsFormatter:
         Returns:
             List[List[Any]]: 2D array of values for Google Sheets
         """
-        # Define column order
+        # Define column order - matching SheetsManager.AD_DETAILS_COLUMNS
         columns = [
             "launched", "ad_name_formula", "creative_angle", "status", 
-            "action", "impressions_formatted", "ctr_formatted", "hook_rate_formatted",
-            "viewthrough_rate_formatted", "ctr_destination_formatted", "cpr_formatted", 
+            "action", "spend_formatted", "cpm_formatted", "hook_rate_formatted",
+            "viewthrough_rate_formatted", "ctr_formatted", "cpc_formatted", "cpr_formatted", 
             "demographics_formatted", "ai_analysis_formatted"
         ]
         
         # Create 2D array
         rows = []
         
-        # Add header row
+        # Add header row - matching SheetsManager.AD_DETAILS_COLUMNS
         headers = [
-            "Date Launched", "Ad Name", "Creative Angle", "Status", 
-            "Action", "Impressions", "CTR (%)", "Hook Rate (%)", 
-            "Viewthrough Rate (%)", "CTR Destination (%)", "CPR", 
+            "Launch Date", "Ad Name", "Creative Angle", "Status", 
+            "Action", "Spend", "CPM", "Hook Rate", 
+            "VT Rate", "CTR", "CPC", "CPR", 
             "Demographics", "AI Analysis"
         ]
         rows.append(headers)
