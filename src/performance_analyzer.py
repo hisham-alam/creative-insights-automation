@@ -14,7 +14,7 @@ from typing import Dict, List, Any, Tuple, Optional
 from pathlib import Path
 
 # Import settings from config
-from config.settings import BENCHMARKS_PATH
+from config.settings import DAYS_THRESHOLD
 
 # Configure logging
 logging.basicConfig(
@@ -26,45 +26,78 @@ logger = logging.getLogger(__name__)
 class PerformanceAnalyzer:
     """Analyzes ad performance against benchmarks"""
     
-    def __init__(self, benchmarks_path: Path = BENCHMARKS_PATH):
+    def __init__(self, meta_client=None):
         """
         Initialize the performance analyzer
         
         Args:
-            benchmarks_path: Path to benchmarks JSON file
+            meta_client: Meta API client instance for fetching account metrics
         """
-        self.benchmarks = self._load_benchmarks(benchmarks_path)
-        logger.info(f"Performance analyzer initialized with benchmarks from {benchmarks_path}")
+        self.meta_client = meta_client
+        self.benchmarks = None
+        logger.info("Performance analyzer initialized - will calculate benchmarks when needed")
     
-    def _load_benchmarks(self, benchmarks_path: Path) -> Dict[str, Any]:
+    def calculate_benchmarks(self, meta_client=None, days=DAYS_THRESHOLD):
         """
-        Load benchmarks from JSON file
+        Calculate benchmarks from actual Meta account data
         
         Args:
-            benchmarks_path: Path to benchmarks JSON file
+            meta_client: Meta API client instance (uses instance from init if None)
+            days: Number of days of data to include
             
         Returns:
             Dict: Benchmark data
         """
-        try:
-            with open(benchmarks_path, 'r') as file:
-                benchmarks = json.load(file)
-            
-            logger.info(f"Loaded benchmarks for market: {benchmarks.get('market', 'Unknown')}")
-            return benchmarks
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            logger.error(f"Error loading benchmarks: {str(e)}")
-            # Return default benchmarks if file not found or invalid
+        # Use provided client or instance client
+        client = meta_client or self.meta_client
+        
+        if not client:
+            logger.warning("No Meta API client available - cannot calculate benchmarks")
+            # We need to return some minimal structure for the analyzer to function
             return {
-                "market": "Default",
-                "benchmarks": {
-                    "ctr": 1.5,
-                    "cpa": 25.0,
-                    "roas": 3.0,
-                    "cpm": 15.0,
-                    "conversion_rate": 2.0
-                }
+                "market": "Unknown",
+                "benchmarks": {}
             }
+            
+        logger.info(f"Calculating benchmarks from account data over past {days} days")
+        
+        try:
+            # Get account-level metrics for benchmarks
+            account_insights = client.get_account_insights(days=days)
+            
+            if not account_insights:
+                logger.warning("No account insights available for benchmarking")
+                return {"market": "Unknown", "benchmarks": {}}
+                
+            # Extract key metrics for benchmarking
+            benchmarks = {
+                "market": client.region,
+                "benchmarks": {
+                    # Extract metrics that exist in the account data
+                    "ctr": account_insights.get("ctr", 0),
+                    "cpm": account_insights.get("cpm", 0),
+                    "cpa": account_insights.get("cost_per_conversion", 0),
+                    "roas": account_insights.get("roas", 0),
+                    "conversion_rate": account_insights.get("conversion_rate", 0),
+                    "hook_rate": account_insights.get("hook_rate", 0),
+                    "viewthrough_rate": account_insights.get("viewthrough_rate", 0)
+                },
+                # We could add segment benchmarks from more detailed account data if needed
+                "segments": {}
+            }
+            
+            # Log the benchmark values we calculated
+            benchmark_str = ", ".join([f"{k}: {v:.2f}" for k, v in benchmarks["benchmarks"].items()])
+            logger.info(f"Generated dynamic benchmarks from account data: {benchmark_str}")
+            
+            # Save the benchmarks
+            self.benchmarks = benchmarks
+            return benchmarks
+            
+        except Exception as e:
+            logger.exception(f"Error calculating benchmarks: {str(e)}")
+            # Return minimal structure so the analyzer can function
+            return {"market": "Error", "benchmarks": {}}
     
     def compare_to_benchmarks(self, ad_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -78,8 +111,12 @@ class PerformanceAnalyzer:
         """
         logger.info(f"Comparing ad {ad_data.get('ad_id', 'unknown')} to benchmarks")
         
+        # If we don't have benchmarks yet and have a Meta client, calculate them now
+        if not self.benchmarks and self.meta_client:
+            self.benchmarks = self.calculate_benchmarks(self.meta_client)
+        
         metrics = ad_data.get('metrics', {})
-        benchmark_metrics = self.benchmarks.get('benchmarks', {})
+        benchmark_metrics = self.benchmarks.get('benchmarks', {}) if self.benchmarks else {}
         
         # Calculate percentage difference for each key metric
         comparison = {}
@@ -187,11 +224,11 @@ class PerformanceAnalyzer:
         segment_analysis = []
         for segment in age_gender_data:
             # Format segment name
-            segment_name = f"{segment.get('age', 'unknown')}_{segment.get('gender', 'unknown')}"
-            segment_name = segment_name.lower().replace('-', '_').replace('+', '_plus')
+            segment_name = f"{segment.get('age', 'unknown')} {segment.get('gender', 'unknown')}"
+            segment_name = segment_name.lower().replace('-', ' ').replace('_', ' ').replace('+', ' plus')
             
             # Get benchmark for this segment if available
-            segment_benchmarks = self.benchmarks.get('segments', {}).get(segment_name, {})
+            segment_benchmarks = self.benchmarks.get('segments', {}).get(segment_name, {}) if self.benchmarks else {}
             
             # Calculate segment metrics
             analysis = {
@@ -306,6 +343,10 @@ class PerformanceAnalyzer:
             Dict: Complete analysis results
         """
         logger.info(f"Starting comprehensive analysis for ad {ad_data.get('ad_id', 'unknown')}")
+        
+        # Ensure benchmarks are calculated if possible
+        if not self.benchmarks and self.meta_client:
+            self.benchmarks = self.calculate_benchmarks(self.meta_client)
         
         # Compare to benchmarks
         benchmark_comparison = self.compare_to_benchmarks(ad_data)

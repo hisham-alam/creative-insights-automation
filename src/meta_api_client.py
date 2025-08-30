@@ -49,6 +49,9 @@ class MetaApiClient:
         base_url: str = META_BASE_URL,
         ad_account_id: str = None  # Allow direct account ID for testing
     ):
+        # Add tracking variables for ad counts
+        self.total_ads_retrieved = 0
+        self.ads_within_threshold = 0
         """
         Initialize the Meta API client
         
@@ -185,9 +188,16 @@ class MetaApiClient:
             if response.status_code == 200:
                 return response.json()
             else:
-                error_msg = f"API request failed: {response.status_code} - {response.text}"
-                logger.error(error_msg)
-                raise Exception(error_msg)
+                # Check for video permission errors and handle them gracefully
+                if "Application does not have permission" in response.text and ("video" in url.lower() or "creative" in url.lower()):
+                    # Don't log anything here, we'll handle it in pipeline_manager.py
+                    return {}  # Return empty response to handle gracefully
+                else:
+                    error_msg = f"API request failed: {response.status_code} - {response.text}"
+                    # For logging, only use a short error message
+                    logger.error(f"API request failed: {response.status_code}")
+                    # Still raise with full error details for debugging
+                    raise Exception(error_msg)
                 
         except requests.exceptions.RequestException as e:
             logger.exception(f"Request error: {str(e)}")
@@ -210,9 +220,15 @@ class MetaApiClient:
         """
         all_data = []
         next_page = None
+        page_count = 0
         
         try:
             # First request
+            page_count += 1
+            # For initial ad discovery only (not for demographic data)
+            is_ad_discovery = "ads" in url and "/ads" in url and not "insights" in url and not "demographic" in url
+            if is_ad_discovery:
+                print(f"Fetching ads... (page {page_count})")
             response = self._make_api_request(url, params)
             
             # Add data from first page
@@ -225,7 +241,16 @@ class MetaApiClient:
             
             # Fetch subsequent pages if they exist
             while next_page:
-                logger.info(f"Fetching next page of results...")
+                page_count += 1
+                # Use different logging for demographic breakdown pagination
+                if "insights" in url and "breakdowns" in params.get('breakdowns', ""):
+                    logger.debug(f"Fetching demographic breakdown page {page_count}...")
+                else:
+                    logger.info(f"Fetching next page of results...")
+                    
+                # Only show "Fetching ads..." for initial ad discovery, not for demographics
+                if is_ad_discovery:
+                    print(f"Fetching ads... (page {page_count})")
                 time.sleep(self.rate_limit_wait)  # Rate limiting
                 
                 response = requests.get(next_page)
@@ -241,6 +266,9 @@ class MetaApiClient:
                 next_page = paging.get('next')
             
             logger.info(f"Retrieved {len(all_data)} total items")
+            # Update our tracking count for total ads
+            if is_ad_discovery:
+                self.total_ads_retrieved = len(all_data)
             return all_data
             
         except Exception as e:
@@ -677,6 +705,8 @@ class MetaApiClient:
                 
             creative_id = creative.get('id')
             logger.info(f"Found creative ID: {creative_id}")
+            # Make the creative ID available for pipeline manager to use
+            ad_data['creative_id'] = creative_id
             
             # Now get the detailed creative data with the correct fields
             creative_url = f"{self.base_url}/{creative_id}"
@@ -775,7 +805,7 @@ class MetaApiClient:
                         creative_details['video_url'] = video_data.get('source')
                         creative_details['video_permalink'] = video_data.get('permalink_url')
                 except Exception as e:
-                    logger.warning(f"Error retrieving video details: {str(e)}")
+                    logger.warning(f"Video permissions error (continuing without video details)")
             
             # Clean up the data - set empty strings to None for consistency
             for key, value in creative_details.items():
@@ -1029,6 +1059,10 @@ class MetaApiClient:
             # Get creative details
             creative = self.get_ad_creative_details(ad_id)
             ad_data["creative"] = creative
+            
+            # Make sure creative_id is in the top level for easier access
+            if creative and 'creative_id' in creative:
+                ad_data["creative_id"] = creative['creative_id']
             
             # Get demographic breakdowns
             breakdowns = self.get_demographic_breakdown(ad_id, days)
@@ -1844,22 +1878,46 @@ class MetaApiClient:
             raise
 
 
-    def find_ads_with_spend(self, days: int = 7, min_spend: float = SPEND_THRESHOLD, limit: int = 20) -> List[Dict[str, Any]]:
+    def find_eligible_ads(self, days: int = DAYS_THRESHOLD, min_spend: float = SPEND_THRESHOLD, 
+                     specific_adset_ids: List[str] = None, 
+                     specific_campaign_ids: List[str] = None) -> List[Dict[str, Any]]:
         """
-        Find ads with specified minimum spend over a specific time period (excluding today)
+        Find ads that meet both criteria:
+        1. Have been active for at least the specified number of days
+        2. Have spent at least the minimum spend amount
+        
+        Filtering logic:
+        - If only account specified: analyze that account
+        - If adset IDs specified: only analyze those adsets
+        - If campaign IDs specified: only analyze those campaigns
+        - If both adset and campaign IDs specified: analyze both, even if adsets are in different campaigns
         
         Args:
-            days: Number of days to look back (default: 7)
-            min_spend: Minimum spend threshold (default: SPEND_THRESHOLD from settings)
-            limit: Maximum number of ads to return
+            days: Minimum number of days since ad creation
+            min_spend: Minimum spend threshold in account currency
+            specific_adset_ids: Optional list of adset IDs to filter by
+            specific_campaign_ids: Optional list of campaign IDs to filter by
             
         Returns:
-            List[Dict]: List of ads with sufficient spend
+            List[Dict]: List of eligible ads meeting both criteria
         """
-        logger.info(f"Finding ads with at least £{min_spend} spend over the past {days} days (excluding today)")
+        filter_message = f"Finding ads that have been active for at least {days} days AND have spent at least £{min_spend}"
         
-        # Calculate date range - last N days NOT including today
+        # Add filter details to log message
+        if specific_adset_ids:
+            filter_message += f" AND in adset IDs: {', '.join(specific_adset_ids)}"
+        if specific_campaign_ids:
+            filter_message += f" AND in campaign IDs: {', '.join(specific_campaign_ids)}"
+            
+        logger.info(filter_message)
+        
+        # Step 1: Get ads that have been active for at least the specified number of days
+        # Calculate the cutoff date for ad creation
         today = datetime.now()
+        days_ago = today - timedelta(days=days)
+        cutoff_date_str = days_ago.strftime('%Y-%m-%d')
+        
+        # Calculate the date range for spend calculation - last N days NOT including today
         end_date = today.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)  # Yesterday end of day
         start_date = end_date - timedelta(days=days-1)  # N days before that
         
@@ -1867,81 +1925,154 @@ class MetaApiClient:
         start_date_str = start_date.strftime('%Y-%m-%d')
         end_date_str = end_date.strftime('%Y-%m-%d')
         
-        logger.info(f"Date range: {start_date_str} to {end_date_str}")
+        logger.info(f"Date range for spend: {start_date_str} to {end_date_str}")
+        logger.info(f"Looking for ads created on or before: {cutoff_date_str}")
         
-        # More efficient approach: Use the insights endpoint to get ads with minimum spend directly
-        # This avoids checking each ad individually
-        insights_url = f"{self.base_url}/act_{self.ad_account_id}/insights"
-        insights_params = {
+        # Get all ads created on or before the cutoff date
+        ads_url = f"{self.base_url}/act_{self.ad_account_id}/ads"
+        ads_params = {
             "access_token": self.access_token,
-            "level": "ad",
-            "fields": "ad_id,ad_name,campaign_id,campaign_name,adset_id,adset_name,spend",
-            "time_range": json.dumps({
-                "since": start_date_str,
-                "until": end_date_str
-            }),
-            "filtering": json.dumps([
-                {"field": "spend", "operator": "GREATER_THAN", "value": min_spend}
-            ]),
-            "limit": min(100, limit)
+            "fields": "id,name,campaign{id,name},adset{id,name},created_time,status",
+            # No date filtering here - we'll filter by creation date later
+            "limit": 1000  # Get a large batch to filter from
         }
         
         try:
-            # Get insights for ads with minimum spend directly
-            insights_results = self._handle_pagination(insights_url, insights_params)
+            # Get all ads for the account
+            all_ads = self._handle_pagination(ads_url, ads_params)
             
-            if not insights_results:
-                logger.warning(f"No ads found with minimum spend of £{min_spend} in the date range")
+            if not all_ads:
+                logger.warning(f"No ads found in account {self.ad_account_id}")
                 return []
                 
-            logger.info(f"Found {len(insights_results)} ads with minimum spend of £{min_spend}")
+            logger.info(f"Found {len(all_ads)} total ads in account")
             
-            # Format the results
-            ads_with_spend = []
-            
-            # Process the insights data to format it
-            for insight in insights_results:
-                ad_id = insight.get('ad_id')
+            # Filter ads by creation date and adset ID if specified
+            eligible_by_date = []
+            for ad in all_ads:
+                ad_id = ad.get('id')
+                created_time_str = ad.get('created_time', '')
                 
-                # Get additional ad details if needed
-                ad_url = f"{self.base_url}/{ad_id}"
-                ad_params = {
+                if not created_time_str:
+                    continue
+                
+                # Parse created time
+                if 'T' in created_time_str:
+                    created_date = datetime.strptime(created_time_str.split('T')[0], '%Y-%m-%d')
+                else:
+                    created_date = datetime.strptime(created_time_str, '%Y-%m-%d')
+                
+                # Check if ad was created before or on the cutoff date
+                if created_date <= days_ago:
+                    # Get ad's adset and campaign IDs
+                    adset_id = ad.get('adset', {}).get('id')
+                    campaign_id = ad.get('campaign', {}).get('id')
+                    
+                    # Apply filter logic:
+                    # 1. If no filters provided, include all ads
+                    # 2. If both filters provided, include if either matches (OR logic)
+                    # 3. If only one filter provided, include if it matches
+                    
+                    # Default to including the ad
+                    include_ad = True
+                    
+                    # If adset filter is active
+                    if specific_adset_ids:
+                        # Ad must be in one of the specified adsets
+                        in_specific_adset = adset_id in specific_adset_ids
+                        include_ad = include_ad and (in_specific_adset or False)
+                    
+                    # If campaign filter is active AND adset filter isn't matched yet
+                    if specific_campaign_ids:
+                        # Ad must be in one of the specified campaigns
+                        in_specific_campaign = campaign_id in specific_campaign_ids
+                        
+                        # If adset filter is active, use OR logic
+                        if specific_adset_ids:
+                            include_ad = include_ad or in_specific_campaign
+                        else:
+                            # If only campaign filter is active, use AND logic
+                            include_ad = include_ad and in_specific_campaign
+                    
+                    # Add ad if it passes all filters
+                    if include_ad:
+                        eligible_by_date.append(ad)
+            
+            logger.info(f"Found {len(eligible_by_date)} ads created at least {days} days ago")
+            # Track the count of ads within threshold
+            self.ads_within_threshold = len(eligible_by_date)
+            
+            if not eligible_by_date:
+                return []
+            
+            # Step 2: Get ads with minimum spend
+            # Use the insights endpoint to check spend for the eligible ads
+            
+            # Batch ads into groups of 50 for the insights query
+            ad_batches = [eligible_by_date[i:i+50] for i in range(0, len(eligible_by_date), 50)]
+            eligible_ads = []
+            
+            for batch in ad_batches:
+                # Extract ad IDs for this batch
+                batch_ad_ids = [ad.get('id') for ad in batch]
+                
+                # Query insights for this batch of ads
+                insights_url = f"{self.base_url}/act_{self.ad_account_id}/insights"
+                insights_params = {
                     "access_token": self.access_token,
-                    "fields": "id,name,campaign{id,name},adset{id,name},created_time,status"
+                    "level": "ad",
+                    "fields": "ad_id,ad_name,campaign_id,campaign_name,adset_id,adset_name,spend",
+                    "time_range": json.dumps({
+                        "since": start_date_str,
+                        "until": end_date_str
+                    }),
+                    "filtering": json.dumps([
+                        {"field": "ad.id", "operator": "IN", "value": batch_ad_ids},
+                        {"field": "spend", "operator": "GREATER_THAN", "value": min_spend}
+                    ]),
+                    "limit": 50
                 }
                 
-                try:
-                    ad_details = self._make_api_request(ad_url, ad_params)
-                    
-                    # Format ad data
-                    ad_data = {
-                        "ad_id": ad_id,
-                        "ad_name": insight.get('ad_name') or ad_details.get('name', ''),
-                        "campaign_id": insight.get('campaign_id') or ad_details.get('campaign', {}).get('id'),
-                        "campaign_name": insight.get('campaign_name') or ad_details.get('campaign', {}).get('name'),
-                        "adset_id": insight.get('adset_id') or ad_details.get('adset', {}).get('id'),
-                        "adset_name": insight.get('adset_name') or ad_details.get('adset', {}).get('name'),
-                        "created_time": ad_details.get('created_time'),
-                        "status": ad_details.get('status'),
-                        "spend": float(insight.get('spend', 0))
-                    }
-                    
-                    logger.info(f"Ad {ad_id} '{ad_data['ad_name']}' has sufficient spend: £{ad_data['spend']:.2f}")
-                    ads_with_spend.append(ad_data)
-                    
-                    # Limit the number of ads if needed
-                    if len(ads_with_spend) >= limit:
-                        logger.info(f"Found {limit} ads with sufficient spend. Stopping search.")
-                        break
+                # Get insights for ads with minimum spend
+                batch_insights = self._handle_pagination(insights_url, insights_params)
+                
+                if batch_insights:
+                    # Process each ad that meets the spend requirement
+                    for insight in batch_insights:
+                        ad_id = insight.get('ad_id')
                         
-                except Exception as e:
-                    logger.error(f"Error getting details for ad {ad_id}: {str(e)}")
+                        # Find the matching ad from the eligible_by_date list
+                        matching_ad = next((ad for ad in batch if ad.get('id') == ad_id), None)
+                        
+                        if matching_ad:
+                            # Format ad data
+                            ad_data = {
+                                "ad_id": ad_id,
+                                "ad_name": insight.get('ad_name') or matching_ad.get('name', ''),
+                                "campaign_id": insight.get('campaign_id') or matching_ad.get('campaign', {}).get('id'),
+                                "campaign_name": insight.get('campaign_name') or matching_ad.get('campaign', {}).get('name'),
+                                "adset_id": insight.get('adset_id') or matching_ad.get('adset', {}).get('id'),
+                                "adset_name": insight.get('adset_name') or matching_ad.get('adset', {}).get('name'),
+                                "created_time": matching_ad.get('created_time'),
+                                "status": matching_ad.get('status'),
+                                "spend": float(insight.get('spend', 0))
+                            }
+                            
+                            logger.info(f"Ad {ad_id} '{ad_data['ad_name']}' meets both criteria: "
+                                      f"Created on {ad_data['created_time']} with £{ad_data['spend']:.2f} spend")
+                            eligible_ads.append(ad_data)
+                
+                # Add a short delay between batches to avoid rate limiting
+                time.sleep(1)
             
-            logger.info(f"Found {len(ads_with_spend)} ads with at least £{min_spend} spend in the specified date range")
-            return ads_with_spend
+            # Sort by spend (highest first) - no limit on number of ads
+            eligible_ads = sorted(eligible_ads, key=lambda x: x.get('spend', 0), reverse=True)
+                
+            logger.info(f"Found {len(eligible_ads)} ads meeting both criteria")
+            return eligible_ads
             
         except Exception as e:
-            logger.exception(f"Error finding ads with spend: {str(e)}")
+            logger.exception(f"Error finding eligible ads: {str(e)}")
             return []
 
 # Example usage

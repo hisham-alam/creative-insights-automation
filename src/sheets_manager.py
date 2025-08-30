@@ -27,7 +27,7 @@ if __name__ == "__main__":
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
     sys.path.insert(0, project_root)
 
-from config.settings import SHEETS_SPREADSHEET_ID
+from config.settings import SHEETS_SPREADSHEET_ID, CONFIG_DIR
 
 # Configure logging
 logging.basicConfig(
@@ -116,6 +116,10 @@ class SheetsManager:
             Exception: If authentication fails
         """
         try:
+            # Import needed here to ensure it's in scope
+            import os
+            from google.oauth2 import service_account
+            
             # If credentials file is provided, use service account
             if self.credentials_path:
                 credentials = Credentials.from_service_account_file(
@@ -124,11 +128,17 @@ class SheetsManager:
                 )
                 service = build('sheets', 'v4', credentials=credentials)
                 logger.info("Authenticated with service account")
+            # Try using the credentials file in the config directory
+            elif os.path.exists(os.path.join(CONFIG_DIR, 'sheets-api-key.json')):
+                credentials = Credentials.from_service_account_file(
+                    os.path.join(CONFIG_DIR, 'sheets-api-key.json'),
+                    scopes=['https://www.googleapis.com/auth/spreadsheets']
+                )
+                service = build('sheets', 'v4', credentials=credentials)
+                logger.info("Authenticated with service account from config directory")
             
             # Otherwise use application default credentials
             else:
-                from google.oauth2 import service_account
-                import os
 
                 # Try to use GOOGLE_APPLICATION_CREDENTIALS environment variable
                 credentials = None
@@ -393,6 +403,15 @@ class SheetsManager:
         except Exception as e:
             logger.exception(f"Failed to format header row for tab {tab_name}: {str(e)}")
             raise
+    
+    def get_spreadsheet_id(self) -> str:
+        """
+        Get the ID of the Google Sheet
+        
+        Returns:
+            str: Spreadsheet ID
+        """
+        return self.spreadsheet_id
     
     def get_spreadsheet_url(self) -> str:
         """
